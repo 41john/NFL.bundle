@@ -4,22 +4,9 @@
 <dict>
 	<key>CFBundleIdentifier</key>
 	<string>com.plexapp.plugins.nflvideos</string>
-	<key>PlexClientCapabilities</key>
-	<dict>
-		<key>protocols</key>
-		<array>
-			<string>webkit</string>
-		</array>
-	</dict>
 	<key>PlexClientPlatforms</key>
 	<string>*</string>
 	<key>PlexFrameworkVersion</key>
 	<string>2</string>
-	<key>PlexPluginMode</key>
-	<string>AlwaysOn</string>
-	<key>PlexMediaContainer</key>
-	<array>
-		<string>Flash</string>
-	</array>
 </dict>
 </plist>
