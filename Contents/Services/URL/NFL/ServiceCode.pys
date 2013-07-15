@@ -1,0 +1,24 @@
+####################################################################################################
+def MetadataObjectForURL(url):
+
+    return VideoClipObject(
+        title = "NFL Video"
+    )
+
+
+####################################################################################################
+def MediaObjectsForURL(url):
+
+	return [
+		MediaObject(
+			container = 'Container.MP4',
+			video_codec = VideoCodec.H264,
+			audio_codec = AudioCodec.AAC,
+			audio_channels = 2,
+			optimized_for_streaming = True,
+			parts = [PartObject(key = url)],
+		)
+	]
+
+
+####################################################################################################

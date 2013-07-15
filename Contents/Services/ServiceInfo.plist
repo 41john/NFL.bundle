@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+  <dict>
+    <key>URL</key>
+    <dict>
+      <key>NFL</key>
+      <dict>
+        <key>Identifier</key>
+        <string>com.plexapp.plugins.nflvideos</string>
+        <key>URLPatterns</key>
+        <array>
+          <string>http://gamepass.nfl.com/*</string>
+          <string>http://www.nfl.com/*</string>
+          <string>http://a.video.nfl.com/*</string>
+        </array>
+      </dict>
+    </dict>
+  </dict>
+</plist>
