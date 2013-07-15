@@ -2,7 +2,6 @@
 ###################################################################################################
 #
 # NFL Videos for Plex (by 41john)
-# http://wiki.plexapp.com/index.php/NFL_Videos
 #
 ###################################################################################################
 
@@ -12,7 +11,7 @@ BASE_URL                   = 'http://www.nfl.com/videos'
 GAMEHIGHLIGHTS_URL         = 'http://www.nfl.com/videos/nfl-game-highlights'
 NFL_NETWORK_LIVE           = 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true'
 GAMEPASS_SCHEDULE          = 'https://gamepass.nfl.com/nflgp/secure/schedulechange'
-NFL_VIDEOS_JSON		   = 'http://www.nfl.com/static/embeddablevideo/%s.json'
+NFL_VIDEOS_JSON            = 'http://www.nfl.com/static/embeddablevideo/%s.json'
 
 TEAMS = {'arizona-cardinals': 'Arizona Cardinals', 'atlanta-falcons': 'Atlanta Falcons', 'baltimore-ravens': 'Baltimore Ravens', 'buffalo-bills': 'Buffalo Bills', 'carolina-panthers': 'Carolina Panthers', 'chicago-bears': 'Chicago Bears', 'cincinnati-bengals': 'Cincinnati Bengals', 'cleveland-browns': 'Cleveland Browns', 'dallas-cowboys': 'Dallas Cowboys', 'denver-broncos': 'Denver Broncos', 'detroit-lions': 'Detroit Lions', 'green-bay-packers': 'Green Bay Packers', 'houston-texans': 'Houston Texans', 'indianapolis-colts': 'Indianapolis Colts', 'jacksonville-jaguars': 'Jacksonville Jaguars', 'kansas-city-chiefs': 'Kansas City Chiefs', 'miami-dolphins': 'Miami Dolphins', 'minnesota-vikings': 'Minnesota Vikings', 'new-england-patriots': 'New England Patriots', 'new-orleans-saints': 'New Orleans Saints', 'new-york-giants': 'New York Giants', 'new-york-jets': 'New York Jets', 'oakland-raiders': 'Oakland Raiders', 'philadelphia-eagles': 'Philadelphia Eagles', 'pittsburgh-steelers': 'Pittsburgh Steelers', 'san-diego-chargers': 'San Diego Chargers', 'san-francisco-49ers': 'San Francisco 49ers', 'seattle-seahawks': 'Seattle Seahawks', 'st-louis-rams': 'St. Louis Rams', 'tampa-bay-buccaneers': 'Tampa Bay Buccaneers', 'tennessee-titans': 'Tennessee Titans', 'washington-redskins': 'Washington Redskins'}
 ORDERED_TEAMS = ['arizona-cardinals','atlanta-falcons','baltimore-ravens','buffalo-bills','carolina-panthers','chicago-bears','cincinnati-bengals','cleveland-browns','dallas-cowboys','denver-broncos','detroit-lions','green-bay-packers','houston-texans','indianapolis-colts','jacksonville-jaguars','kansas-city-chiefs','miami-dolphins','minnesota-vikings','new-england-patriots','new-orleans-saints','new-york-giants','new-york-jets','oakland-raiders','philadelphia-eagles','pittsburgh-steelers','san-diego-chargers','san-francisco-49ers','seattle-seahawks','st-louis-rams','tampa-bay-buccaneers','tennessee-titans','washington-redskins']
@@ -127,20 +126,16 @@ def GamepassMenu():
 def GamepassSeason():
 
 	oc = ObjectContainer(title2="NFL Game Pass")
-	
-	seasons = {'2009': '2009', '2010': '2010', '2011': '2011', '2012': '2012', '2013': '2013'}
-	orderedSeasons = ['2009', '2010', '2011', '2012', '2013']
-    
-	for season in orderedSeasons:
-		season_title = seasons[season]
-	
-		oc.add(DirectoryObject(key = Callback(GamepassWeek, season=season, season_title=season_title), title=season_title))
-	return oc       
+
+	for season in range(2009, Datetime.Now().year+1):
+		oc.add(DirectoryObject(key = Callback(GamepassWeek, season=str(season)), title=str(season)))
+
+	return oc
 
 ####################################################################################################
 
 @route('/video/nflvideos/gamepassweek')
-def GamepassWeek(season, season_title):
+def GamepassWeek(season):
 
 	oc = ObjectContainer(title2="NFL Game Pass")
 	
