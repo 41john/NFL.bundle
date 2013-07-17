@@ -115,7 +115,7 @@ def GamepassMenu():
 
 	oc = ObjectContainer(title2="NFl Game Pass")
 	
-	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archive", thumb=R("gamepass.png"), summary="Archived games from 2009, 2010, 2011, and 2012"))	
+	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archive", thumb=R("gamepass.png"), summary="Archived games from this season back to 2009"))	
 	oc.add(DirectoryObject(key=Callback(GamepassPlayweek), title="Live / This week", thumb=R("gamepass-live.png"), summary="This weeks games, Live!"))
 	
 	return oc
@@ -158,11 +158,13 @@ def GamepassPlay(week, season, week_title):
 	oc = ObjectContainer(title2=week_title)
 	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', values={'week':week, 'season':season}, cacheTime=1)
 
-	for stream in list.xpath('//tr'):
-		sTitle = stream.xpath('./td[@width="100%"]')[0].text
-		sStreamURL = stream.xpath('.//a[@class="watchBtn"]')[0].get('href')
+	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
+		sTeam1 = stream.xpath('./table/tr[1]/td[2]/text()')[0]
+		sTeam2 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
+		sTitle = "%s @ %s" % (sTeam1,sTeam2)
+		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
 		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamepass.nfl.com/nflgp/console.jsp?eid=").replace("')","")
-		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, duration=0))
+		oc.add(VideoClipObject(url=sStreamURL, title=sTitle,  thumb=R("gamepass.png")))
 
 	return oc
 
@@ -174,13 +176,14 @@ def GamepassPlayweek():
 	oc = ObjectContainer(title2="NFL Game Pass")
 	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', cacheTime=1)
 
-	for stream in list.xpath('//tr'):
-		sTitle = stream.xpath('./td[@width="100%"]')[0].text
-		sSummary = stream.xpath('./td[@nowrap="true"]')[0].text
-		sSummary = sSummary.replace(":00.0"," Eastern")
-		sStreamURL = stream.xpath('.//a[@class="watchBtn"]')[0].get('href')
+	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
+		sTeam1 = stream.xpath('./table/tr[1]/td[2]/text()')[0]
+		sTeam2 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
+		sTitle = "%s @ %s" % (sTeam1,sTeam2)
+		sSummary = stream.xpath('./table/tr[1]/td[3]/text()')[0].strip()
+		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
 		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamepass.nfl.com/nflgp/console.jsp?eid=").replace("')","")
-		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary=sSummary, duration=0))
+		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary = sSummary, thumb=R("gamepass.png")))
 
 	return oc
 
