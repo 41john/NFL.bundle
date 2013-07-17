@@ -127,7 +127,9 @@ def GamepassSeason():
 
 	oc = ObjectContainer(title2="NFL Game Pass")
 
-	for season in range(2009, Datetime.Now().year+1):
+	year = Datetime.Now().year if Datetime.Now().month < 8 else Datetime.Now().year+1
+
+	for season in range(2009, year):
 		oc.add(DirectoryObject(key = Callback(GamepassWeek, season=str(season)), title=str(season)))
 
 	return oc
