@@ -18,12 +18,5 @@
         "label": "Password",
         "default": "",
         "option": "hidden"
-    },
-    {
-        "id": "nflnetqual",
-        "type": "enum",
-        "label": "NFL Network Quality",
-        "values": ["500kbps", "700kbps", "1200kbps", "2000kbps", "3200kbps"],
-        "default": "500kbps"
     }
 ]

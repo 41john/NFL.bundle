@@ -196,6 +196,7 @@ def NflNetworkMenu():
 	oc = ObjectContainer(title2="NFL Network")
 
 	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary="Watch NFL Network Live (subscription needed)", thumb=R("nfl-network-live.png")))
+	
 
 	return oc
 
@@ -208,26 +209,19 @@ def PlayMenu(url=None):
 	oc = ObjectContainer(title2="NFL Network")
 	list = HTML.ElementFromURL(url, errors='ignore', cacheTime=1).xpath('//div[@id="videos-list"]/ul[@class="list-items"]/li')
 
-	for id in list:
-		streamid = id.xpath('.')[0].get('data-ecmid')
-		result = JSON.ObjectFromURL(NFL_VIDEOS_JSON % streamid)
-		sSummary = result['caption']
-		sTitle = result['briefHeadline']
-		sThumb = result['imagePaths']['m']
-		sUrl3200 = NFL_URL1 + result['cdnData']['bitrateInfo'][-1]['path']
-		sUrl2000 = NFL_URL1 + result['cdnData']['bitrateInfo'][-2]['path']
-		sUrl1200 = NFL_URL1 + result['cdnData']['bitrateInfo'][-3]['path']
-		sUrl700 = NFL_URL1 + result['cdnData']['bitrateInfo'][-4]['path']
-		sUrl500 = NFL_URL1 + result['cdnData']['bitrateInfo'][-5]['path']
-		if Prefs['nflnetqual'] == "500kbps":
-			oc.add(VideoClipObject(url=sUrl500, title=sTitle, summary=sSummary, thumb=sThumb))
-		elif Prefs['nflnetqual'] == "700kbps":
-			oc.add(VideoClipObject(url=sUrl700, title=sTitle, summary=sSummary, thumb=sThumb))
-		elif Prefs['nflnetqual'] == "1200kbps":
-			oc.add(VideoClipObject(url=sUrl1200, title=sTitle, summary=sSummary, thumb=sThumb))
-		elif Prefs['nflnetqual'] == "2000kbps":
-			oc.add(VideoClipObject(url=sUrl2000, title=sTitle, summary=sSummary, thumb=sThumb))
-		elif Prefs['nflnetqual'] == "3200kbps":
-			oc.add(VideoClipObject(url=sUrl3200, title=sTitle, summary=sSummary, thumb=sThumb))
+	for stream in list:
+		sTitle = stream.xpath('.//div[@class="content"]//a')[0].text
+		sSummary = stream.xpath('.//p[last()]')[0].text
+		sThumb = stream.xpath('.//div[@class="thumbnail"]//a/img')[0].get('src')
+		sThumb = sThumb.replace("thumbnail_80_60.jpg","rhr_210.jpg")
+		sStreamURL = NFL_URL + stream.xpath('.//div[@class="content"]//a')[0].get('href')
+		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary=sSummary, thumb=sThumb))
 
 	return oc
+
+###################################################################################################	
+
+# Notes about xpaths
+# .// means any child/grandchild of the currently selected node, rather than anywhere in the document. Particularly important when dealing with loops.
+# // = any child or grand-child ( you can use // so that you don't have to specify all the parents before it). Be careful to be specific enough to avoid confusion.
+# / = direct child of the parent (for example of the entire page)

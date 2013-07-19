@@ -1,24 +1,110 @@
+NFL_VIDEOS_JSON				= 'http://www.nfl.com/static/embeddablevideo/%s.json'
+NFL_VIDEOS_URL				= 'http://a.video.nfl.com/'
 ####################################################################################################
 def MetadataObjectForURL(url):
+	
+	if url.startswith("http://www.nfl.com"):
 
-    return VideoClipObject(
-        title = "NFL Video"
-    )
+		page = HTML.ElementFromURL(url)
+		streamid = page.xpath('//div[@id="video-hero-player"]')[0].get('data-ecmid')
+		json = JSON.ObjectFromURL(NFL_VIDEOS_JSON % streamid)
+		sTitle = json['briefHeadline']
+		sSummary = json['caption']
+		sThumb = json['imagePaths']['m']
+		
+		return VideoClipObject(
+			title = sTitle,
+			summary = sSummary,
+			thumb = sThumb,
+		)
 
+#	if url.startswith("http://gamepass.nfl.com"):
 
 ####################################################################################################
 def MediaObjectsForURL(url):
 
-	return [
-		MediaObject(
-			container = 'Container.MP4',
-			video_codec = VideoCodec.H264,
-			audio_codec = AudioCodec.AAC,
-			audio_channels = 2,
-			optimized_for_streaming = True,
-			parts = [PartObject(key = url)],
-		)
-	]
+	if url.startswith("http://www.nfl.com"):
+		return [
+			MediaObject(
+				bitrate = 3000,
+				video_resolution = '1080',
+				container = Container.MP4,
+				video_codec = VideoCodec.H264,
+				audio_codec = AudioCodec.AAC,
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '3000'))]				
+			),
+			MediaObject(
+				bitrate = 2000,
+				video_resolution = '720',
+				container = Container.MP4,
+				video_codec = VideoCodec.H264,
+				audio_codec = AudioCodec.AAC,
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '2000'))]				
+			),
+			MediaObject(
+				bitrate = 1200,
+				video_resolution = '480',
+				container = Container.MP4,
+				video_codec = VideoCodec.H264,
+				audio_codec = AudioCodec.AAC,
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '1200'))]				
+			),
+			MediaObject(
+				bitrate = 700,
+				video_resolution = '320',
+				container = Container.MP4,
+				video_codec = VideoCodec.H264,
+				audio_codec = AudioCodec.AAC,
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '700'))]				
+			),
+			MediaObject(
+				bitrate = 500,
+				video_resolution = '240',
+				container = Container.MP4,
+				video_codec = VideoCodec.H264,
+				audio_codec = AudioCodec.AAC,
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '500'))]				
+			)
+		]
 
+#	if url.startswith("http://gamepass.nfl.com"):
 
+####################################################################################################
+def PlayVideo(url, bitrate):
+
+	if url.startswith("http://www.nfl.com"):
+
+		page = HTML.ElementFromURL(url)
+		streamid = page.xpath('//div[@id="video-hero-player"]')[0].get('data-ecmid')
+		json = JSON.ObjectFromURL(NFL_VIDEOS_JSON % streamid)
+	
+		mp4_url3000 = NFL_VIDEOS_URL + json['cdnData']['bitrateInfo'][-1]['path']
+		mp4_url2000 = NFL_VIDEOS_URL + json['cdnData']['bitrateInfo'][-2]['path']
+		mp4_url1200 = NFL_VIDEOS_URL + json['cdnData']['bitrateInfo'][-3]['path']
+		mp4_url700 = NFL_VIDEOS_URL + json['cdnData']['bitrateInfo'][-4]['path']
+		mp4_url500 = NFL_VIDEOS_URL + json['cdnData']['bitrateInfo'][-5]['path']
+		
+		if bitrate == '3000':
+			return Redirect(mp4_url3000)
+		elif bitrate == '2000':
+			return Redirect(mp4_url2000)
+		elif bitrate == '1200':
+			return Redirect(mp4_url1200)
+		elif bitrate == '700':
+			return Redirect(mp4_url700)
+		elif bitrate == '500':
+			return Redirect(mp4_url500)
+			
+#	if url.startswith("http://gamepass.nfl.com"):
+	
 ####################################################################################################
