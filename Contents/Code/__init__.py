@@ -5,14 +5,14 @@
 #
 ###################################################################################################
 
-NFL_URL                    = 'http://www.nfl.com'
-NFL_URL1                   = 'http://a.video.nfl.com/'
-BASE_URL                   = 'http://www.nfl.com/videos'
-LATEST_VIDEOS			   = 'http://www.nfl.com/videos/nfl-videos'
-GAMEHIGHLIGHTS_URL         = 'http://www.nfl.com/videos/nfl-game-highlights'
-NFL_NETWORK_LIVE           = 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true'
-GAMEPASS_SCHEDULE          = 'https://gamepass.nfl.com/nflgp/secure/schedulechange'
-NFL_VIDEOS_JSON            = 'http://www.nfl.com/static/embeddablevideo/%s.json'
+NFL_URL						= 'http://www.nfl.com'
+NFL_URL1					= 'http://a.video.nfl.com/'
+BASE_URL					= 'http://www.nfl.com/videos'
+LATEST_VIDEOS				= 'http://www.nfl.com/videos/nfl-videos'
+GAMEHIGHLIGHTS_URL			= 'http://www.nfl.com/videos/nfl-game-highlights'
+NFL_NETWORK_LIVE			= 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true'
+GAMEPASS_SCHEDULE			= 'https://gamepass.nfl.com/nflgp/secure/schedulechange'
+NFL_VIDEOS_JSON				= 'http://www.nfl.com/static/embeddablevideo/%s.json'
 
 TEAMS = {'arizona-cardinals': 'Arizona Cardinals', 'atlanta-falcons': 'Atlanta Falcons', 'baltimore-ravens': 'Baltimore Ravens', 'buffalo-bills': 'Buffalo Bills', 'carolina-panthers': 'Carolina Panthers', 'chicago-bears': 'Chicago Bears', 'cincinnati-bengals': 'Cincinnati Bengals', 'cleveland-browns': 'Cleveland Browns', 'dallas-cowboys': 'Dallas Cowboys', 'denver-broncos': 'Denver Broncos', 'detroit-lions': 'Detroit Lions', 'green-bay-packers': 'Green Bay Packers', 'houston-texans': 'Houston Texans', 'indianapolis-colts': 'Indianapolis Colts', 'jacksonville-jaguars': 'Jacksonville Jaguars', 'kansas-city-chiefs': 'Kansas City Chiefs', 'miami-dolphins': 'Miami Dolphins', 'minnesota-vikings': 'Minnesota Vikings', 'new-england-patriots': 'New England Patriots', 'new-orleans-saints': 'New Orleans Saints', 'new-york-giants': 'New York Giants', 'new-york-jets': 'New York Jets', 'oakland-raiders': 'Oakland Raiders', 'philadelphia-eagles': 'Philadelphia Eagles', 'pittsburgh-steelers': 'Pittsburgh Steelers', 'san-diego-chargers': 'San Diego Chargers', 'san-francisco-49ers': 'San Francisco 49ers', 'seattle-seahawks': 'Seattle Seahawks', 'st-louis-rams': 'St. Louis Rams', 'tampa-bay-buccaneers': 'Tampa Bay Buccaneers', 'tennessee-titans': 'Tennessee Titans', 'washington-redskins': 'Washington Redskins'}
 ORDERED_TEAMS = ['arizona-cardinals','atlanta-falcons','baltimore-ravens','buffalo-bills','carolina-panthers','chicago-bears','cincinnati-bengals','cleveland-browns','dallas-cowboys','denver-broncos','detroit-lions','green-bay-packers','houston-texans','indianapolis-colts','jacksonville-jaguars','kansas-city-chiefs','miami-dolphins','minnesota-vikings','new-england-patriots','new-orleans-saints','new-york-giants','new-york-jets','oakland-raiders','philadelphia-eagles','pittsburgh-steelers','san-diego-chargers','san-francisco-49ers','seattle-seahawks','st-louis-rams','tampa-bay-buccaneers','tennessee-titans','washington-redskins']
@@ -157,6 +157,9 @@ def GamepassWeek(season):
 def GamepassPlay(week, season, week_title):
 
 	oc = ObjectContainer(title2=week_title)
+	
+	GamepassLogin()
+	
 	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', values={'week':week, 'season':season}, cacheTime=1)
 
 	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
@@ -175,6 +178,9 @@ def GamepassPlay(week, season, week_title):
 def GamepassPlayweek():
 
 	oc = ObjectContainer(title2="NFL Game Pass")
+
+	GamepassLogin()
+
 	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', cacheTime=1)
 
 	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
@@ -195,8 +201,9 @@ def NflNetworkMenu():
 
 	oc = ObjectContainer(title2="NFL Network")
 
+	GamepassLogin()
+
 	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary="Watch NFL Network Live (subscription needed)", thumb=R("nfl-network-live.png")))
-	
 
 	return oc
 
@@ -219,8 +226,24 @@ def PlayMenu(url=None):
 
 	return oc
 
-###################################################################################################	
+###################################################################################################
+def GamepassLogin():
 
+	username = Prefs['username']
+	password = Prefs['password']
+	
+	authentication_url = "https://network.nfl.com/nfln/secure/schedule"
+	post_values = {
+		'form.username.value' : username,
+		'form.password.value' : password,
+		'form.vendor_id.value' : 'nflptnrnln',
+		'form.success_url.value' : 'https://network.nfl.com/nfln/secure/login',
+		'form.error_url.value' : 'https://network.nfl.com/nfln/secure/login'
+		}
+ 	
+	login = HTTP.Request(url=authentication_url, values=post_values).content
+
+###################################################################################################	
 # Notes about xpaths
 # .// means any child/grandchild of the currently selected node, rather than anywhere in the document. Particularly important when dealing with loops.
 # // = any child or grand-child ( you can use // so that you don't have to specify all the parents before it). Be careful to be specific enough to avoid confusion.

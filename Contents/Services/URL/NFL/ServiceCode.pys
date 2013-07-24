@@ -17,8 +17,11 @@ def MetadataObjectForURL(url):
 			summary = sSummary,
 			thumb = sThumb,
 		)
-
-#	if url.startswith("http://gamepass.nfl.com"):
+		
+	if url.startswith("http://gamepass.nfl.com"):
+		return VideoClipObject(
+        	title = "NFL Gamepass"
+    	)
 
 ####################################################################################################
 def MediaObjectsForURL(url):
@@ -76,8 +79,19 @@ def MediaObjectsForURL(url):
 				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '500'))]				
 			)
 		]
-
-#	if url.startswith("http://gamepass.nfl.com"):
+	
+	if url.startswith("http://gamepass.nfl.com"):
+		return [
+			MediaObject(
+				bitrate = 1200,
+				container = Container.MP4,
+				video_codec = VideoCodec.H264,
+				audio_codec = AudioCodec.AAC,
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '1200'))]
+			)
+		]
 
 ####################################################################################################
 def PlayVideo(url, bitrate):
@@ -105,6 +119,34 @@ def PlayVideo(url, bitrate):
 		elif bitrate == '500':
 			return Redirect(mp4_url500)
 			
-#	if url.startswith("http://gamepass.nfl.com"):
-	
+	if url.startswith("http://gamepass.nfl.com"):
+
+		game_id = url.replace("http://gamepass.nfl.com/nflgp/console.jsp?eid=", "")
+		games_url = "http://gamepass.nfl.com/nflgp/servlets/games"
+		post_values1 = {
+		'eid' : game_id,
+		'isFlex' : 'true'
+		}
+		
+ 		games_pagedata = HTTP.Request(url=games_url, values=post_values1).content
+		games_page = XML.ElementFromString(games_pagedata)
+
+		program_id = games_page.xpath('//programId')[0].text
+		videopath_url = "http://gamepass.nfl.com/nflgp/servlets/encryptvideopath"
+		post_values2 = {
+		'path' : program_id,
+		'type' : 'fgpa',
+		'isFlex' : 'true'
+		}
+		
+ 		videopath_pagedata = HTTP.Request(url=videopath_url, values=post_values2).content
+		videopath_page = XML.ElementFromString(videopath_pagedata)
+		
+		mp4_url = videopath_page.xpath('//path')[0].text
+		mp4_gamepassurl1200 = mp4_url.replace("adaptive://nlds82.neulion.com:443", "http://nlds82.cdnak.neulion.com").replace("pc.mp4", "1200.mp4")
+		
+		return Redirect(mp4_gamepassurl1200)
+
+# Once this is working, I will edit the gamepass parts of the URL service above to include all bitrates
+		
 ####################################################################################################
