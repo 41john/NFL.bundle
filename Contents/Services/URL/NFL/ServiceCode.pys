@@ -121,7 +121,9 @@ def PlayVideo(url, bitrate):
 			
 	if url.startswith("http://gamepass.nfl.com"):
 	
-		headers_value = {'Cookie' : 'JSESSIONID=32229~5DEC46929CA2FC59FF0AFCE5E2FABD29; ARSL=CT-1; mbox=check#true#1374666234|session#1374666137517-969731#1374668034|PC#1374666137517-969731.21_07#1375875774; s_sess=%20s_eVar1%3DProd_GP_Nav%3B%20s_cc%3Dtrue%3B%20s_ppv%3D-%252C62%252C62%252C943%3B%20s_sq%3Dcbsnfl%253D%252526pid%25253Dnfl%2525253Agamepass%2525253Aschedule%252526pidt%25253D1%252526oid%25253Djavascript%2525253AlaunchApp%25252528%252525272012110800%25252527%25252529%252526ot%25253DA%3B; s_pers=%20s_nr%3D1374666286093%7C1377258286093%3B%20s_lastvisit%3D1374679961673%7C1469287961673%3B%20s_pv%3Dnfl%253Agamepass%253Aschedule%7C1374681761675%3B%20p36%3D41john%257Chold%7C1532359961677%3B; s_vi=[CS]v1|28F7DECD8514B870-60000175E000B687[CE]; __psrw=190211ea-f456-11e2-ad6c-22000a977ed0; headerSubProducts=preseasonLiveClass%2CgameRewindClass; nflpollUoF=0_0_1374453298867V0V0V0V0E; fsr.s=%7B%22v%22%3A1%2C%22rid%22%3A%22d1e16f9-69149616-36a5-7b5a-6e5a3%22%2C%22to%22%3A3%2C%22c%22%3A%22http%3A%2F%2Fwww.nfl.com%2F%22%2C%22pv%22%3A1%2C%22lc%22%3A%7B%22d2%22%3A%7B%22v%22%3A1%2C%22s%22%3Afalse%7D%7D%2C%22cd%22%3A2%2C%22f%22%3A1374666151424%7D; utag_main=_st:1374667973564$ses_id:1374666329899%3Bexp-session; cvo_sid1=VPYTBMDK4CV7; userId=u%3D41john%26t%3DNO%26d%3D1374666159826%26p%3Dfalse%26h%3Dc9a113fff6f70eff30ec60373939b6ea%26la%3D1374666159826%26sps%3D; at=u%3D41john%26a%3D41john%26e%3Djohn%40jr-pcs.co.uk%26ft%3DNO%26t%3D1374666159%26h%3D89ac66ae7ee00df321524cb2801a251c; ptnr=u%3D41john%26f%3DJohn%26e%3Djohn%40jr-pcs.co.uk%26t%3DNO%26d%3D1374666159826%26p%3Dfalse%26h%3Dd8a3f05060616fb9495422d16c56ce7b; bd=u%3D41john%26f%3DJohn%26e%3Djohn%40jr-pcs.co.uk%26t%3DNO%26d%3D1374666159827%26p%3Dfalse%26h%3D197f4036067a8d103733b6859140bece; mdot=u%3D41john%26f%3DJohn%26e%3Djohn%40jr-pcs.co.uk%26t%3DNO%26d%3D1374666159827%26p%3Dfalse%26h%3Dbc497283df7ba69ebd7b47a79da7cd42; nflsubs=41john|GAME_PASS; iptvpcplatform=nflgp'}
+# Need to figure out how to get cookies for url and replace for header_value below.	
+	
+		headers_value = {'Cookie' : 'JSESSIONID=32231~8A3E271E338F5ACBBE98B1DFF1A9DAFC; mbox=session#1374686684103-220908#1374688791|PC#1374686684103-220908.21_30#1375896531|check#true#1374686991; utag_main=_st:1374688730732$ses_id:1374686878155%3Bexp-session; s_sess=%20s_cc%3Dtrue%3B%20s_ppv%3D-%3B%20s_sq%3Dcbsnfl%253D%252526pid%25253Dnfl%2525253Agamepass%2525253Aschedule%252526pidt%25253D1%252526oid%25253Djavascript%2525253AlaunchApp%25252528%252525272012110800%25252527%25252529%252526ot%25253DA%2526nfl360dev%253D%252526pid%25253Dhttps%2525253A%2525252F%2525252Fgamepass.nfl.com%2525252Fnflgp%2525252Fsecure%2525252Fpackages%2525253Fttv%2525253D1%252526oid%25253Dhttps%2525253A%2525252F%2525252Fgamepass.nfl.com%2525252Fnflgp%2525252Fsecure%2525252Floginform%252526ot%25253DA%3B; s_pers=%20s_lastvisit%3D1374686691826%7C1469294691826%3B%20s_nr%3D1374686997047%7C1377278997047%3B%20s_pv%3Dnfl%253Agamepass%253Aschedule%7C1374688797048%3B%20p36%3D41john%257Chold%7C1532366997049%3B; __psrw=f3391ac8-f485-11e2-9c78-12313809e63f; cvo_sid1=5EJRY3FKYA2X; s_vi=[CS]v1|28F806F285013284-400016094016C725[CE]; userId=u%3D41john%26t%3DNO%26d%3D1374686888162%26p%3Dfalse%26h%3D9f5d4f8780b25abfb9cca4c67038fb08%26la%3D1374686888162%26sps%3D; at=u%3D41john%26a%3D41john%26e%3Djohn%40jr-pcs.co.uk%26ft%3DNO%26t%3D1374686888%26h%3D2567be14b40b23c8120027676f25df2d; bd=u%3D41john%26f%3DJohn%26e%3Djohn%40jr-pcs.co.uk%26t%3DNO%26d%3D1374686888163%26p%3Dfalse%26h%3D5433947debb2e4a486e3b4fc07d533a8; mdot=u%3D41john%26f%3DJohn%26e%3Djohn%40jr-pcs.co.uk%26t%3DNO%26d%3D1374686888163%26p%3Dfalse%26h%3D3898294666c9c2680917975828f85e67; nflsubs=41john|GAME_PASS; ptnr=u%3D41john%26f%3DJohn%26e%3Djohn%40jr-pcs.co.uk%26t%3DNO%26d%3D1374686888163%26p%3Dfalse%26h%3Dde1d3698d20a4e1a0535745e7c8dc8de'}
 
 		game_id = url.replace("http://gamepass.nfl.com/nflgp/console.jsp?eid=", "")
 		games_url = "http://gamepass.nfl.com/nflgp/servlets/games"
@@ -129,24 +131,29 @@ def PlayVideo(url, bitrate):
 		'eid' : game_id,
 		'isFlex' : 'true'
 		}
-		games_pagedata = HTTP.Request(url=games_url, values=post_values1, headers=headers_value, errors='ignore').content
+		games_pagedata = HTTP.Request(url=games_url, values=post_values1, headers=headers_value).content
 		games_page = XML.ElementFromString(games_pagedata)
 
-		program_id = games_page.xpath('//programId/text()')
+		program_id = games_page.xpath('//game[1]//programId/text()')[0]
 		videopath_url = "http://gamepass.nfl.com/nflgp/servlets/encryptvideopath"
 		post_values2 = {
 		'path' : program_id,
 		'type' : 'fgpa',
 		'isFlex' : 'true'
 		}
- 		videopath_pagedata = HTTP.Request(url=videopath_url, values=post_values2, headers=headers_value, errors='ignore').content
+ 		videopath_pagedata = HTTP.Request(url=videopath_url, values=post_values2, headers=headers_value).content
 		videopath_page = XML.ElementFromString(videopath_pagedata)
 		
-		mp4_url = videopath_page.xpath('//path/text()')
-		mp4_gamepassurl1200 = mp4_url.replace("adaptive://nlds82.neulion.com:443", "http://nlds82.cdnak.neulion.com").replace("pc.mp4", "1200.mp4")
+		mp4_url = videopath_page.xpath('//path/text()')[0]
+		mp4_url1200 = mp4_url.replace("adaptive://nlds82.neulion.com:443","http://nlds82.cdnak.neulion.com").replace("pc.mp4","1200.mp4")
 		
-		return Redirect(mp4_gamepassurl1200)
+		return Redirect(mp4_url1200)
 
 # Once this is working, I will edit the gamepass parts of the URL service above to include all bitrates
+
+# BUGS TO FIX
+# Only games after week 17 are working.
+# Even for games after week 17, it only plays the top item from list (if you select an item from lower in the list it just plays the top item in list).
+
 		
 ####################################################################################################
