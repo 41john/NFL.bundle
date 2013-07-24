@@ -120,10 +120,10 @@ def PlayVideo(url, bitrate):
 			return Redirect(mp4_url500)
 			
 	if url.startswith("http://gamepass.nfl.com"):
-	
-# Need to figure out how to get cookies for url and replace for header_value below.	
-	
-		headers_value = {'Cookie' : 'JSESSIONID=32231~8A3E271E338F5ACBBE98B1DFF1A9DAFC; mbox=session#1374686684103-220908#1374688791|PC#1374686684103-220908.21_30#1375896531|check#true#1374686991; utag_main=_st:1374688730732$ses_id:1374686878155%3Bexp-session; s_sess=%20s_cc%3Dtrue%3B%20s_ppv%3D-%3B%20s_sq%3Dcbsnfl%253D%252526pid%25253Dnfl%2525253Agamepass%2525253Aschedule%252526pidt%25253D1%252526oid%25253Djavascript%2525253AlaunchApp%25252528%252525272012110800%25252527%25252529%252526ot%25253DA%2526nfl360dev%253D%252526pid%25253Dhttps%2525253A%2525252F%2525252Fgamepass.nfl.com%2525252Fnflgp%2525252Fsecure%2525252Fpackages%2525253Fttv%2525253D1%252526oid%25253Dhttps%2525253A%2525252F%2525252Fgamepass.nfl.com%2525252Fnflgp%2525252Fsecure%2525252Floginform%252526ot%25253DA%3B; s_pers=%20s_lastvisit%3D1374686691826%7C1469294691826%3B%20s_nr%3D1374686997047%7C1377278997047%3B%20s_pv%3Dnfl%253Agamepass%253Aschedule%7C1374688797048%3B%20p36%3D41john%257Chold%7C1532366997049%3B; __psrw=f3391ac8-f485-11e2-9c78-12313809e63f; cvo_sid1=5EJRY3FKYA2X; s_vi=[CS]v1|28F806F285013284-400016094016C725[CE]; userId=u%3D41john%26t%3DNO%26d%3D1374686888162%26p%3Dfalse%26h%3D9f5d4f8780b25abfb9cca4c67038fb08%26la%3D1374686888162%26sps%3D; at=u%3D41john%26a%3D41john%26e%3Djohn%40jr-pcs.co.uk%26ft%3DNO%26t%3D1374686888%26h%3D2567be14b40b23c8120027676f25df2d; bd=u%3D41john%26f%3DJohn%26e%3Djohn%40jr-pcs.co.uk%26t%3DNO%26d%3D1374686888163%26p%3Dfalse%26h%3D5433947debb2e4a486e3b4fc07d533a8; mdot=u%3D41john%26f%3DJohn%26e%3Djohn%40jr-pcs.co.uk%26t%3DNO%26d%3D1374686888163%26p%3Dfalse%26h%3D3898294666c9c2680917975828f85e67; nflsubs=41john|GAME_PASS; ptnr=u%3D41john%26f%3DJohn%26e%3Djohn%40jr-pcs.co.uk%26t%3DNO%26d%3D1374686888163%26p%3Dfalse%26h%3Dde1d3698d20a4e1a0535745e7c8dc8de'}
+		
+		cookie_values = HTTP.CookiesForURL(url)
+
+		headers_value = {'Cookie' : cookie_values}
 
 		game_id = url.replace("http://gamepass.nfl.com/nflgp/console.jsp?eid=", "")
 		games_url = "http://gamepass.nfl.com/nflgp/servlets/games"
