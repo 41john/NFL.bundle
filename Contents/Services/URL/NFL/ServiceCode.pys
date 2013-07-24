@@ -127,22 +127,20 @@ def PlayVideo(url, bitrate):
 		'eid' : game_id,
 		'isFlex' : 'true'
 		}
-		
- 		games_pagedata = HTTP.Request(url=games_url, values=post_values1).content
+		games_pagedata = HTTP.Request(url=games_url, values=post_values1).content
 		games_page = XML.ElementFromString(games_pagedata)
 
-		program_id = games_page.xpath('//programId')[0].text
+		program_id = games_page.xpath('//programId/text()')
 		videopath_url = "http://gamepass.nfl.com/nflgp/servlets/encryptvideopath"
 		post_values2 = {
 		'path' : program_id,
 		'type' : 'fgpa',
 		'isFlex' : 'true'
 		}
-		
  		videopath_pagedata = HTTP.Request(url=videopath_url, values=post_values2).content
 		videopath_page = XML.ElementFromString(videopath_pagedata)
 		
-		mp4_url = videopath_page.xpath('//path')[0].text
+		mp4_url = videopath_page.xpath('//path/text()')
 		mp4_gamepassurl1200 = mp4_url.replace("adaptive://nlds82.neulion.com:443", "http://nlds82.cdnak.neulion.com").replace("pc.mp4", "1200.mp4")
 		
 		return Redirect(mp4_gamepassurl1200)
