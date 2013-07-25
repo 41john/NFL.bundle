@@ -17,7 +17,9 @@ def MetadataObjectForURL(url):
 			summary = sSummary,
 			thumb = sThumb,
 		)
-		
+
+#################################################
+	
 	if url.startswith("http://gamepass.nfl.com"):
 		return VideoClipObject(
         	title = "NFL Gamepass"
@@ -79,6 +81,8 @@ def MediaObjectsForURL(url):
 				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '500'))]				
 			)
 		]
+
+#################################################
 	
 	if url.startswith("http://gamepass.nfl.com"):
 		return [
@@ -118,10 +122,14 @@ def PlayVideo(url, bitrate):
 			return Redirect(mp4_url700)
 		elif bitrate == '500':
 			return Redirect(mp4_url500)
+	
+#################################################
 			
 	if url.startswith("http://gamepass.nfl.com"):
-		
+				
 		cookie_values = HTTP.CookiesForURL(url)
+		
+		Log(cookie_values)
 
 		headers_value = {'Cookie' : cookie_values}
 
@@ -134,7 +142,41 @@ def PlayVideo(url, bitrate):
 		games_pagedata = HTTP.Request(url=games_url, values=post_values1, headers=headers_value).content
 		games_page = XML.ElementFromString(games_pagedata)
 
-		program_id = games_page.xpath('//game[1]//programId/text()')[0]
+# Needs a tidy up
+
+		if games_page.xpath('//game[1]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[1]//programId/text()')[0]
+		elif games_page.xpath('//game[2]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[2]//programId/text()')[0]
+		elif games_page.xpath('//game[3]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[3]//programId/text()')[0]
+		elif games_page.xpath('//game[4]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[4]//programId/text()')[0]
+		elif games_page.xpath('//game[5]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[5]//programId/text()')[0]
+		elif games_page.xpath('//game[6]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[6]//programId/text()')[0]
+		elif games_page.xpath('//game[7]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[7]//programId/text()')[0]
+		elif games_page.xpath('//game[8]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[8]//programId/text()')[0]
+		elif games_page.xpath('//game[9]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[9]//programId/text()')[0]
+		elif games_page.xpath('//game[10]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[10]//programId/text()')[0]
+		elif games_page.xpath('//game[11]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[11]//programId/text()')[0]
+		elif games_page.xpath('//game[12]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[12]//programId/text()')[0]
+		elif games_page.xpath('//game[13]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[13]//programId/text()')[0]
+		elif games_page.xpath('//game[14]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[14]//programId/text()')[0]
+		elif games_page.xpath('//game[15]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[15]//programId/text()')[0]
+		elif games_page.xpath('//game[16]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[16]//programId/text()')[0]
+
 		videopath_url = "http://gamepass.nfl.com/nflgp/servlets/encryptvideopath"
 		post_values2 = {
 		'path' : program_id,
@@ -152,8 +194,6 @@ def PlayVideo(url, bitrate):
 # Once this is working, I will edit the gamepass parts of the URL service above to include all bitrates
 
 # BUGS TO FIX
-# Only games after week 17 are working.
-# Even for games after week 17, it only plays the top item from list (if you select an item from lower in the list it just plays the top item in list).
-
+# Only games after week 17 in season 2012 are working.
 		
 ####################################################################################################

@@ -232,16 +232,26 @@ def GamepassLogin():
 	username = Prefs['username']
 	password = Prefs['password']
 	
-	authentication_url = "https://network.nfl.com/nfln/secure/schedule"
+	login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
+
+	authentication_url = "https://id.s.nfl.com/login"
 	post_values = {
-		'form.username.value' : username,
-		'form.password.value' : password,
-		'form.vendor_id.value' : 'nflptnrnln',
-		'form.success_url.value' : 'https://network.nfl.com/nfln/secure/login',
-		'form.error_url.value' : 'https://network.nfl.com/nfln/secure/login'
+		'username' : username,
+		'password' : password,
+		'vendor_id' : 'nflptnrnln',
+		'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
+		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
 		}
+	
+ 	needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
  	
-	login = HTTP.Request(url=authentication_url, values=post_values).content
+ 	Log(needtologin)
+ 	
+ 	if needtologin == "loginform":
+ 		login = HTTP.Request(url=authentication_url, values=post_values).content
+	else:
+		return
+
 
 ###################################################################################################	
 # Notes about xpaths
