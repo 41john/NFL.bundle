@@ -39,7 +39,7 @@ def Start():
 	DirectoryObject.thumb = R("nfl-network.png")
 	DirectoryObject.art = R(ART)
 
-	HTTP.Headers['User-agent'] = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; en-us) AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 Safari/533.20.27'
+	HTTP.Headers['User-agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0'
 
 ###################################################################################################
 
@@ -56,7 +56,7 @@ def VideoMainMenu():
 	oc.add(DirectoryObject(key = Callback(SpotlightMenu), title="Channels", summary="Browse videos for different NFL channels"))
 	oc.add(DirectoryObject(key = Callback(EventsMenu), title="Events", summary="Browse videos by Event"))
 	oc.add(PrefsObject(title="Preferences", summary="Set My Team. Enter subscription details for Gamepass or NFL Network Live", thumb=R("icon-prefs.png")))
-	oc.add(DirectoryObject(key = Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live (subscription needed)", thumb=R("nfl-network-live.png")))
+	oc.add(DirectoryObject(key = Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
 	oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
 	return oc
 
@@ -201,9 +201,7 @@ def NflNetworkMenu():
 
 	oc = ObjectContainer(title2="NFL Network")
 
-	GamepassLogin()
-
-	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary="Watch NFL Network Live (subscription needed)", thumb=R("nfl-network-live.png")))
+	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
 
 	return oc
 
@@ -251,7 +249,6 @@ def GamepassLogin():
  		login = HTTP.Request(url=authentication_url, values=post_values).content
 	else:
 		return
-
 
 ###################################################################################################	
 # Notes about xpaths
