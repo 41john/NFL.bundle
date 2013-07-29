@@ -39,7 +39,7 @@ def Start():
 	DirectoryObject.thumb = R("nfl-network.png")
 	DirectoryObject.art = R(ART)
 
-	HTTP.Headers['User-agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0'
+	HTTP.Headers['User-agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0'
 
 ###################################################################################################
 
@@ -130,8 +130,8 @@ def GamepassSeason():
 
 	year = Datetime.Now().year if Datetime.Now().month < 8 else Datetime.Now().year+1
 
-	for season in range(2009, year):
-		oc.add(DirectoryObject(key = Callback(GamepassWeek, season=str(season)), title=str(season)))
+	for season in range(2012, year):
+		oc.add(DirectoryObject(key = Callback(GamepassWeek, season=str(season)), title=str(season), thumb=R("gamepass.png")))
 
 	return oc
 
@@ -142,13 +142,13 @@ def GamepassWeek(season):
 
 	oc = ObjectContainer(title2="NFL Game Pass")
 	
-	weeks = {'101': 'Preseason 1','102': 'Preseason 2','103': 'Preseason 3','104': 'Preseason 4', '201': 'Week 1', '202': 'Week 2', '203': 'Week 3', '204': 'Week 4', '205': 'Week 5', '206': 'Week 6', '207': 'Week 7', '208': 'Week 8', '209': 'Week 9', '210': 'Week 10', '211': 'Week 11', '212': 'Week 12', '213': 'Week 13', '214': 'Week 14', '215': 'Week 15', '216': 'Week 16', '217': 'Week 17', '218': 'Wild Card Round', '219': 'Divisional Round', '220': 'Championship Round', '221': 'Pro Bowl', '222': 'Super Bowl'}
-	orderedWeeks = ['101','102','103','104', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '211', '212', '213', '214', '215', '216', '217', '218', '219', '220', '221', '222']
+	weeks = {'100': 'Hall Of Fame', '101': 'Preseason 1','102': 'Preseason 2','103': 'Preseason 3','104': 'Preseason 4', '201': 'Week 1', '202': 'Week 2', '203': 'Week 3', '204': 'Week 4', '205': 'Week 5', '206': 'Week 6', '207': 'Week 7', '208': 'Week 8', '209': 'Week 9', '210': 'Week 10', '211': 'Week 11', '212': 'Week 12', '213': 'Week 13', '214': 'Week 14', '215': 'Week 15', '216': 'Week 16', '217': 'Week 17', '218': 'Wild Card Round', '219': 'Divisional Round', '220': 'Championship Round', '221': 'Pro Bowl', '222': 'Super Bowl'}
+	orderedWeeks = ['100', '101','102','103','104', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '211', '212', '213', '214', '215', '216', '217', '218', '219', '220', '221', '222']
     
 	for week in orderedWeeks:
 		week_title = weeks[week]
 	
-		oc.add(DirectoryObject(key = Callback(GamepassPlay, week=week, season=season, week_title=week_title), title = week_title))
+		oc.add(DirectoryObject(key = Callback(GamepassPlay, week=week, season=season, week_title=week_title), title = week_title, thumb=R("gamepass.png")))
 	return oc
 	
 ####################################################################################################	
@@ -158,8 +158,6 @@ def GamepassPlay(week, season, week_title):
 
 	oc = ObjectContainer(title2=week_title)
 	
-	GamepassLogin()
-	
 	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', values={'week':week, 'season':season}, cacheTime=1)
 
 	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
@@ -168,7 +166,7 @@ def GamepassPlay(week, season, week_title):
 		sTitle = "%s @ %s" % (sTeam1,sTeam2)
 		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
 		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamepass.nfl.com/nflgp/console.jsp?eid=").replace("')","")
-		oc.add(VideoClipObject(url=sStreamURL, title=sTitle,  thumb=R("gamepass.png")))
+		oc.add(VideoClipObject(url=sStreamURL, title=sTitle,  thumb=R("icon-gamepass.png")))
 
 	return oc
 
@@ -179,8 +177,6 @@ def GamepassPlayweek():
 
 	oc = ObjectContainer(title2="NFL Game Pass")
 
-	GamepassLogin()
-
 	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', cacheTime=1)
 
 	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
@@ -190,7 +186,7 @@ def GamepassPlayweek():
 		sSummary = stream.xpath('./table/tr[1]/td[3]/text()')[0].strip()
 		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
 		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamepass.nfl.com/nflgp/console.jsp?eid=").replace("')","")
-		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary = sSummary, thumb=R("gamepass.png")))
+		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary = sSummary, thumb=R("icon-gamepass-live.png")))
 
 	return oc
 
@@ -201,7 +197,7 @@ def NflNetworkMenu():
 
 	oc = ObjectContainer(title2="NFL Network")
 
-	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
+	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("icon-nfl-network-live.png")))
 
 	return oc
 
@@ -223,32 +219,6 @@ def PlayMenu(url=None):
 		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary=sSummary, thumb=sThumb))
 
 	return oc
-
-###################################################################################################
-def GamepassLogin():
-
-	username = Prefs['username']
-	password = Prefs['password']
-	
-	login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
-
-	authentication_url = "https://id.s.nfl.com/login"
-	post_values = {
-		'username' : username,
-		'password' : password,
-		'vendor_id' : 'nflptnrnln',
-		'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
-		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
-		}
-	
- 	needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
- 	
- 	Log(needtologin)
- 	
- 	if needtologin == "loginform":
- 		login = HTTP.Request(url=authentication_url, values=post_values).content
-	else:
-		return
 
 ###################################################################################################	
 # Notes about xpaths

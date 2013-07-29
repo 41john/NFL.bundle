@@ -21,7 +21,7 @@ def MetadataObjectForURL(url):
 #################################################
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true"):
 		return VideoClipObject(
-        	title = "NFL Gamepass"
+        	title = "NFL Network"
     	)
 
 #################################################
@@ -33,13 +33,11 @@ def MetadataObjectForURL(url):
 ####################################################################################################
 def MediaObjectsForURL(url):
 
-# NEED TO CHECK RESOLUTIONS
-
 	if url.startswith("http://www.nfl.com"):
 		return [
 			MediaObject(
 				bitrate = 3000,
-				video_resolution = '1080',
+				video_resolution = '720',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -49,7 +47,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 2000,
-				video_resolution = '720',
+				video_resolution = '432',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -59,7 +57,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 1200,
-				video_resolution = '480',
+				video_resolution = '432',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -69,7 +67,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 700,
-				video_resolution = '320',
+				video_resolution = '432',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -78,8 +76,8 @@ def MediaObjectsForURL(url):
 				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '700'))]				
 			),
 			MediaObject(
-				bitrate = 500,
-				video_resolution = '240',
+				bitrate = 500, 
+				video_resolution = '432',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -254,7 +252,7 @@ def PlayVideo(url, bitrate):
 	mp4_url1200 = NFL_VIDEOS_URL + json['cdnData']['bitrateInfo'][-3]['path']
 	mp4_url700 = NFL_VIDEOS_URL + json['cdnData']['bitrateInfo'][-4]['path']
 	mp4_url500 = NFL_VIDEOS_URL + json['cdnData']['bitrateInfo'][-5]['path']
-
+	
 	if bitrate == '3000':
 		return Redirect(mp4_url3000)
 	elif bitrate == '2000':
@@ -296,14 +294,31 @@ def PlayVideoNFLNetwork(url, bitrate):
 ####################################################################################################
 @indirect
 def PlayVideoGP(url, bitrate):
-				
+	
+
+	
+	username = Prefs['username']
+	password = Prefs['password']
+	
+	login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
+	
+	authentication_url = "https://id.s.nfl.com/login"
+	post_values = {
+		'username' : username,
+		'password' : password,
+		'vendor_id' : 'nflptnrnln',
+		'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
+		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
+		}
+	
+ 	needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
+ 	
+ 	if needtologin == "loginform":
+ 		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+	
 	cookie_values = HTTP.CookiesForURL(url)
-		
-	Log(cookie_values)
 
 	headers_value = {'Cookie' : cookie_values}
-
-	Log(headers_value)
 
 	game_id = url.replace("http://gamepass.nfl.com/nflgp/console.jsp?eid=", "")
 	games_url = "http://gamepass.nfl.com/nflgp/servlets/games"
@@ -314,7 +329,7 @@ def PlayVideoGP(url, bitrate):
 	games_pagedata = HTTP.Request(url=games_url, values=post_values1, headers=headers_value).content
 	games_page = XML.ElementFromString(games_pagedata)
 
-# Needs a tidy up
+# Needs a tidy up?
 
 	if games_page.xpath('//game[1]//elias/text()')[0] == game_id:
 		program_id = games_page.xpath('//game[1]//programId/text()')[0]
@@ -359,7 +374,6 @@ def PlayVideoGP(url, bitrate):
 	videopath_page = XML.ElementFromString(videopath_pagedata)
 
 	m3u8_url = videopath_page.xpath('//path/text()')[0]
-	Log(m3u8_url)
 	m3u8_url4500 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","4500.mp4.m3u8")
 	m3u8_url3000 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","3000.mp4.m3u8")
 	m3u8_url2400 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","2400.mp4.m3u8")
@@ -367,7 +381,6 @@ def PlayVideoGP(url, bitrate):
 	m3u8_url1200 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","1200.mp4.m3u8")
 	m3u8_url800 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","800.mp4.m3u8")
 	m3u8_url400 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","400.mp4.m3u8")
-	Log(m3u8_url4500)
 	
 	if bitrate == '4500':
 		try:
@@ -389,4 +402,4 @@ def PlayVideoGP(url, bitrate):
 		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url400))
 	
 ####################################################################################################
-# can not get pre 2012 to work or preseason in 2012. some week 1 2012 games are only in 540p so need to code something for this
+# Can not get 2009-2011 games or some preseason games in 2012 to work as there is no m3u8 file but may come back to this another time.
