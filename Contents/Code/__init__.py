@@ -114,7 +114,7 @@ def EventsMenu():
 @route('/video/nflvideos/gamepass')
 def GamepassMenu():
 
-	oc = ObjectContainer(title2="NFl Game Pass")
+	oc = ObjectContainer(title2="NFL Game Pass")
 	
 	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archive", thumb=R("gamepass.png"), summary="Archived games from this season back to 2009"))	
 	oc.add(DirectoryObject(key=Callback(GamepassPlayweek), title="Live / This week", thumb=R("gamepass-live.png"), summary="This weeks games, Live!"))
