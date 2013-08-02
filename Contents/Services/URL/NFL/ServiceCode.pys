@@ -37,7 +37,7 @@ def MediaObjectsForURL(url):
 		return [
 			MediaObject(
 				bitrate = 3000,
-				video_resolution = '720',
+				video_resolution = 720,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -47,7 +47,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 2000,
-				video_resolution = '432',
+				video_resolution = 432,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -57,7 +57,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 1200,
-				video_resolution = '432',
+				video_resolution = 432,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -67,7 +67,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 700,
-				video_resolution = '432',
+				video_resolution = 432,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -77,7 +77,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 500, 
-				video_resolution = '432',
+				video_resolution = 432,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -94,7 +94,7 @@ def MediaObjectsForURL(url):
 			return [
 				MediaObject(
 					bitrate = 4500,
-					video_resolution = '720',
+					video_resolution = 720,
 					container = Container.MP4,
 					video_codec = VideoCodec.H264,
 					audio_codec = AudioCodec.AAC,
@@ -104,7 +104,7 @@ def MediaObjectsForURL(url):
 				),
 				MediaObject(
 					bitrate = 3000,
-					video_resolution = '540',
+					video_resolution = 540,
 					container = Container.MP4,
 					video_codec = VideoCodec.H264,
 					audio_codec = AudioCodec.AAC,
@@ -114,7 +114,7 @@ def MediaObjectsForURL(url):
 				),
 				MediaObject(
 					bitrate = 2400,
-					video_resolution = '540',
+					video_resolution = 540,
 					container = Container.MP4,
 					video_codec = VideoCodec.H264,
 					audio_codec = AudioCodec.AAC,
@@ -124,7 +124,7 @@ def MediaObjectsForURL(url):
 				),
 				MediaObject(
 					bitrate = 1600,
-					video_resolution = '360',
+					video_resolution = 360,
 					container = Container.MP4,
 					video_codec = VideoCodec.H264,
 					audio_codec = AudioCodec.AAC,
@@ -134,7 +134,7 @@ def MediaObjectsForURL(url):
 				),
 				MediaObject(
 					bitrate = 1200,
-					video_resolution = '360',
+					video_resolution = 360,
 					container = Container.MP4,
 					video_codec = VideoCodec.H264,
 					audio_codec = AudioCodec.AAC,
@@ -144,7 +144,7 @@ def MediaObjectsForURL(url):
 				),
 				MediaObject(
 					bitrate = 800,
-					video_resolution = '224',
+					video_resolution = 224,
 					container = Container.MP4,
 					video_codec = VideoCodec.H264,
 					audio_codec = AudioCodec.AAC,
@@ -154,7 +154,7 @@ def MediaObjectsForURL(url):
 				),
 				MediaObject(
 					bitrate = 400,
-					video_resolution = '224',
+					video_resolution = 224,
 					container = Container.MP4,
 					video_codec = VideoCodec.H264,
 					audio_codec = AudioCodec.AAC,
@@ -170,7 +170,7 @@ def MediaObjectsForURL(url):
 		return [
 			MediaObject(
 				bitrate = 4500,
-				video_resolution = '720',
+				video_resolution = 720,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -180,7 +180,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 3000,
-				video_resolution = '540',
+				video_resolution = 540,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -200,7 +200,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 1600,
-				video_resolution = '360',
+				video_resolution = 360,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -210,7 +210,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 1200,
-				video_resolution = '360',
+				video_resolution = 360,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -220,7 +220,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 800,
-				video_resolution = '224',
+				video_resolution = 224,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -230,7 +230,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 400,
-				video_resolution = '224',
+				video_resolution = 224,
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
