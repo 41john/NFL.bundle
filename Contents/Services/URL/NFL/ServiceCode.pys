@@ -295,7 +295,7 @@ def PlayVideoNFLNetwork(url, bitrate):
 @indirect
 def PlayVideoGP(url, bitrate):
 	
-
+	new_url = url.replace("#Condensed", "")
 	
 	username = Prefs['username']
 	password = Prefs['password']
@@ -315,12 +315,12 @@ def PlayVideoGP(url, bitrate):
  	
  	if needtologin == "loginform":
  		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
-	
-	cookie_values = HTTP.CookiesForURL(url)
+
+	cookie_values = HTTP.CookiesForURL(new_url)
 
 	headers_value = {'Cookie' : cookie_values}
 
-	game_id = url.replace("http://gamepass.nfl.com/nflgp/console.jsp?eid=", "")
+	game_id = new_url.replace("http://gamepass.nfl.com/nflgp/console.jsp?eid=", "")
 	games_url = "http://gamepass.nfl.com/nflgp/servlets/games"
 	post_values1 = {
 	'eid' : game_id,
@@ -329,40 +329,75 @@ def PlayVideoGP(url, bitrate):
 	games_pagedata = HTTP.Request(url=games_url, values=post_values1, headers=headers_value).content
 	games_page = XML.ElementFromString(games_pagedata)
 
-# Needs a tidy up?
+# lines 334 to 400 could probably be expressed much better without so much code?
 
-	if games_page.xpath('//game[1]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[1]//programId/text()')[0]
-	elif games_page.xpath('//game[2]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[2]//programId/text()')[0]
-	elif games_page.xpath('//game[3]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[3]//programId/text()')[0]
-	elif games_page.xpath('//game[4]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[4]//programId/text()')[0]
-	elif games_page.xpath('//game[5]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[5]//programId/text()')[0]
-	elif games_page.xpath('//game[6]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[6]//programId/text()')[0]
-	elif games_page.xpath('//game[7]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[7]//programId/text()')[0]
-	elif games_page.xpath('//game[8]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[8]//programId/text()')[0]
-	elif games_page.xpath('//game[9]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[9]//programId/text()')[0]
-	elif games_page.xpath('//game[10]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[10]//programId/text()')[0]
-	elif games_page.xpath('//game[11]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[11]//programId/text()')[0]
-	elif games_page.xpath('//game[12]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[12]//programId/text()')[0]
-	elif games_page.xpath('//game[13]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[13]//programId/text()')[0]
-	elif games_page.xpath('//game[14]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[14]//programId/text()')[0]
-	elif games_page.xpath('//game[15]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[15]//programId/text()')[0]
-	elif games_page.xpath('//game[16]//elias/text()')[0] == game_id:
-		program_id = games_page.xpath('//game[16]//programId/text()')[0]
+	if url.endswith("#Condensed"):
+		if games_page.xpath('//game[1]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[1]//condensedId/text()')[0]
+		elif games_page.xpath('//game[2]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[2]//condensedId/text()')[0]
+		elif games_page.xpath('//game[3]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[3]//condensedId/text()')[0]
+		elif games_page.xpath('//game[4]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[4]//condensedId/text()')[0]
+		elif games_page.xpath('//game[5]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[5]//condensedId/text()')[0]
+		elif games_page.xpath('//game[6]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[6]//condensedId/text()')[0]
+		elif games_page.xpath('//game[7]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[7]//condensedId/text()')[0]
+		elif games_page.xpath('//game[8]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[8]//condensedId/text()')[0]
+		elif games_page.xpath('//game[9]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[9]//condensedId/text()')[0]
+		elif games_page.xpath('//game[10]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[10]//condensedId/text()')[0]
+		elif games_page.xpath('//game[11]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[11]//condensedId/text()')[0]
+		elif games_page.xpath('//game[12]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[12]//condensedId/text()')[0]
+		elif games_page.xpath('//game[13]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[13]//condensedId/text()')[0]
+		elif games_page.xpath('//game[14]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[14]//condensedId/text()')[0]
+		elif games_page.xpath('//game[15]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[15]//condensedId/text()')[0]
+		elif games_page.xpath('//game[16]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[16]//condensedId/text()')[0]
+	
+	else:
+		if games_page.xpath('//game[1]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[1]//programId/text()')[0]
+		elif games_page.xpath('//game[2]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[2]//programId/text()')[0]
+		elif games_page.xpath('//game[3]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[3]//programId/text()')[0]
+		elif games_page.xpath('//game[4]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[4]//programId/text()')[0]
+		elif games_page.xpath('//game[5]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[5]//programId/text()')[0]
+		elif games_page.xpath('//game[6]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[6]//programId/text()')[0]
+		elif games_page.xpath('//game[7]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[7]//programId/text()')[0]
+		elif games_page.xpath('//game[8]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[8]//programId/text()')[0]
+		elif games_page.xpath('//game[9]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[9]//programId/text()')[0]
+		elif games_page.xpath('//game[10]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[10]//programId/text()')[0]
+		elif games_page.xpath('//game[11]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[11]//programId/text()')[0]
+		elif games_page.xpath('//game[12]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[12]//programId/text()')[0]
+		elif games_page.xpath('//game[13]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[13]//programId/text()')[0]
+		elif games_page.xpath('//game[14]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[14]//programId/text()')[0]
+		elif games_page.xpath('//game[15]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[15]//programId/text()')[0]
+		elif games_page.xpath('//game[16]//elias/text()')[0] == game_id:
+			program_id = games_page.xpath('//game[16]//programId/text()')[0]
 
 	videopath_url = "http://gamepass.nfl.com/nflgp/servlets/encryptvideopath"
 	post_values2 = {
@@ -370,6 +405,7 @@ def PlayVideoGP(url, bitrate):
 	'type' : 'fgpa',
 	'isFlex' : 'true'
 	}
+	
 	videopath_pagedata = HTTP.Request(url=videopath_url, values=post_values2, headers=headers_value).content
 	videopath_page = XML.ElementFromString(videopath_pagedata)
 

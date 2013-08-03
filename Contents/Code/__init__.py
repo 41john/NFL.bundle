@@ -151,7 +151,7 @@ def GamepassWeek(season):
 		oc.add(DirectoryObject(key = Callback(GamepassPlay, week=week, season=season, week_title=week_title), title = week_title, thumb=R("gamepass.png")))
 	return oc
 	
-####################################################################################################	
+###################################################################################################
 
 @route('/video/nflvideos/gamepassplay')	
 def GamepassPlay(week, season, week_title):
@@ -166,8 +166,8 @@ def GamepassPlay(week, season, week_title):
 		sTitle = "%s @ %s" % (sTeam1,sTeam2)
 		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
 		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamepass.nfl.com/nflgp/console.jsp?eid=").replace("')","")
-		oc.add(VideoClipObject(url=sStreamURL, title=sTitle,  thumb=R("icon-gamepass.png")))
-
+		oc.add(VideoClipObject(url=sStreamURL + "#Condensed", title="Condensed Game - " + sTitle,  thumb=R("icon-gamepass.png")))
+		oc.add(VideoClipObject(url=sStreamURL, title="Full Length Game - " + sTitle,  thumb=R("icon-gamepass.png")))
 	return oc
 
 ###################################################################################################
