@@ -111,12 +111,30 @@ def EventsMenu():
 
 ###################################################################################################
 
+@route('/video/nflvideos/playmenu')
+def PlayMenu(url=None):
+
+	oc = ObjectContainer(title2="NFL Network")
+	list = HTML.ElementFromURL(url, errors='ignore', cacheTime=1).xpath('//div[@id="videos-list"]/ul[@class="list-items"]/li')
+
+	for stream in list:
+		sTitle = stream.xpath('.//div[@class="content"]//a')[0].text
+		sSummary = stream.xpath('.//p[last()]')[0].text
+		sThumb = stream.xpath('.//div[@class="thumbnail"]//a/img')[0].get('src')
+		sThumb = sThumb.replace("thumbnail_80_60.jpg","rhr_210.jpg")
+		sStreamURL = NFL_URL + stream.xpath('.//div[@class="content"]//a')[0].get('href')
+		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary=sSummary, thumb=sThumb))
+
+	return oc
+
+###################################################################################################	
+
 @route('/video/nflvideos/gamepass')
 def GamepassMenu():
 
 	oc = ObjectContainer(title2="NFL Game Pass")
 	
-	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archive", thumb=R("gamepass.png"), summary="Archived games from this season back to 2009"))	
+	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archive", thumb=R("gamepass.png"), summary="Archived games from this season back to 2012"))
 	oc.add(DirectoryObject(key=Callback(GamepassPlayweek), title="Live / This week", thumb=R("gamepass-live.png"), summary="This weeks games, Live!"))
 	
 	return oc
@@ -186,7 +204,7 @@ def GamepassPlayweek():
 		sSummary = stream.xpath('./table/tr[1]/td[3]/text()')[0].strip()
 		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
 		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamepass.nfl.com/nflgp/console.jsp?eid=").replace("')","")
-		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary = sSummary, thumb=R("icon-gamepass-live.png")))
+		oc.add(VideoClipObject(url=sStreamURL + "#Live", title=sTitle, summary = sSummary, thumb=R("icon-gamepass-live.png")))
 
 	return oc
 
@@ -202,25 +220,6 @@ def NflNetworkMenu():
 	return oc
 
 ###################################################################################################
-
-
-@route('/video/nflvideos/playmenu')
-def PlayMenu(url=None):
-
-	oc = ObjectContainer(title2="NFL Network")
-	list = HTML.ElementFromURL(url, errors='ignore', cacheTime=1).xpath('//div[@id="videos-list"]/ul[@class="list-items"]/li')
-
-	for stream in list:
-		sTitle = stream.xpath('.//div[@class="content"]//a')[0].text
-		sSummary = stream.xpath('.//p[last()]')[0].text
-		sThumb = stream.xpath('.//div[@class="thumbnail"]//a/img')[0].get('src')
-		sThumb = sThumb.replace("thumbnail_80_60.jpg","rhr_210.jpg")
-		sStreamURL = NFL_URL + stream.xpath('.//div[@class="content"]//a')[0].get('href')
-		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary=sSummary, thumb=sThumb))
-
-	return oc
-
-###################################################################################################	
 # Notes about xpaths
 # .// means any child/grandchild of the currently selected node, rather than anywhere in the document. Particularly important when dealing with loops.
 # // = any child or grand-child ( you can use // so that you don't have to specify all the parents before it). Be careful to be specific enough to avoid confusion.

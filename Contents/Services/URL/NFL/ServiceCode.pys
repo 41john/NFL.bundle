@@ -295,7 +295,7 @@ def PlayVideoNFLNetwork(url, bitrate):
 @indirect
 def PlayVideoGP(url, bitrate):
 	
-	new_url = url.replace("#Condensed", "")
+	new_url = url.replace("#Condensed", "").replace("#Live", "")
 	
 	username = Prefs['username']
 	password = Prefs['password']
@@ -399,24 +399,35 @@ def PlayVideoGP(url, bitrate):
 		elif games_page.xpath('//game[16]//elias/text()')[0] == game_id:
 			program_id = games_page.xpath('//game[16]//programId/text()')[0]
 
-	videopath_url = "http://gamepass.nfl.com/nflgp/servlets/encryptvideopath"
-	post_values2 = {
-	'path' : program_id,
-	'type' : 'fgpa',
-	'isFlex' : 'true'
-	}
+
+	
+	if url.endswith("#Live"):
+		videopath_url = "http://gamepass.nfl.com/nflgp/servlets/encryptvideopath"
+		post_values2 = {
+		'path' : program_id,
+		'type' : 'fgp',
+		'isFlex' : 'true'
+		}	
+	else:
+		videopath_url = "http://gamepass.nfl.com/nflgp/servlets/encryptvideopath"
+		post_values2 = {
+		'path' : program_id,
+		'type' : 'fgpa',
+		'isFlex' : 'true'
+		}
 	
 	videopath_pagedata = HTTP.Request(url=videopath_url, values=post_values2, headers=headers_value).content
 	videopath_page = XML.ElementFromString(videopath_pagedata)
 
 	m3u8_url = videopath_page.xpath('//path/text()')[0]
-	m3u8_url4500 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","4500.mp4.m3u8")
-	m3u8_url3000 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","3000.mp4.m3u8")
-	m3u8_url2400 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","2400.mp4.m3u8")
-	m3u8_url1600 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","1600.mp4.m3u8")
-	m3u8_url1200 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","1200.mp4.m3u8")
-	m3u8_url800 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","800.mp4.m3u8")
-	m3u8_url400 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","400.mp4.m3u8")
+	m3u8_url = m3u8_url.split('?')[0]
+	m3u8_url4500 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","4500.mp4.m3u8").replace("pc","4500.m3u8")
+	m3u8_url3000 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","3000.mp4.m3u8").replace("pc","3000.m3u8")
+	m3u8_url2400 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","2400.mp4.m3u8").replace("pc","2400.m3u8")
+	m3u8_url1600 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","1600.mp4.m3u8").replace("pc","1600.m3u8")
+	m3u8_url1200 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","1200.mp4.m3u8").replace("pc","1200.m3u8")
+	m3u8_url800 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","800.mp4.m3u8").replace("pc","800.m3u8")
+	m3u8_url400 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","400.mp4.m3u8").replace("pc","400.m3u8")
 	
 	if bitrate == '4500':
 		try:
@@ -439,3 +450,4 @@ def PlayVideoGP(url, bitrate):
 	
 ####################################################################################################
 # Can not get 2009-2011 games or some preseason games in 2012 to work as there is no m3u8 file but may come back to this another time.
+
