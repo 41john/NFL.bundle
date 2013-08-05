@@ -201,7 +201,7 @@ def GamepassPlayweek():
 		sTeam1 = stream.xpath('./table/tr[1]/td[2]/text()')[0]
 		sTeam2 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
 		sTitle = "%s @ %s" % (sTeam1,sTeam2)
-		sSummary = stream.xpath('./table/tr[1]/td[3]/text()')[0].strip()
+		sSummary = stream.xpath('./table/tr[1]/td[3]/span/text()')[0].strip()
 		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
 		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamepass.nfl.com/nflgp/console.jsp?eid=").replace("')","")
 		oc.add(VideoClipObject(url=sStreamURL + "#Live", title=sTitle, summary = sSummary, thumb=R("icon-gamepass-live.png")))
