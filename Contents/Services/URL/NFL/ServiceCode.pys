@@ -311,9 +311,12 @@ def PlayVideoGP(url, bitrate):
 		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
 		}
 	
- 	needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
- 	
- 	if needtologin == "loginform":
+	try:
+ 		needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
+	except:
+		needtologin = 'nothing'
+
+	if needtologin == "loginform":
  		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
 
 	cookie_values = HTTP.CookiesForURL(new_url)
