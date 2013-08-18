@@ -267,29 +267,62 @@ def PlayVideo(url, bitrate):
 ####################################################################################################
 @indirect
 def PlayVideoNFLNetwork(url, bitrate):
+	
+	username = Prefs['username']
+	password = Prefs['password']
+	
+	login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
+	
+	authentication_url = "https://id.s.nfl.com/login"
+	post_values = {
+		'username' : username,
+		'password' : password,
+		'vendor_id' : 'nflptnrnln',
+		'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
+		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
+		}
+	
+	try:
+ 		needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
+	except:
+		needtologin = 'nothing'
 
-	NFL_NETWORK_LIVE_400 = 'http://nlds21.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd_400.m3u8'
-	NFL_NETWORK_LIVE_800 = 'http://nlds21.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd_800.m3u8'
-	NFL_NETWORK_LIVE_1200 = 'http://nlds21.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd_1200.m3u8'
-	NFL_NETWORK_LIVE_1600 = 'http://nlds21.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd_1600.m3u8'
-	NFL_NETWORK_LIVE_2400 = 'http://nlds21.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd_2400.m3u8'
-	NFL_NETWORK_LIVE_3000 = 'http://nlds21.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd_3000.m3u8'
-	NFL_NETWORK_LIVE_4500 = 'http://nlds21.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd_4500.m3u8'
-
+	if needtologin == "loginform":
+ 		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+	
+	cookie_values = HTTP.CookiesForURL(url)	
+	headers_value = {'Cookie' : cookie_values, 'User-Agent' : 'iPhone'}
+	publish_url = "http://gamepass.nfl.com/nflgp/servlets/publishpoint"
+	post_values1 = {
+	'id' : '1',
+	'type' : 'channel',
+	'nt' : '1'
+	}
+	m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values1, headers=headers_value).content
+	m3u8_page = XML.ElementFromString(m3u8_pagedata)
+	m3u8_url = m3u8_page.xpath('//path/text()')[0]
+	m3u8_url4500 = m3u8_url.replace("adaptive","http").replace("iphone","4500")
+	m3u8_url3000 = m3u8_url.replace("adaptive","http").replace("iphone","3000")
+	m3u8_url2400 = m3u8_url.replace("adaptive","http").replace("iphone","2400")
+	m3u8_url1600 = m3u8_url.replace("adaptive","http").replace("iphone","1600")
+	m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
+	m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
+	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
+	
 	if bitrate == '4500':
-		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(NFL_NETWORK_LIVE_4500))	
-	if bitrate == '3000':
-		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(NFL_NETWORK_LIVE_3000))
+		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url4500))	
+	elif bitrate == '3000':
+		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url3000))
 	elif bitrate == '2400':
-		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(NFL_NETWORK_LIVE_2400))
+		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url2400))
 	elif bitrate == '1600':
-		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(NFL_NETWORK_LIVE_1600))
+		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url1600))
 	elif bitrate == '1200':
-		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(NFL_NETWORK_LIVE_1200))
+		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url1200))
 	elif bitrate == '800':
-		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(NFL_NETWORK_LIVE_800))
+		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url800))
 	elif bitrate == '400':
-		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(NFL_NETWORK_LIVE_400))
+		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url400))
 	
 ####################################################################################################
 @indirect
@@ -438,7 +471,7 @@ def PlayVideoGP(url, bitrate):
 			return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url4500))	
 		except:
 			return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url3000))	
-	if bitrate == '3000':
+	elif bitrate == '3000':
 		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url3000))
 	elif bitrate == '2400':
 		return IndirectResponse(VideoClipObject, key=HTTPLiveStreamURL(m3u8_url2400))
