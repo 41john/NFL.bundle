@@ -56,7 +56,6 @@ def VideoMainMenu():
 	oc.add(DirectoryObject(key = Callback(SpotlightMenu), title="Channels", summary="Browse videos for different NFL channels"))
 	oc.add(DirectoryObject(key = Callback(EventsMenu), title="Events", summary="Browse videos by Event"))
 	oc.add(PrefsObject(title="Preferences", summary="Set My Team. Enter subscription details for Gamepass or NFL Network Live", thumb=R("icon-prefs.png")))
-	oc.add(DirectoryObject(key = Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
 	oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
 	return oc
 
@@ -136,6 +135,7 @@ def GamepassMenu():
 	
 	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archive", thumb=R("gamepass.png"), summary="Archived games from this season back to 2012"))
 	oc.add(DirectoryObject(key=Callback(GamepassPlayweek), title="Live / This week", thumb=R("gamepass-live.png"), summary="This weeks games, Live!"))
+	oc.add(DirectoryObject(key = Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
 	
 	return oc
 
