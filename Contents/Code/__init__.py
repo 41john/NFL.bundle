@@ -12,6 +12,7 @@ LATEST_VIDEOS				= 'http://www.nfl.com/videos/nfl-videos'
 GAMEHIGHLIGHTS_URL			= 'http://www.nfl.com/videos/nfl-game-highlights'
 NFL_NETWORK_LIVE			= 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true'
 GAMEPASS_SCHEDULE			= 'https://gamepass.nfl.com/nflgp/secure/schedulechange'
+GAMEREWIND_SCHEDULE			= 'https://gamerewind.nfl.com/nflgr/secure/schedulechange'
 NFL_VIDEOS_JSON				= 'http://www.nfl.com/static/embeddablevideo/%s.json'
 
 TEAMS = {'arizona-cardinals': 'Arizona Cardinals', 'atlanta-falcons': 'Atlanta Falcons', 'baltimore-ravens': 'Baltimore Ravens', 'buffalo-bills': 'Buffalo Bills', 'carolina-panthers': 'Carolina Panthers', 'chicago-bears': 'Chicago Bears', 'cincinnati-bengals': 'Cincinnati Bengals', 'cleveland-browns': 'Cleveland Browns', 'dallas-cowboys': 'Dallas Cowboys', 'denver-broncos': 'Denver Broncos', 'detroit-lions': 'Detroit Lions', 'green-bay-packers': 'Green Bay Packers', 'houston-texans': 'Houston Texans', 'indianapolis-colts': 'Indianapolis Colts', 'jacksonville-jaguars': 'Jacksonville Jaguars', 'kansas-city-chiefs': 'Kansas City Chiefs', 'miami-dolphins': 'Miami Dolphins', 'minnesota-vikings': 'Minnesota Vikings', 'new-england-patriots': 'New England Patriots', 'new-orleans-saints': 'New Orleans Saints', 'new-york-giants': 'New York Giants', 'new-york-jets': 'New York Jets', 'oakland-raiders': 'Oakland Raiders', 'philadelphia-eagles': 'Philadelphia Eagles', 'pittsburgh-steelers': 'Pittsburgh Steelers', 'san-diego-chargers': 'San Diego Chargers', 'san-francisco-49ers': 'San Francisco 49ers', 'seattle-seahawks': 'Seattle Seahawks', 'st-louis-rams': 'St. Louis Rams', 'tampa-bay-buccaneers': 'Tampa Bay Buccaneers', 'tennessee-titans': 'Tennessee Titans', 'washington-redskins': 'Washington Redskins'}
@@ -57,6 +58,7 @@ def VideoMainMenu():
 	oc.add(DirectoryObject(key = Callback(EventsMenu), title="Events", summary="Browse videos by Event"))
 	oc.add(PrefsObject(title="Preferences", summary="Set My Team. Enter subscription details for Gamepass or NFL Network Live", thumb=R("icon-prefs.png")))
 	oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
+	oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL Game Rewind", summary="NFL Game Rewind subscribers only", thumb=R("gamerewind.png")))
 	return oc
 
 
@@ -220,6 +222,66 @@ def NflNetworkMenu():
 
 	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("icon-nfl-network-live.png")))
 
+	return oc
+
+###################################################################################################	
+
+@route('/video/nflvideos/gamerewind')
+def GamerewindMenu():
+
+	oc = ObjectContainer(title2="NFL Game Rewind")
+	
+	oc.add(DirectoryObject(key=Callback(GamerewindSeason), title="Archive", thumb=R("gamerewind.png"), summary="Archived games from this season back to 2012"))
+	
+	return oc
+
+###################################################################################################
+
+@route('/video/nflvideos/gamerewindseason')
+def GamerewindSeason():
+
+	oc = ObjectContainer(title2="NFL Game Rewind")
+
+	year = Datetime.Now().year if Datetime.Now().month < 8 else Datetime.Now().year+1
+
+	for season in range(2012, year):
+		oc.add(DirectoryObject(key = Callback(GamerewindWeek, season=str(season)), title=str(season), thumb=R("gamerewind.png")))
+
+	return oc
+
+####################################################################################################
+
+@route('/video/nflvideos/gamerewindweek')
+def GamerewindWeek(season):
+
+	oc = ObjectContainer(title2="NFL Game Rewind")
+	
+	weeks = {'201': 'Week 1', '202': 'Week 2', '203': 'Week 3', '204': 'Week 4', '205': 'Week 5', '206': 'Week 6', '207': 'Week 7', '208': 'Week 8', '209': 'Week 9', '210': 'Week 10', '211': 'Week 11', '212': 'Week 12', '213': 'Week 13', '214': 'Week 14', '215': 'Week 15', '216': 'Week 16', '217': 'Week 17', '218': 'Wild Card Round', '219': 'Divisional Round', '220': 'Championship Round', '221': 'Pro Bowl', '222': 'Super Bowl'}
+	orderedWeeks = ['201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '211', '212', '213', '214', '215', '216', '217', '218', '219', '220', '221', '222']
+    
+	for week in orderedWeeks:
+		week_title = weeks[week]
+	
+		oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=week, season=season, week_title=week_title), title = week_title, thumb=R("gamerewind.png")))
+	return oc
+	
+###################################################################################################
+
+@route('/video/nflvideos/gamerewindplay')	
+def GamerewindPlay(week, season, week_title):
+
+	oc = ObjectContainer(title2=week_title)
+	
+	list = HTML.ElementFromURL(GAMEREWIND_SCHEDULE, errors='ignore', values={'week':week, 'season':season}, cacheTime=1)
+
+	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
+		sTeam1 = stream.xpath('./table/tr[1]/td[2]/text()')[0]
+		sTeam2 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
+		sTitle = "%s @ %s" % (sTeam1,sTeam2)
+		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
+		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamerewind.nfl.com/nflgr/console.jsp?eid=").replace("')","")
+		oc.add(VideoClipObject(url=sStreamURL + "#Condensed", title="Condensed Game - " + sTitle,  thumb=R("icon-gamerewind.png")))
+		oc.add(VideoClipObject(url=sStreamURL, title="Full Length Game - " + sTitle,  thumb=R("icon-gamerewind.png")))
 	return oc
 
 ###################################################################################################

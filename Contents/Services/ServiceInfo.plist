@@ -11,6 +11,7 @@
 			<key>URLPatterns</key>
 			<array>
 				<string>http://gamepass.nfl.com/.+</string>
+				<string>http://gamerewind.nfl.com/.+</string>
 				<string>http://www.nfl.com/.+</string>
 				<string>http://a.video.nfl.com/.+</string>
 			</array>
