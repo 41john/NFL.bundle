@@ -278,8 +278,11 @@ def GamerewindPlay(week, season, week_title):
 		sTeam1 = stream.xpath('./table/tr[1]/td[2]/text()')[0]
 		sTeam2 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
 		sTitle = "%s @ %s" % (sTeam1,sTeam2)
-		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
-		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamerewind.nfl.com/nflgr/console.jsp?eid=").replace("')","")
+		try:
+			sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
+			sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamerewind.nfl.com/nflgr/console.jsp?eid=").replace("')","")
+		except:
+			sStreamURL = "http://gamerewind.nfl.com/nflgr/console.jsp?eid=blahblah"
 		oc.add(VideoClipObject(url=sStreamURL + "#Condensed", title="Condensed Game - " + sTitle,  thumb=R("icon-gamerewind.png")))
 		oc.add(VideoClipObject(url=sStreamURL, title="Full Length Game - " + sTitle,  thumb=R("icon-gamerewind.png")))
 	return oc
