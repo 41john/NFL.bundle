@@ -11,6 +11,7 @@ BASE_URL					= 'http://www.nfl.com/videos'
 LATEST_VIDEOS				= 'http://www.nfl.com/videos/nfl-videos'
 GAMEHIGHLIGHTS_URL			= 'http://www.nfl.com/videos/nfl-game-highlights'
 NFL_NETWORK_LIVE			= 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true'
+NFL_REDZONE_LIVE			= 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Redzone'
 GAMEPASS_SCHEDULE			= 'https://gamepass.nfl.com/nflgp/secure/schedulechange'
 GAMEREWIND_SCHEDULE			= 'https://gamerewind.nfl.com/nflgr/secure/schedulechange'
 NFL_VIDEOS_JSON				= 'http://www.nfl.com/static/embeddablevideo/%s.json'
@@ -138,6 +139,7 @@ def GamepassMenu():
 	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archive", thumb=R("gamepass.png"), summary="Archived games from this season back to 2012"))
 	oc.add(DirectoryObject(key=Callback(GamepassPlayweek), title="Live / This week", thumb=R("gamepass-live.png"), summary="This weeks games, Live!"))
 	oc.add(DirectoryObject(key = Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
+	oc.add(DirectoryObject(key = Callback(NflRedzoneMenu), title="NFL Redzone Live", summary="Watch NFL Redzone Live", thumb=R("redzone-logo-live.png")))
 	
 	return oc
 
@@ -221,6 +223,17 @@ def NflNetworkMenu():
 	oc = ObjectContainer(title2="NFL Network")
 
 	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("icon-nfl-network-live.png")))
+
+	return oc
+
+###################################################################################################	
+
+@route('/video/nflvideos/nflredzone')	
+def NflRedzoneMenu():
+
+	oc = ObjectContainer(title2="NFL Redzone")
+
+	oc.add(VideoClipObject(url=NFL_REDZONE_LIVE, title="NFL Redzone Live", summary="Watch NFL Redzone Live", thumb=R("icon-nfl-redzone-live.png")))
 
 	return oc
 
