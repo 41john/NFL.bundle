@@ -19,6 +19,12 @@ def MetadataObjectForURL(url):
 		)
 
 #################################################
+	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Redzone"):
+		return VideoClipObject(
+        	title = "NFL Redzone"
+    	)
+
+#################################################
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true"):
 		return VideoClipObject(
         	title = "NFL Network"
@@ -375,11 +381,18 @@ def PlayVideoNFLNetwork(url, bitrate):
 	cookie_values = HTTP.CookiesForURL(url)	
 	headers_value = {'Cookie' : cookie_values, 'User-Agent' : 'iPhone'}
 	publish_url = "http://gamepass.nfl.com/nflgp/servlets/publishpoint"
-	post_values1 = {
-	'id' : '1',
-	'type' : 'channel',
-	'nt' : '1'
-	}
+	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Redzone"):
+			post_values1 = {
+		'id' : '2',
+		'type' : 'channel',
+		'nt' : '1'
+		}
+	else:
+		post_values1 = {
+		'id' : '1',
+		'type' : 'channel',
+		'nt' : '1'
+		}
 	m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values1, headers=headers_value).content
 	m3u8_page = XML.ElementFromString(m3u8_pagedata)
 	m3u8_url = m3u8_page.xpath('//path/text()')[0]
