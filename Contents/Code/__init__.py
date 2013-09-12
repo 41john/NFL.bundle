@@ -9,7 +9,6 @@ NFL_URL						= 'http://www.nfl.com'
 NFL_URL1					= 'http://a.video.nfl.com/'
 BASE_URL					= 'http://www.nfl.com/videos'
 LATEST_VIDEOS				= 'http://www.nfl.com/videos/nfl-videos'
-GAMEHIGHLIGHTS_URL			= 'http://www.nfl.com/videos/nfl-game-highlights'
 NFL_NETWORK_LIVE			= 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true'
 NFL_REDZONE_LIVE			= 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Redzone'
 GAMEPASS_SCHEDULE			= 'https://gamepass.nfl.com/nflgp/secure/schedulechange'
@@ -51,7 +50,6 @@ def VideoMainMenu():
 	oc = ObjectContainer()
 	
 	oc.add(DirectoryObject(key = Callback(PlayMenu, url=LATEST_VIDEOS), title="Latest Videos", summary="Browse the latest videos"))
-	oc.add(DirectoryObject(key = Callback(PlayMenu, url=GAMEHIGHLIGHTS_URL), title="Game Highlights", summary="Browse game highlights"))
 	oc.add(DirectoryObject(key = Callback(ShowsMenu), title="Shows", summary="Browse videos for different NFL shows"))
 	oc.add(DirectoryObject(key = Callback(TeamsMenu), title="Teams", summary="Browse videos by team"))
 	oc.add(DirectoryObject(key = Callback(PlayMenu, url="%s/%s" % (BASE_URL, Prefs['team'])), title="My Team", summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
