@@ -134,10 +134,11 @@ def GamepassMenu():
 
 	oc = ObjectContainer(title2="NFL Game Pass")
 	
-	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archive", thumb=R("gamepass.png"), summary="Archived games from this season back to 2012"))
+	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archived Games", thumb=R("gamepass.png"), summary="Archived games from this season back to 2012"))
 	oc.add(DirectoryObject(key=Callback(GamepassPlayweek), title="Live / This week", thumb=R("gamepass-live.png"), summary="This weeks games, Live!"))
-	oc.add(DirectoryObject(key = Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
-	oc.add(DirectoryObject(key = Callback(NflRedzoneMenu), title="NFL Redzone Live", summary="Watch NFL Redzone Live", thumb=R("redzone-logo-live.png")))
+	oc.add(DirectoryObject(key=Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
+	oc.add(DirectoryObject(key=Callback(NflRedzoneMenu), title="NFL Redzone Live", summary="Watch NFL Redzone Live", thumb=R("redzone-logo-live.png")))
+	oc.add(DirectoryObject(key=Callback(NflRedzoneArchive), title="NFL Redzone Archive", thumb=R("redzone-logo.png"), summary="Archived Redzone channel from this season back to 2011"))
 	
 	return oc
 
@@ -236,6 +237,22 @@ def NflRedzoneMenu():
 	return oc
 
 ###################################################################################################	
+
+@route('/video/nflvideos/nflredzonearchive')
+def NflRedzoneArchive():
+
+	oc = ObjectContainer(title2="NFL Redzone Archive")
+	
+	weeks = {'2012/09/09': '2012 Week 1', '2012/09/16': '2012 Week 2','2012/09/23': '2012 Week 3','2012/09/30': '2012 Week 4','2012/10/07': '2012 Week 5', '2012/10/14': '2012 Week 6', '2012/10/21': '2012 Week 7', '2012/10/28': '2012 Week 8', '2012/11/04': '2012 Week 9', '2012/11/11': '2012 Week 10', '2012/11/18': '2012 Week 11', '2012/11/25': '2012 Week 12', '2012/12/02': '2012 Week 13', '2012/12/09': '2012 Week 14', '2012/12/16': '2012 Week 15', '2012/12/23': '2012 Week 16', '2012/12/30': '2012 Week 17', '2013/09/08': '2013 Week 1', '2013/09/15': '2013 Week 2','2013/09/22': '2013 Week 3','2013/09/29': '2013 Week 4','2013/10/06': '2013 Week 5', '2013/10/13': '2013 Week 6', '2013/10/20': '2013 Week 7', '2013/10/27': '2013 Week 8', '2013/11/03': '2013 Week 9', '2013/11/10': '2013 Week 10', '2013/11/17': '2013 Week 11', '2013/11/24': '2013 Week 12', '2013/12/01': '2013 Week 13', '2013/12/08': '2013 Week 14', '2013/12/15': '2013 Week 15', '2013/12/22': '2013 Week 16', '2013/12/29': '2013 Week 17'}
+	orderedWeeks = ['2012/09/09', '2012/09/16','2012/09/23','2012/09/30','2012/10/07', '2012/10/14', '2012/10/21', '2012/10/28', '2012/11/04', '2012/11/11', '2012/11/18', '2012/11/25', '2012/12/02', '2012/12/09', '2012/12/16', '2012/12/23', '2012/12/30', '2013/09/08', '2013/09/15','2013/09/22','2013/09/29','2013/10/06', '2013/10/13', '2013/10/20', '2013/10/27', '2013/11/03', '2013/11/10', '2013/11/17', '2013/11/24', '2013/12/01', '2013/12/08', '2013/12/15', '2013/12/22', '2013/12/29']
+    
+	for week in orderedWeeks:
+		week_title = weeks[week]
+		oc.add(VideoClipObject(url="http://gamepass.nfl.com/nflgp/console.jsp?rza=" + week, title=week_title, thumb=R("icon-nfl-redzone.png")))
+		
+	return oc
+	
+###################################################################################################
 
 @route('/video/nflvideos/gamerewind')
 def GamerewindMenu():
