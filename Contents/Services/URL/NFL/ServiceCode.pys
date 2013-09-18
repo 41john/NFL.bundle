@@ -31,6 +31,12 @@ def MetadataObjectForURL(url):
     	)
 
 #################################################
+	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?rza="):
+		return VideoClipObject(
+        	title = "NFL Redzone Archive"
+    	)
+
+#################################################
 	if url.startswith("http://gamepass.nfl.com"):
 		return VideoClipObject(
         	title = "NFL Gamepass"
@@ -176,6 +182,82 @@ def MediaObjectsForURL(url):
 				)
 			]
 			
+#################################################
+	
+	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?rza="):
+			return [
+				MediaObject(
+					bitrate = 4500,
+					video_resolution = 720,
+					container = Container.MP4,
+					video_codec = VideoCodec.H264,
+					audio_codec = AudioCodec.AAC,
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '4500')))]
+				),
+				MediaObject(
+					bitrate = 3000,
+					video_resolution = 540,
+					container = Container.MP4,
+					video_codec = VideoCodec.H264,
+					audio_codec = AudioCodec.AAC,
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '3000')))]
+				),
+				MediaObject(
+					bitrate = 2400,
+					video_resolution = '540',
+					container = Container.MP4,
+					video_codec = VideoCodec.H264,
+					audio_codec = AudioCodec.AAC,
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '2400')))]
+				),
+				MediaObject(
+					bitrate = 1600,
+					video_resolution = 360,
+					container = Container.MP4,
+					video_codec = VideoCodec.H264,
+					audio_codec = AudioCodec.AAC,
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '1600')))]
+				),
+				MediaObject(
+					bitrate = 1200,
+					video_resolution = 360,
+					container = Container.MP4,
+					video_codec = VideoCodec.H264,
+					audio_codec = AudioCodec.AAC,
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '1200')))]
+				),
+				MediaObject(
+					bitrate = 800,
+					video_resolution = 224,
+					container = Container.MP4,
+					video_codec = VideoCodec.H264,
+					audio_codec = AudioCodec.AAC,
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '800')))]
+				),
+				MediaObject(
+					bitrate = 400,
+					video_resolution = 224,
+					container = Container.MP4,
+					video_codec = VideoCodec.H264,
+					audio_codec = AudioCodec.AAC,
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '400')))]
+				)
+			]
+
 #################################################
 	
 	if url.startswith("http://gamepass.nfl.com"):
@@ -382,7 +464,7 @@ def PlayVideoNFLNetwork(url, bitrate):
 	headers_value = {'Cookie' : cookie_values, 'User-Agent' : 'iPhone'}
 	publish_url = "http://gamepass.nfl.com/nflgp/servlets/publishpoint"
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Redzone"):
-			post_values1 = {
+		post_values1 = {
 		'id' : '2',
 		'type' : 'channel',
 		'nt' : '1'
@@ -587,6 +669,85 @@ def PlayVideoGP(url, bitrate):
 		m3u8_url800 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","800.mp4.m3u8").replace("pc","800.m3u8")
 		m3u8_url400 = m3u8_url.replace("adaptive","http").replace(":443","").replace("pc.mp4","400.mp4.m3u8").replace("pc","400.m3u8")
 	
+	if bitrate == '4500':
+		try:
+			headers = HTTP.Request(m3u8_url4500).headers
+			return IndirectResponse(VideoClipObject, key = m3u8_url4500)	
+		except:
+			return IndirectResponse(VideoClipObject, key = m3u8_url3000)	
+	elif bitrate == '3000':
+		return IndirectResponse(VideoClipObject, key = m3u8_url3000)
+	elif bitrate == '2400':
+		return IndirectResponse(VideoClipObject, key = m3u8_url2400)
+	elif bitrate == '1600':
+		return IndirectResponse(VideoClipObject, key = m3u8_url1600)
+	elif bitrate == '1200':
+		return IndirectResponse(VideoClipObject, key = m3u8_url1200)
+	elif bitrate == '800':
+		return IndirectResponse(VideoClipObject, key = m3u8_url800)
+	elif bitrate == '400':
+		return IndirectResponse(VideoClipObject, key = m3u8_url400)
+
+####################################################################################################
+@indirect
+def PlayVideoGPRZA(url, bitrate):
+	
+	username = Prefs['username']
+	password = Prefs['password']
+	
+	login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
+	
+	authentication_url = "https://id.s.nfl.com/login"
+	post_values = {
+		'username' : username,
+		'password' : password,
+		'vendor_id' : 'nflptnrnln',
+		'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
+		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
+		}
+	
+	try:
+ 		needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
+	except:
+		needtologin = 'nothing'
+
+	if needtologin == "loginform":
+ 		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+
+	cookie_values = HTTP.CookiesForURL(url)
+
+	headers_value = {'Cookie' : cookie_values}
+
+	date1 = url.replace("http://gamepass.nfl.com/nflgp/console.jsp?rza=", "")
+	date2 = date1.replace("/","")
+	if date2.startswith("2011"):
+		season = "2011"	
+	if date2.startswith("2012"):
+		season = "2012"
+	if date2.startswith("2013"):
+		season = "2013"
+	
+	publish_url = "http://gamepass.nfl.com/nflgp/servlets/publishpoint"
+	post_values2 = {
+	'id' : '2',
+	'type' : 'channel',
+	'nt' : '1',
+	'date1' : date1,
+	'date2' : date2,
+	'season' : season
+	}
+	headers_value2 = {'Cookie' : cookie_values, 'User-Agent' : 'iPhone'}
+	m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values2, headers=headers_value2).content
+	m3u8_page = XML.ElementFromString(m3u8_pagedata)
+	m3u8_url = m3u8_page.xpath('//path/text()')[0]
+	m3u8_url4500 = m3u8_url.replace("adaptive","http").replace("iphone","4500")
+	m3u8_url3000 = m3u8_url.replace("adaptive","http").replace("iphone","3000")
+	m3u8_url2400 = m3u8_url.replace("adaptive","http").replace("iphone","2400")
+	m3u8_url1600 = m3u8_url.replace("adaptive","http").replace("iphone","1600")
+	m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
+	m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
+	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
+
 	if bitrate == '4500':
 		try:
 			headers = HTTP.Request(m3u8_url4500).headers
