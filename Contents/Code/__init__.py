@@ -14,6 +14,7 @@ NFL_REDZONE_LIVE			= 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Redzon
 GAMEPASS_SCHEDULE			= 'https://gamepass.nfl.com/nflgp/secure/schedulechange'
 GAMEREWIND_SCHEDULE			= 'https://gamerewind.nfl.com/nflgr/secure/schedulechange'
 NFL_VIDEOS_JSON				= 'http://www.nfl.com/static/embeddablevideo/%s.json'
+NFL_NETWORK_SCHEDULE		= 'http://www.locatetv.com/listings/nflnet'
 
 TEAMS = {'arizona-cardinals': 'Arizona Cardinals', 'atlanta-falcons': 'Atlanta Falcons', 'baltimore-ravens': 'Baltimore Ravens', 'buffalo-bills': 'Buffalo Bills', 'carolina-panthers': 'Carolina Panthers', 'chicago-bears': 'Chicago Bears', 'cincinnati-bengals': 'Cincinnati Bengals', 'cleveland-browns': 'Cleveland Browns', 'dallas-cowboys': 'Dallas Cowboys', 'denver-broncos': 'Denver Broncos', 'detroit-lions': 'Detroit Lions', 'green-bay-packers': 'Green Bay Packers', 'houston-texans': 'Houston Texans', 'indianapolis-colts': 'Indianapolis Colts', 'jacksonville-jaguars': 'Jacksonville Jaguars', 'kansas-city-chiefs': 'Kansas City Chiefs', 'miami-dolphins': 'Miami Dolphins', 'minnesota-vikings': 'Minnesota Vikings', 'new-england-patriots': 'New England Patriots', 'new-orleans-saints': 'New Orleans Saints', 'new-york-giants': 'New York Giants', 'new-york-jets': 'New York Jets', 'oakland-raiders': 'Oakland Raiders', 'philadelphia-eagles': 'Philadelphia Eagles', 'pittsburgh-steelers': 'Pittsburgh Steelers', 'san-diego-chargers': 'San Diego Chargers', 'san-francisco-49ers': 'San Francisco 49ers', 'seattle-seahawks': 'Seattle Seahawks', 'st-louis-rams': 'St. Louis Rams', 'tampa-bay-buccaneers': 'Tampa Bay Buccaneers', 'tennessee-titans': 'Tennessee Titans', 'washington-redskins': 'Washington Redskins'}
 ORDERED_TEAMS = ['arizona-cardinals','atlanta-falcons','baltimore-ravens','buffalo-bills','carolina-panthers','chicago-bears','cincinnati-bengals','cleveland-browns','dallas-cowboys','denver-broncos','detroit-lions','green-bay-packers','houston-texans','indianapolis-colts','jacksonville-jaguars','kansas-city-chiefs','miami-dolphins','minnesota-vikings','new-england-patriots','new-orleans-saints','new-york-giants','new-york-jets','oakland-raiders','philadelphia-eagles','pittsburgh-steelers','san-diego-chargers','san-francisco-49ers','seattle-seahawks','st-louis-rams','tampa-bay-buccaneers','tennessee-titans','washington-redskins']
@@ -220,8 +221,23 @@ def GamepassPlayweek():
 def NflNetworkMenu():
 
 	oc = ObjectContainer(title2="NFL Network")
+	
+	page = HTML.ElementFromURL(NFL_NETWORK_SCHEDULE, errors='ignore', cacheTime=1)
+	try:
+		onnow = page.xpath('//ul[@class="nextOn clearFix"]/li[2]/div/a/text()')[0]
+		timestarted = page.xpath('//ul[@class="nextOn clearFix"]/li[1]/text()')[0]
+	except:
+		onnow = ""
+		timestarted = ""
+		
+	try:
+		nextstarted = page.xpath('//ul[@class="schedule hoverable"]/li[3]/ul/li[1]/text()')[0]
+		onnext = page.xpath('//ul[@class="schedule hoverable"]/li[3]/ul/li[2]/div/a/text()')[0]
+	except:
+		nextstarted = ""
+		onnext = ""
 
-	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("icon-nfl-network-live.png")))
+	oc.add(VideoClipObject(url=NFL_NETWORK_LIVE, title="NFL Network Live", summary = "Started at " + timestarted + " " + onnow + "\nNext at " + nextstarted +" " + onnext, thumb=R("icon-nfl-network-live.png")))
 
 	return oc
 

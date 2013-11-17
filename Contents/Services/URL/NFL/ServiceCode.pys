@@ -1,5 +1,6 @@
 NFL_VIDEOS_JSON				= 'http://www.nfl.com/static/embeddablevideo/%s.json'
 NFL_VIDEOS_URL				= 'http://a.video.nfl.com/'
+NFL_NETWORK_SCHEDULE		= 'http://www.locatetv.com/listings/nflnet'
 ####################################################################################################
 def MetadataObjectForURL(url):
 	
@@ -26,10 +27,27 @@ def MetadataObjectForURL(url):
 
 #################################################
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true"):
+		
+		page = HTML.ElementFromURL(NFL_NETWORK_SCHEDULE, errors='ignore', cacheTime=1)
+		try:
+			onnow = page.xpath('//ul[@class="nextOn clearFix"]/li[2]/div/a/text()')[0]
+			timestarted = page.xpath('//ul[@class="nextOn clearFix"]/li[1]/text()')[0]
+		except:
+			onnow = ""
+			timestarted = ""
+		
+		try:
+			nextstarted = page.xpath('//ul[@class="schedule hoverable"]/li[3]/ul/li[1]/text()')[0]
+			onnext = page.xpath('//ul[@class="schedule hoverable"]/li[3]/ul/li[2]/div/a/text()')[0]
+		except:
+			nextstarted = ""
+			onnext = ""
+		
 		return VideoClipObject(
-        	title = "NFL Network"
-    	)
-
+			title = "NFL Network",
+    		summary = "Started at " + timestarted + " " + onnow + "\nNext at " + nextstarted +" " + onnext
+     	)
+     		
 #################################################
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?rza="):
 		return VideoClipObject(
