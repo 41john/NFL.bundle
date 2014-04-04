@@ -15,6 +15,7 @@ GAMEPASS_SCHEDULE			= 'https://gamepass.nfl.com/nflgp/secure/schedulechange'
 GAMEREWIND_SCHEDULE			= 'https://gamerewind.nfl.com/nflgr/secure/schedulechange'
 NFL_VIDEOS_JSON				= 'http://www.nfl.com/static/embeddablevideo/%s.json'
 NFL_NETWORK_SCHEDULE		= 'http://www.locatetv.com/listings/nflnet'
+NFLNAIMAGE 					= 'http://smb.cdn.neulion.com/u/nfl/nfl/thumbs/'
 
 TEAMS = {'arizona-cardinals': 'Arizona Cardinals', 'atlanta-falcons': 'Atlanta Falcons', 'baltimore-ravens': 'Baltimore Ravens', 'buffalo-bills': 'Buffalo Bills', 'carolina-panthers': 'Carolina Panthers', 'chicago-bears': 'Chicago Bears', 'cincinnati-bengals': 'Cincinnati Bengals', 'cleveland-browns': 'Cleveland Browns', 'dallas-cowboys': 'Dallas Cowboys', 'denver-broncos': 'Denver Broncos', 'detroit-lions': 'Detroit Lions', 'green-bay-packers': 'Green Bay Packers', 'houston-texans': 'Houston Texans', 'indianapolis-colts': 'Indianapolis Colts', 'jacksonville-jaguars': 'Jacksonville Jaguars', 'kansas-city-chiefs': 'Kansas City Chiefs', 'miami-dolphins': 'Miami Dolphins', 'minnesota-vikings': 'Minnesota Vikings', 'new-england-patriots': 'New England Patriots', 'new-orleans-saints': 'New Orleans Saints', 'new-york-giants': 'New York Giants', 'new-york-jets': 'New York Jets', 'oakland-raiders': 'Oakland Raiders', 'philadelphia-eagles': 'Philadelphia Eagles', 'pittsburgh-steelers': 'Pittsburgh Steelers', 'san-diego-chargers': 'San Diego Chargers', 'san-francisco-49ers': 'San Francisco 49ers', 'seattle-seahawks': 'Seattle Seahawks', 'st-louis-rams': 'St. Louis Rams', 'tampa-bay-buccaneers': 'Tampa Bay Buccaneers', 'tennessee-titans': 'Tennessee Titans', 'washington-redskins': 'Washington Redskins'}
 ORDERED_TEAMS = ['arizona-cardinals','atlanta-falcons','baltimore-ravens','buffalo-bills','carolina-panthers','chicago-bears','cincinnati-bengals','cleveland-browns','dallas-cowboys','denver-broncos','detroit-lions','green-bay-packers','houston-texans','indianapolis-colts','jacksonville-jaguars','kansas-city-chiefs','miami-dolphins','minnesota-vikings','new-england-patriots','new-orleans-saints','new-york-giants','new-york-jets','oakland-raiders','philadelphia-eagles','pittsburgh-steelers','san-diego-chargers','san-francisco-49ers','seattle-seahawks','st-louis-rams','tampa-bay-buccaneers','tennessee-titans','washington-redskins']
@@ -139,6 +140,7 @@ def GamepassMenu():
 	oc.add(DirectoryObject(key=Callback(GamepassPlayweek), title="Live / This week", thumb=R("gamepass-live.png"), summary="This weeks games, Live!"))
 	oc.add(DirectoryObject(key=Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
 	oc.add(DirectoryObject(key=Callback(NflRedzoneMenu), title="NFL Redzone Live", summary="Watch NFL Redzone Live", thumb=R("redzone-logo-live.png")))
+	oc.add(DirectoryObject(key=Callback(NflNetworkArchiveMenu), title="NFL Network Archive", summary="Watch NFL Network Archived Shows", thumb=R("nfl-network.png")))
 	oc.add(DirectoryObject(key=Callback(NflRedzoneArchive), title="NFL Redzone Archive", thumb=R("redzone-logo.png"), summary="Archived Redzone channel from this season back to 2011"))
 	
 	return oc
@@ -348,7 +350,80 @@ def GamerewindPlay(week, season, week_title):
 		oc.add(VideoClipObject(url=sStreamURL + "#Condensed", title="Condensed Game - " + sTitle,  thumb=R("icon-gamerewind.png")))
 		oc.add(VideoClipObject(url=sStreamURL, title="Full Length Game - " + sTitle,  thumb=R("icon-gamerewind.png")))
 	return oc
+	
+###################################################################################################	
 
+@route('/video/nflvideos/nflnetworkarchivemenu')
+def NflNetworkArchiveMenu():
+
+	oc = ObjectContainer(title2="NFL Network Archive")
+
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="181", title="Total Access 2013"), title="Total Access 2013", thumb=R("nfl-network.png"), summary="Total Access 2013"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="186", title="A Football Life 2013"), title="A Football Life 2013", thumb=R("nfl-network.png"), summary="A Football Life 2013"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="187", title="NFL Films Presents 2013"), title="NFL Films Presents 2013", thumb=R("nfl-network.png"), summary="NFL Films Presents 2013"))	
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="179", title="NFL Gameday 2013"), title="NFL Gameday 2013", thumb=R("nfl-network.png"), summary="NFL Gameday 2013"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="180", title="Playbook 2013"), title="Playbook 2013", thumb=R("nfl-network.png"), summary="Playbook 2013"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="183", title="Sound FX 2013"), title="Sound FX 2013", thumb=R("nfl-network.png"), summary="Sound FX 2013"))
+	
+	return oc
+	
+###################################################################################################
+
+@route('/video/nflvideos/nflnarchiveplay')	
+def NFLNArchivePlay(cid, title):
+
+	oc = ObjectContainer(title2=title)
+		
+	username = Prefs['username']
+	password = Prefs['password']
+	
+	# seems to log in each time you go back to the gamepass menu. Will fix in later update
+	
+	login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
+	
+	authentication_url = "https://id.s.nfl.com/login"
+	post_values = {
+		'username' : username,
+		'password' : password,
+		'vendor_id' : 'nflptnrnln',
+		'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
+		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
+		}
+	
+	try:
+ 		needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
+	except:
+		needtologin = 'nothing'
+
+
+	if needtologin == "loginform":
+ 		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+	
+	cookie_values = HTTP.CookiesForURL(login_url)
+	
+	headers_value = {'Cookie' : cookie_values}
+
+	program_url = "http://gamepass.nfl.com/nflgp/servlets/browse"
+	post_values1 = {
+	'cid' : cid,
+	'ps' : '50',
+	'pm' : '0',
+	'pn' : '1',
+	'isFlex' : 'true'
+	}
+	program_pagedata = HTTP.Request(url=program_url, values=post_values1, headers=headers_value).content
+	program_page = XML.ElementFromString(program_pagedata).xpath('//programs/program')
+
+	for stream in program_page:
+		sTitle = stream.xpath('.//name')[0].text
+		sThumb = NFLNAIMAGE + stream.xpath('.//image')[0].text
+		sStreamURL = stream.xpath('.//publishPoint')[0].text
+		sStreamURL = sStreamURL.replace("adaptive","http").replace(":443","")
+		sSummary = stream.xpath('.//runtime')[0].text + " Minutes"
+		oc.add(VideoClipObject(url=sStreamURL+"#"+sTitle, title=sTitle, summary=sSummary, thumb=sThumb))
+		
+	return oc	
+	
 ###################################################################################################
 # Notes about xpaths
 # .// means any child/grandchild of the currently selected node, rather than anywhere in the document. Particularly important when dealing with loops.
