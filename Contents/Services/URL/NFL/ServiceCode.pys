@@ -66,6 +66,16 @@ def MetadataObjectForURL(url):
         	title = "NFL Game Rewind"
     	)
 
+#################################################
+	if url.startswith("http://nlds"):
+	
+		new_url = url.split("#")
+		titlevid = new_url[1]
+	
+		return VideoClipObject(
+        	title = titlevid
+    	)
+
 ####################################################################################################
 def MediaObjectsForURL(url):
 
@@ -73,7 +83,7 @@ def MediaObjectsForURL(url):
 		return [
 			MediaObject(
 				bitrate = 3000,
-				video_resolution = 720,
+				video_resolution = '720',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -83,7 +93,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 2000,
-				video_resolution = 432,
+				video_resolution = '432',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -93,7 +103,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 1200,
-				video_resolution = 432,
+				video_resolution = '432',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -103,7 +113,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 700,
-				video_resolution = 432,
+				video_resolution = '432',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -113,7 +123,7 @@ def MediaObjectsForURL(url):
 			),
 			MediaObject(
 				bitrate = 500, 
-				video_resolution = 432,
+				video_resolution = '432',
 				container = Container.MP4,
 				video_codec = VideoCodec.H264,
 				audio_codec = AudioCodec.AAC,
@@ -130,70 +140,49 @@ def MediaObjectsForURL(url):
 			return [
 				MediaObject(
 					bitrate = 4500,
-					video_resolution = 720,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '720',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '4500')))]
 				),
 				MediaObject(
 					bitrate = 3000,
-					video_resolution = 540,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '540',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '3000')))]
 				),
 				MediaObject(
 					bitrate = 2400,
-					video_resolution = 540,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '540',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '2400')))]
 				),
 				MediaObject(
 					bitrate = 1600,
-					video_resolution = 360,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '360',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '1600')))]
 				),
 				MediaObject(
 					bitrate = 1200,
-					video_resolution = 360,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '360',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '1200')))]
 				),
 				MediaObject(
 					bitrate = 800,
-					video_resolution = 224,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '224',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '800')))]
 				),
 				MediaObject(
 					bitrate = 400,
-					video_resolution = 224,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '224',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '400')))]
@@ -206,20 +195,14 @@ def MediaObjectsForURL(url):
 			return [
 				MediaObject(
 					bitrate = 4500,
-					video_resolution = 720,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '720',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '4500')))]
 				),
 				MediaObject(
 					bitrate = 3000,
-					video_resolution = 540,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '540',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '3000')))]
@@ -227,49 +210,34 @@ def MediaObjectsForURL(url):
 				MediaObject(
 					bitrate = 2400,
 					video_resolution = '540',
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '2400')))]
 				),
 				MediaObject(
 					bitrate = 1600,
-					video_resolution = 360,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '360',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '1600')))]
 				),
 				MediaObject(
 					bitrate = 1200,
-					video_resolution = 360,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '360',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '1200')))]
 				),
 				MediaObject(
 					bitrate = 800,
-					video_resolution = 224,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '224',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '800')))]
 				),
 				MediaObject(
 					bitrate = 400,
-					video_resolution = 224,
-					container = Container.MP4,
-					video_codec = VideoCodec.H264,
-					audio_codec = AudioCodec.AAC,
+					video_resolution = '224',
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGPRZA, url = url, bitrate = '400')))]
@@ -282,20 +250,14 @@ def MediaObjectsForURL(url):
 		return [
 			MediaObject(
 				bitrate = 4500,
-				video_resolution = 720,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '720',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '4500')))]
 			),
 			MediaObject(
 				bitrate = 3000,
-				video_resolution = 540,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '540',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '3000')))]
@@ -303,49 +265,34 @@ def MediaObjectsForURL(url):
 			MediaObject(
 				bitrate = 2400,
 				video_resolution = '540',
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '2400')))]
 			),
 			MediaObject(
 				bitrate = 1600,
-				video_resolution = 360,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '360',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '1600')))]
 			),
 			MediaObject(
 				bitrate = 1200,
-				video_resolution = 360,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '360',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '1200')))]
 			),
 			MediaObject(
 				bitrate = 800,
-				video_resolution = 224,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '224',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '800')))]
 			),
 			MediaObject(
 				bitrate = 400,
-				video_resolution = 224,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '224',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '400')))]
@@ -358,20 +305,14 @@ def MediaObjectsForURL(url):
 		return [
 			MediaObject(
 				bitrate = 4500,
-				video_resolution = 720,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '720',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGR, url = url, bitrate = '4500')))]
 			),
 			MediaObject(
 				bitrate = 3000,
-				video_resolution = 540,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '540',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGR, url = url, bitrate = '3000')))]
@@ -379,55 +320,87 @@ def MediaObjectsForURL(url):
 			MediaObject(
 				bitrate = 2400,
 				video_resolution = '540',
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGR, url = url, bitrate = '2400')))]
 			),
 			MediaObject(
 				bitrate = 1600,
-				video_resolution = 360,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '360',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGR, url = url, bitrate = '1600')))]
 			),
 			MediaObject(
 				bitrate = 1200,
-				video_resolution = 360,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '360',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGR, url = url, bitrate = '1200')))]
 			),
 			MediaObject(
 				bitrate = 800,
-				video_resolution = 224,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '224',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGR, url = url, bitrate = '800')))]
 			),
 			MediaObject(
 				bitrate = 400,
-				video_resolution = 224,
-				container = Container.MP4,
-				video_codec = VideoCodec.H264,
-				audio_codec = AudioCodec.AAC,
+				video_resolution = '224',
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGR, url = url, bitrate = '400')))]
 			)
 		]
 
+#################################################
+	
+	if url.startswith("http://nlds"):
+		return [
+			MediaObject(
+				bitrate = 3000,
+				video_resolution = '540',
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNA, url = url, bitrate = '3000')))]
+			),
+			MediaObject(
+				bitrate = 2400,
+				video_resolution = '540',
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNA, url = url, bitrate = '2400')))]
+			),
+			MediaObject(
+				bitrate = 1600,
+				video_resolution = '360',
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNA, url = url, bitrate = '1600')))]
+			),
+			MediaObject(
+				bitrate = 1200,
+				video_resolution = '360',
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNA, url = url, bitrate = '1200')))]
+			),
+			MediaObject(
+				bitrate = 800,
+				video_resolution = '224',
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNA, url = url, bitrate = '800')))]
+			),
+			MediaObject(
+				bitrate = 400,
+				video_resolution = '224',
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNA, url = url, bitrate = '400')))]
+			)
+		]
 ####################################################################################################
 def PlayVideo(url, bitrate):
 
@@ -504,20 +477,23 @@ def PlayVideoNFLNetwork(url, bitrate):
 	m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
 	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
 	
+	playlist = HTTP.Request(m3u8_url400, cacheTime=10)
+	cookie = playlist.headers['set-cookie']
+	
 	if bitrate == '4500':
-		return IndirectResponse(VideoClipObject, key = m3u8_url4500)	
+		return IndirectResponse(VideoClipObject, key = m3u8_url4500, http_cookies = cookie)	
 	elif bitrate == '3000':
-		return IndirectResponse(VideoClipObject, key = m3u8_url3000)	
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000), http_cookies = cookie)	
 	elif bitrate == '2400':
-		return IndirectResponse(VideoClipObject, key = m3u8_url2400)	
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url2400), http_cookies = cookie)	
 	elif bitrate == '1600':
-		return IndirectResponse(VideoClipObject, key = m3u8_url1600)	
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1600), http_cookies = cookie)	
 	elif bitrate == '1200':
-		return IndirectResponse(VideoClipObject, key = m3u8_url1200)	
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1200), http_cookies = cookie)	
 	elif bitrate == '800':
-		return IndirectResponse(VideoClipObject, key = m3u8_url800)	
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url800), http_cookies = cookie)	
 	elif bitrate == '400':
-		return IndirectResponse(VideoClipObject, key = m3u8_url400)	
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url400), http_cookies = cookie)	
 	
 ####################################################################################################
 @indirect
@@ -685,6 +661,8 @@ def PlayVideoGPRZA(url, bitrate):
 		season = "2012"
 	if date2.startswith("2013"):
 		season = "2013"
+	if date2.startswith("2014"):
+		season = "2014"
 	
 	publish_url = "http://gamepass.nfl.com/nflgp/servlets/publishpoint"
 	post_values2 = {
@@ -830,7 +808,6 @@ def PlayVideoGR(url, bitrate):
 	m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
 	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
 	
-
 		
 	if bitrate == '4500':
 		try:
@@ -850,6 +827,33 @@ def PlayVideoGR(url, bitrate):
 		return IndirectResponse(VideoClipObject, key = m3u8_url800)
 	elif bitrate == '400':
 		return IndirectResponse(VideoClipObject, key = m3u8_url400)
-	
+
 ####################################################################################################
-# Can not get 2009-2011 games or some preseason games in 2012 to work as there is no m3u8 file but may come back to this another time.
+@indirect
+def PlayVideoNFLNA(url, bitrate):
+	
+	new_url = url.split("#")
+	url = new_url[0]
+	
+	m3u8_url3000 = url.replace("pc.mp4","3000.mp4.m3u8")
+	m3u8_url2400 = url.replace("pc.mp4","2400.mp4.m3u8")
+	m3u8_url1600 = url.replace("pc.mp4","1600.mp4.m3u8")
+	m3u8_url1200 = url.replace("pc.mp4","1200.mp4.m3u8")
+	m3u8_url800 = url.replace("pc.mp4","800.mp4.m3u8")
+	m3u8_url400 = url.replace("pc.mp4","400.mp4.m3u8")
+
+
+	if bitrate == '3000':
+		return IndirectResponse(VideoClipObject, key = m3u8_url3000)
+	elif bitrate == '2400':
+		return IndirectResponse(VideoClipObject, key = m3u8_url2400)
+	elif bitrate == '1600':
+		return IndirectResponse(VideoClipObject, key = m3u8_url1600)
+	elif bitrate == '1200':
+		return IndirectResponse(VideoClipObject, key = m3u8_url1200)
+	elif bitrate == '800':
+		return IndirectResponse(VideoClipObject, key = m3u8_url800)
+	elif bitrate == '400':
+		return IndirectResponse(VideoClipObject, key = m3u8_url400)
+
+####################################################################################################
