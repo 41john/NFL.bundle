@@ -136,58 +136,68 @@ def MediaObjectsForURL(url):
 #################################################
 	
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true"):
-	
-			return [
-				MediaObject(
-					bitrate = 4500,
-					video_resolution = '720',
-					audio_channels = 2,
-					optimized_for_streaming = True,
-					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '4500')))]
-				),
-				MediaObject(
-					bitrate = 3000,
-					video_resolution = '540',
-					audio_channels = 2,
-					optimized_for_streaming = True,
-					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '3000')))]
-				),
-				MediaObject(
-					bitrate = 2400,
-					video_resolution = '540',
-					audio_channels = 2,
-					optimized_for_streaming = True,
-					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '2400')))]
-				),
-				MediaObject(
-					bitrate = 1600,
-					video_resolution = '360',
-					audio_channels = 2,
-					optimized_for_streaming = True,
-					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '1600')))]
-				),
-				MediaObject(
-					bitrate = 1200,
-					video_resolution = '360',
-					audio_channels = 2,
-					optimized_for_streaming = True,
-					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '1200')))]
-				),
-				MediaObject(
-					bitrate = 800,
-					video_resolution = '224',
-					audio_channels = 2,
-					optimized_for_streaming = True,
-					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '800')))]
-				),
-				MediaObject(
-					bitrate = 400,
-					video_resolution = '224',
-					audio_channels = 2,
-					optimized_for_streaming = True,
-					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '400')))]
-				)
-			]
+			
+			if Prefs['gplivebitrate'] == "Auto":
+				return [
+					MediaObject(
+						bitrate = 4500,
+						video_resolution = '720',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '4500')))]
+					),
+					MediaObject(
+						bitrate = 3000,
+						video_resolution = '540',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '3000')))]
+					),
+					MediaObject(
+						bitrate = 2400,
+						video_resolution = '540',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '2400')))]
+					),
+					MediaObject(
+						bitrate = 1600,
+						video_resolution = '360',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '1600')))]
+					),
+					MediaObject(
+						bitrate = 1200,
+						video_resolution = '360',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '1200')))]
+					),
+					MediaObject(
+						bitrate = 800,
+						video_resolution = '224',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '800')))]
+					),
+					MediaObject(
+						bitrate = 400,
+						video_resolution = '224',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = '400')))]
+					)
+				]
+			else:
+				return [
+					MediaObject(
+						bitrate = Prefs['gplivebitrate'],
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = Prefs['gplivebitrate'])))]
+					)
+				]
 			
 #################################################
 	
@@ -247,57 +257,120 @@ def MediaObjectsForURL(url):
 #################################################
 	
 	if url.startswith("http://gamepass.nfl.com"):
-		return [
-			MediaObject(
-				bitrate = 4500,
-				video_resolution = '720',
-				audio_channels = 2,
-				optimized_for_streaming = True,
-				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '4500')))]
-			),
-			MediaObject(
-				bitrate = 3000,
-				video_resolution = '540',
-				audio_channels = 2,
-				optimized_for_streaming = True,
-				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '3000')))]
-			),
-			MediaObject(
-				bitrate = 2400,
-				video_resolution = '540',
-				audio_channels = 2,
-				optimized_for_streaming = True,
-				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '2400')))]
-			),
-			MediaObject(
-				bitrate = 1600,
-				video_resolution = '360',
-				audio_channels = 2,
-				optimized_for_streaming = True,
-				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '1600')))]
-			),
-			MediaObject(
-				bitrate = 1200,
-				video_resolution = '360',
-				audio_channels = 2,
-				optimized_for_streaming = True,
-				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '1200')))]
-			),
-			MediaObject(
-				bitrate = 800,
-				video_resolution = '224',
-				audio_channels = 2,
-				optimized_for_streaming = True,
-				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '800')))]
-			),
-			MediaObject(
-				bitrate = 400,
-				video_resolution = '224',
-				audio_channels = 2,
-				optimized_for_streaming = True,
-				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '400')))]
-			)
-		]
+		if url.endswith("#Live"):
+			if Prefs['gplivebitrate'] == "Auto":
+				return [
+					MediaObject(
+						bitrate = 4500,
+						video_resolution = '720',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '4500')))]
+					),
+					MediaObject(
+						bitrate = 3000,
+						video_resolution = '540',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '3000')))]
+					),
+					MediaObject(
+						bitrate = 2400,
+						video_resolution = '540',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '2400')))]
+				),
+					MediaObject(
+						bitrate = 1600,
+						video_resolution = '360',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '1600')))]
+					),
+					MediaObject(
+						bitrate = 1200,
+						video_resolution = '360',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '1200')))]
+					),
+					MediaObject(
+						bitrate = 800,
+						video_resolution = '224',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '800')))]
+					),
+					MediaObject(
+						bitrate = 400,
+						video_resolution = '224',
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '400')))]
+					)
+				]
+			else:
+				return [
+					MediaObject(
+						bitrate = Prefs['gplivebitrate'],
+						audio_channels = 2,
+						optimized_for_streaming = True,
+						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = Prefs['gplivebitrate'])))]
+					)
+				]
+		else:	
+			return [
+				MediaObject(
+					bitrate = 4500,
+					video_resolution = '720',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '4500')))]
+					),
+				MediaObject(
+					bitrate = 3000,
+					video_resolution = '540',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '3000')))]
+				),
+				MediaObject(
+					bitrate = 2400,
+					video_resolution = '540',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '2400')))]
+				),
+				MediaObject(
+					bitrate = 1600,
+					video_resolution = '360',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '1600')))]
+				),
+				MediaObject(
+					bitrate = 1200,
+					video_resolution = '360',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '1200')))]
+				),
+				MediaObject(
+					bitrate = 800,
+					video_resolution = '224',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '800')))]
+				),
+				MediaObject(
+					bitrate = 400,
+					video_resolution = '224',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = '400')))]
+				)
+			]
 
 #################################################
 	
@@ -476,12 +549,14 @@ def PlayVideoNFLNetwork(url, bitrate):
 	m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
 	m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
 	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
+
+# This tries to fix eHLS live streams for Roku and PHT
 	
 	playlist = HTTP.Request(m3u8_url400, cacheTime=10)
 	cookie = playlist.headers['set-cookie']
 	
 	if bitrate == '4500':
-		return IndirectResponse(VideoClipObject, key = m3u8_url4500, http_cookies = cookie)	
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url4500), http_cookies = cookie)	
 	elif bitrate == '3000':
 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000), http_cookies = cookie)	
 	elif bitrate == '2400':
