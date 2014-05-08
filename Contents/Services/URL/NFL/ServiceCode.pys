@@ -192,7 +192,7 @@ def MediaObjectsForURL(url):
 			else:
 				return [
 					MediaObject(
-						bitrate = Prefs['gplivebitrate'],
+						bitrate = int(Prefs['gplivebitrate']),
 						audio_channels = 2,
 						optimized_for_streaming = True,
 						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = Prefs['gplivebitrate'])))]
@@ -313,7 +313,7 @@ def MediaObjectsForURL(url):
 			else:
 				return [
 					MediaObject(
-						bitrate = Prefs['gplivebitrate'],
+						bitrate = int(Prefs['gplivebitrate']),
 						audio_channels = 2,
 						optimized_for_streaming = True,
 						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = Prefs['gplivebitrate'])))]
