@@ -79,6 +79,21 @@ def MetadataObjectForURL(url):
 ####################################################################################################
 def MediaObjectsForURL(url):
 
+	if Prefs['gplivebitrate'] == "4500":
+		VidRes = '720'
+	if Prefs['gplivebitrate'] == "3000":
+		VidRes = '540'
+	if Prefs['gplivebitrate'] == "2400":
+		VidRes = '540'
+	if Prefs['gplivebitrate'] == "1600":
+		VidRes = '360'
+	if Prefs['gplivebitrate'] == "1200":
+		VidRes = '360'
+	if Prefs['gplivebitrate'] == "800":
+		VidRes = '224'
+	if Prefs['gplivebitrate'] == "400":
+		VidRes = '224'
+
 	if url.startswith("http://www.nfl.com"):
 		return [
 			MediaObject(
@@ -193,6 +208,7 @@ def MediaObjectsForURL(url):
 				return [
 					MediaObject(
 						bitrate = int(Prefs['gplivebitrate']),
+						video_resolution = VidRes,
 						audio_channels = 2,
 						optimized_for_streaming = True,
 						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNetwork, url = url, bitrate = Prefs['gplivebitrate'])))]
@@ -314,6 +330,7 @@ def MediaObjectsForURL(url):
 				return [
 					MediaObject(
 						bitrate = int(Prefs['gplivebitrate']),
+						video_resolution = VidRes,
 						audio_channels = 2,
 						optimized_for_streaming = True,
 						parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = Prefs['gplivebitrate'])))]

@@ -50,16 +50,27 @@ def Start():
 def VideoMainMenu():
 	
 	oc = ObjectContainer()
+		
+	oc.add(DirectoryObject(key = Callback(NFLVideosMenu), title="NFL.com Videos", summary="Browse videos from NFL.com/Videos"))
+	oc.add(DirectoryObject(key = Callback(PlayMenu, url="%s/%s" % (BASE_URL, Prefs['team'])), title="My Team", summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
+	oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
+	oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL Game Rewind", summary="NFL Game Rewind subscribers only", thumb=R("gamerewind.png")))
+	oc.add(PrefsObject(title="Preferences", summary="Set My Team. Enter subscription details for Gamepass or NFL Network Live", thumb=R("icon-prefs.png")))
+	return oc
+
+
+###################################################################################################
+
+@route('/video/nflvideos/nflvideosmenu')
+def NFLVideosMenu():
+	
+	oc = ObjectContainer(title2="NFL.com Videos")
 	
 	oc.add(DirectoryObject(key = Callback(PlayMenu, url=LATEST_VIDEOS), title="Latest Videos", summary="Browse the latest videos"))
 	oc.add(DirectoryObject(key = Callback(ShowsMenu), title="Shows", summary="Browse videos for different NFL shows"))
 	oc.add(DirectoryObject(key = Callback(TeamsMenu), title="Teams", summary="Browse videos by team"))
-	oc.add(DirectoryObject(key = Callback(PlayMenu, url="%s/%s" % (BASE_URL, Prefs['team'])), title="My Team", summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
 	oc.add(DirectoryObject(key = Callback(SpotlightMenu), title="Channels", summary="Browse videos for different NFL channels"))
 	oc.add(DirectoryObject(key = Callback(EventsMenu), title="Events", summary="Browse videos by Event"))
-	oc.add(PrefsObject(title="Preferences", summary="Set My Team. Enter subscription details for Gamepass or NFL Network Live", thumb=R("icon-prefs.png")))
-	oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
-	oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL Game Rewind", summary="NFL Game Rewind subscribers only", thumb=R("gamerewind.png")))
 	return oc
 
 
