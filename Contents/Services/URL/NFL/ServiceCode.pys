@@ -207,6 +207,7 @@ def MediaObjectsForURL(url):
 			return [
 				MediaObject(
 					bitrate = int(Prefs['gplivebitrate']),
+					video_resolution = VidRes,
 					audio_channels = 2,
 					optimized_for_streaming = True,
 					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoGP, url = url, bitrate = Prefs['gplivebitrate'])))]
@@ -458,7 +459,7 @@ def PlayVideoGP(url, bitrate):
 		m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
 		m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
 		m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
-		
+
 	if bitrate == '4500':
 		try:
 			headers = HTTP.Request(m3u8_url4500).headers
