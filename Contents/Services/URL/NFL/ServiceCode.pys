@@ -459,24 +459,24 @@ def PlayVideoGP(url, bitrate):
 		m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
 		m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
 		m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
-
+	
 	if bitrate == '4500':
 		try:
 			headers = HTTP.Request(m3u8_url4500).headers
-			return IndirectResponse(VideoClipObject, key = m3u8_url4500)	
+			return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url4500))	
 		except:
-			return IndirectResponse(VideoClipObject, key = m3u8_url3000)	
+			return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000))	
 	elif bitrate == '3000':
-		return IndirectResponse(VideoClipObject, key = m3u8_url3000)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000))
 	elif bitrate == '2400':
-		return IndirectResponse(VideoClipObject, key = m3u8_url2400)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url2400))
 	elif bitrate == '1600':
-		return IndirectResponse(VideoClipObject, key = m3u8_url1600)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1600))
 	elif bitrate == '1200':
-		return IndirectResponse(VideoClipObject, key = m3u8_url1200)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1200))
 	elif bitrate == '800':
-		return IndirectResponse(VideoClipObject, key = m3u8_url800)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url800))
 	elif bitrate == '400':
-		return IndirectResponse(VideoClipObject, key = m3u8_url400)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url400))
 
 ####################################################################################################
