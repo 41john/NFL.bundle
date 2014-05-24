@@ -4,10 +4,10 @@ NFL_NETWORK_SCHEDULE		= 'http://www.locatetv.com/listings/nflnet'
 ####################################################################################################
 def MetadataObjectForURL(url):
 	
-	if url.startswith("http://www.nfl.com"):
+	if url.startswith("http://a.video.nfl.com"):
 
-		page = HTML.ElementFromURL(url)
-		streamid = page.xpath('//div[@id="video-hero-player"]')[0].get('data-ecmid')
+		new_url = url.split("#")
+		streamid = new_url[1]
 		json = JSON.ObjectFromURL(NFL_VIDEOS_JSON % streamid)
 		sTitle = json['briefHeadline']
 		sSummary = json['caption']
@@ -94,7 +94,7 @@ def MediaObjectsForURL(url):
 	if Prefs['gplivebitrate'] == "400":
 		VidRes = '224'
 
-	if url.startswith("http://www.nfl.com"):
+	if url.startswith("http://a.video.nfl.com"):
 		return [
 			MediaObject(
 				bitrate = 3000,
@@ -268,9 +268,9 @@ def MediaObjectsForURL(url):
 		
 ####################################################################################################
 def PlayVideo(url, bitrate):
-
-	page = HTML.ElementFromURL(url)
-	streamid = page.xpath('//div[@id="video-hero-player"]')[0].get('data-ecmid')
+	
+	new_url = url.split("#")
+	streamid = new_url[1]
 	json = JSON.ObjectFromURL(NFL_VIDEOS_JSON % streamid)
 
 	mp4_url3000 = NFL_VIDEOS_URL + json['cdnData']['bitrateInfo'][-1]['path']
