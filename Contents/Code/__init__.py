@@ -365,10 +365,7 @@ def NFLNArchivePlay(cid, title):
 		sStreamURL = stream.xpath('.//publishPoint')[0].text
 		sStreamURL = sStreamURL.replace("adaptive","http").replace(":443","")
 		sSummary = stream.xpath('.//runtime')[0].text + " Minutes"
-		if sTitle.startswith("TOP 100 PLAYERS OF 2013"):
-			sTitle = "Sorry can not play this file"
-		else:
-			oc.add(VideoClipObject(url=sStreamURL+"#"+sTitle, title=sTitle, summary=sSummary, thumb=sThumb))
+		oc.add(VideoClipObject(url=sStreamURL+"#"+sTitle, title=sTitle, summary=sSummary, thumb=sThumb))
 		
 	return oc	
 	
@@ -452,8 +449,8 @@ def NflNetworkArchiveMenu():
 
 	oc = ObjectContainer(title2="NFL Network Archive")
 
-	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="185", title="Top 100 Players of 2014"), title="Top 100 Players of 2014", thumb=R("nfl-network.png"), summary="Top 100 Players of 2014"))
-	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="181", title="Total Access 2013"), title="Total Access 2013", thumb=R("nfl-network.png"), summary="Total Access 2013"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="214", title="Total Access 2014"), title="Total Access 2014", thumb=R("nfl-network.png"), summary="Total Access 2014"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="217", title="Top 100 Players of 2014"), title="Top 100 Players of 2014", thumb=R("nfl-network.png"), summary="Top 100 Players of 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="186", title="A Football Life 2013"), title="A Football Life 2013", thumb=R("nfl-network.png"), summary="A Football Life 2013"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="187", title="NFL Films Presents 2013"), title="NFL Films Presents 2013", thumb=R("nfl-network.png"), summary="NFL Films Presents 2013"))	
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="179", title="NFL Gameday 2013"), title="NFL Gameday 2013", thumb=R("nfl-network.png"), summary="NFL Gameday 2013"))
