@@ -166,7 +166,7 @@ def GamepassSeason():
 
 	oc = ObjectContainer(title2="NFL Game Pass")
 
-	year = Datetime.Now().year if Datetime.Now().month < 8 else Datetime.Now().year+1
+	year = Datetime.Now().year if Datetime.Now().month < 7 else Datetime.Now().year+1
 
 	for season in reversed(range(2012, year)):
 		oc.add(DirectoryObject(key = Callback(GamepassWeek, season=str(season)), title=str(season), thumb=R("gamepass.png")))
@@ -182,17 +182,20 @@ def GamepassWeek(season):
 	
 	weeks = {'100': 'Hall Of Fame', '101': 'Preseason 1','102': 'Preseason 2','103': 'Preseason 3','104': 'Preseason 4', '201': 'Week 1', '202': 'Week 2', '203': 'Week 3', '204': 'Week 4', '205': 'Week 5', '206': 'Week 6', '207': 'Week 7', '208': 'Week 8', '209': 'Week 9', '210': 'Week 10', '211': 'Week 11', '212': 'Week 12', '213': 'Week 13', '214': 'Week 14', '215': 'Week 15', '216': 'Week 16', '217': 'Week 17', '218': 'Wild Card Round', '219': 'Divisional Round', '220': 'Championship Round', '221': 'Pro Bowl', '222': 'Super Bowl'}
 	orderedWeeks = ['100', '101','102','103','104', '201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '211', '212', '213', '214', '215', '216', '217', '218', '219', '220', '221', '222']
-	currentSeason = Datetime.Now().year -1 if Datetime.Now().month < 8 else Datetime.Now().year
-
+	currentSeason = Datetime.Now().year -1 if Datetime.Now().month < 3 else Datetime.Now().year
+	
 	if str(currentSeason) == season:
 		page = HTML.ElementFromURL(GAMEPASS_SCHEDULE_WEEK, errors='ignore', cacheTime=1)
 		currentWeek = page.xpath("//select[@id = 'weekSelect']/option[@selected = 'true']")[0].get("value")
 		oc.add(DirectoryObject(key = Callback(GamepassPlay, week=currentWeek, season=season, week_title=weeks[currentWeek]), title = "Current Week", thumb=R("gamepass.png")))
-	
-		if currentWeek[-1:] != "1":
-			lastWeek = str(int(currentWeek) - 1)
-			oc.add(DirectoryObject(key = Callback(GamepassPlay, week=lastWeek, season=season, week_title=weeks[lastWeek]), title = "Last Week", thumb=R("gamepass.png")))
-
+		
+		try:
+			if currentWeek[-1:] != "1":
+				lastWeek = str(int(currentWeek) - 1)
+				oc.add(DirectoryObject(key = Callback(GamepassPlay, week=lastWeek, season=season, week_title=weeks[lastWeek]), title = "Last Week", thumb=R("gamepass.png")))
+		except:
+			Log("Last weeks games not available")
+		
 	for week in orderedWeeks:
 		week_title = weeks[week]	
 		oc.add(DirectoryObject(key = Callback(GamepassPlay, week=week, season=season, week_title=week_title), title = week_title, thumb=R("gamepass.png")))
@@ -387,7 +390,7 @@ def GamerewindSeason():
 
 	oc = ObjectContainer(title2="NFL Game Rewind")
 
-	year = Datetime.Now().year if Datetime.Now().month < 8 else Datetime.Now().year+1
+	year = Datetime.Now().year if Datetime.Now().month < 7 else Datetime.Now().year+1
 
 	for season in reversed(range(2012, year)):
 		oc.add(DirectoryObject(key = Callback(GamerewindWeek, season=str(season)), title=str(season), thumb=R("gamerewind.png")))
@@ -403,16 +406,19 @@ def GamerewindWeek(season):
 	
 	weeks = {'201': 'Week 1', '202': 'Week 2', '203': 'Week 3', '204': 'Week 4', '205': 'Week 5', '206': 'Week 6', '207': 'Week 7', '208': 'Week 8', '209': 'Week 9', '210': 'Week 10', '211': 'Week 11', '212': 'Week 12', '213': 'Week 13', '214': 'Week 14', '215': 'Week 15', '216': 'Week 16', '217': 'Week 17', '218': 'Wild Card Round', '219': 'Divisional Round', '220': 'Championship Round', '221': 'Pro Bowl', '222': 'Super Bowl'}
 	orderedWeeks = ['201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '211', '212', '213', '214', '215', '216', '217', '218', '219', '220', '221', '222']
-	currentSeason = Datetime.Now().year -1 if Datetime.Now().month < 8 else Datetime.Now().year
+	currentSeason = Datetime.Now().year -1 if Datetime.Now().month < 3 else Datetime.Now().year
 
 	if str(currentSeason) == season:
 		page = HTML.ElementFromURL(GAMEREWIND_SCHEDULE_WEEK, errors='ignore', cacheTime=1)
 		currentWeek = page.xpath("//select[@id = 'weekSelect']/option[@selected = 'true']")[0].get("value")
 		oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=currentWeek, season=season, week_title=weeks[currentWeek]), title = "Current Week", thumb=R("gamerewind.png")))
 	
-		if currentWeek[-1:] != "1":
-			lastWeek = str(int(currentWeek) - 1)
-			oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=lastWeek, season=season, week_title=weeks[lastWeek]), title = "Last Week", thumb=R("gamerewind.png")))
+		try:
+			if currentWeek[-1:] != "1":
+				lastWeek = str(int(currentWeek) - 1)
+				oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=lastWeek, season=season, week_title=weeks[lastWeek]), title = "Last Week", thumb=R("gamerewind.png")))
+		except:
+			Log("Last weeks games not available")
 
 	for week in orderedWeeks:
 		week_title = weeks[week]
