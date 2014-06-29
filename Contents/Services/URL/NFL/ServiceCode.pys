@@ -313,13 +313,7 @@ def PlayVideoGP(url, bitrate):
 			'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
 			}
 	
-		try:
-			needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
-		except:
-			needtologin = 'nothing'
-
-		if needtologin == "loginform":
-			login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
 	
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true"):
 		Log("NFL Network/Redzone Live")
