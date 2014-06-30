@@ -212,10 +212,10 @@ def GamepassPlay(week, season, week_title):
 	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', values={'week':week, 'season':season}, cacheTime=1)
 
 	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
-		sTeam1 = stream.xpath('./table/tr[1]/td[2]/text()')[0]
-		sTeam2 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
+		sTeam1 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
+		sTeam2 = stream.xpath('./table/tr[3]/td[2]/text()')[0]
 		sTitle = "%s @ %s" % (sTeam1,sTeam2)
-		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
+		sStreamURL = stream.xpath('./table/tr[3]/td[3]/a')[0].get('href')
 		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamepass.nfl.com/nflgp/console.jsp?eid=").replace("')","")
 		oc.add(VideoClipObject(url=sStreamURL + "#Condensed", title=sTitle + " - Condensed Game",  thumb=R("icon-gamepass.png")))
 		oc.add(VideoClipObject(url=sStreamURL, title=sTitle + " - Full Length Game",  thumb=R("icon-gamepass.png")))
@@ -231,14 +231,14 @@ def GamepassPlayweek():
 	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', cacheTime=1)
 
 	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
-		sTeam1 = stream.xpath('./table/tr[1]/td[2]/text()')[0]
-		sTeam2 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
+		sTeam1 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
+		sTeam2 = stream.xpath('./table/tr[3]/td[2]/text()')[0]
 		sTitle = "%s @ %s" % (sTeam1,sTeam2)
 		try:
-			sSummary = stream.xpath('./table/tr[1]/td[3]/span/text()')[0].strip()
+			sSummary = stream.xpath('./table/tr[2]/td[3]/span/text()')[0].strip()
 		except:
 			sSummary = "Game Has Finished"
-		sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
+		sStreamURL = stream.xpath('./table/tr[3]/td[3]/a')[0].get('href')
 		sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamepass.nfl.com/nflgp/console.jsp?eid=").replace("')","")
 		oc.add(VideoClipObject(url=sStreamURL + "#Live", title=sTitle, summary = sSummary, thumb=R("icon-gamepass-live.png")))
 
@@ -337,15 +337,8 @@ def NFLNArchivePlay(cid, title):
 		'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
 		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
 		}
-	
-	try:
- 		needtologin = HTML.ElementFromURL(login_url, errors='ignore', cacheTime=0).xpath('//td[@class="tab"]/a')[0].get('href')
-	except:
-		needtologin = 'nothing'
 
-
-	if needtologin == "loginform":
- 		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+	login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
 	
 	cookie_values = HTTP.CookiesForURL(login_url)
 	
@@ -436,11 +429,11 @@ def GamerewindPlay(week, season, week_title):
 	list = HTML.ElementFromURL(GAMEREWIND_SCHEDULE, errors='ignore', values={'week':week, 'season':season}, cacheTime=1)
 
 	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
-		sTeam1 = stream.xpath('./table/tr[1]/td[2]/text()')[0]
-		sTeam2 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
+		sTeam1 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
+		sTeam2 = stream.xpath('./table/tr[3]/td[2]/text()')[0]
 		sTitle = "%s @ %s" % (sTeam1,sTeam2)
 		try:
-			sStreamURL = stream.xpath('./table/tr[2]/td[3]/a')[0].get('href')
+			sStreamURL = stream.xpath('./table/tr[3]/td[3]/a')[0].get('href')
 			sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamerewind.nfl.com/nflgr/console.jsp?eid=").replace("')","")
 		except:
 			sStreamURL = "http://gamerewind.nfl.com/nflgr/console.jsp?eid=blahblah"
