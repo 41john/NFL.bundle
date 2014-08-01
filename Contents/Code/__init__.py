@@ -450,6 +450,7 @@ def NflNetworkArchiveMenu():
 
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="214", title="Total Access 2014"), title="Total Access 2014", thumb=R("nfl-network.png"), summary="Total Access 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="217", title="Top 100 Players of 2014"), title="Top 100 Players of 2014", thumb=R("nfl-network.png"), summary="Top 100 Players of 2014"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="181", title="Total Access 2013"), title="Total Access 2013", thumb=R("nfl-network.png"), summary="Total Access 2013"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="186", title="A Football Life 2013"), title="A Football Life 2013", thumb=R("nfl-network.png"), summary="A Football Life 2013"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="187", title="NFL Films Presents 2013"), title="NFL Films Presents 2013", thumb=R("nfl-network.png"), summary="NFL Films Presents 2013"))	
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="179", title="NFL Gameday 2013"), title="NFL Gameday 2013", thumb=R("nfl-network.png"), summary="NFL Gameday 2013"))
