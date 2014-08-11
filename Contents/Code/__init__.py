@@ -360,7 +360,11 @@ def NFLNArchivePlay(cid, title):
 		sThumb = NFLNAIMAGE + stream.xpath('.//image')[0].text
 		sStreamURL = stream.xpath('.//publishPoint')[0].text
 		sStreamURL = sStreamURL.replace("adaptive","http").replace(":443","")
+		if sTitle == "NFL TOTAL ACCESS: (08/07/2014)":
+			sStreamURL="http://nlds84.neulion.com/nlds_vod/nfl/vod/2014/08/07/140807/2_140807_t1_nfltv_2013_h_quickpick1_1_pc.mp4"
 		sSummary = stream.xpath('.//runtime')[0].text + " Minutes"
+		Log(sStreamURL)
+		Log(sTitle)
 		oc.add(VideoClipObject(url=sStreamURL+"#"+sTitle, title=sTitle, summary=sSummary, thumb=sThumb))
 		
 	return oc	
@@ -449,6 +453,13 @@ def NflNetworkArchiveMenu():
 	oc = ObjectContainer(title2="NFL Network Archive")
 
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="214", title="Total Access 2014"), title="Total Access 2014", thumb=R("nfl-network.png"), summary="Total Access 2014"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="212", title="NFL Gameday 2014"), title="NFL Gameday 2014", thumb=R("nfl-network.png"), summary="NFL Gameday 2014"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="220", title="Hard Knocks 2014"), title="Hard Knocks 2014", thumb=R("nfl-network.png"), summary="Hard Knocks 2014"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="218", title="A Football Life 2014"), title="A Football Life 2014", thumb=R("nfl-network.png"), summary="A Football Life 2014"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="222", title="Hall of Fame 2014"), title="Hall of Fame 2014", thumb=R("nfl-network.png"), summary="Hall of Fame 2014"))	
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="219", title="NFL Films Presents 2014"), title="NFL Films Presents 2014", thumb=R("nfl-network.png"), summary="NFL Films Presents 2014"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="213", title="Playbook 2014"), title="Playbook 2014", thumb=R("nfl-network.png"), summary="Playbook 2014"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="215", title="Sound FX 2014"), title="Sound FX 2014", thumb=R("nfl-network.png"), summary="Sound FX 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="217", title="Top 100 Players of 2014"), title="Top 100 Players of 2014", thumb=R("nfl-network.png"), summary="Top 100 Players of 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="181", title="Total Access 2013"), title="Total Access 2013", thumb=R("nfl-network.png"), summary="Total Access 2013"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="186", title="A Football Life 2013"), title="A Football Life 2013", thumb=R("nfl-network.png"), summary="A Football Life 2013"))
