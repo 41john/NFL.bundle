@@ -16,10 +16,13 @@
 				<string>http://a.video.nfl.com/.+</string>
 				<string>http://nlds82.neulion.com/.+</string>
 				<string>http://nlds53.neulion.com/.+</string>
+				<string>http://nlds84.neulion.com/.+</string>
 				<string>http://nlds82.cdnak.neulion.com/.+</string>
 				<string>http://nlds53.cdnak.neulion.com/.+</string>
+				<string>http://nlds84.cdnak.neulion.com/.+</string>
 				<string>http://nlds82.cdnl3nl.neulion.com/.+</string>
 				<string>http://nlds53.cdnl3nl.neulion.com/.+</string>
+				<string>http://nlds84.cdnl3nl.neulion.com/.+</string>
 			</array>
 		</dict>
 	</dict>
