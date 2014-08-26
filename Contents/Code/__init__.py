@@ -133,13 +133,16 @@ def PlayMenu(url=None):
 	list = HTML.ElementFromURL(url, errors='ignore', cacheTime=1).xpath('//div[@class="coverage-wrapper"]/div[@class="yui3-video-coverage-item "]')
 
 	for stream in list:
-		streamid = stream.xpath('./@data-contentid')[0]
-		json = JSON.ObjectFromURL(NFL_VIDEOS_JSON % streamid)
-		sTitle = json['briefHeadline']
-		sSummary = json['caption']
-		sThumb = json['imagePaths']['m']
-		sStreamURL = NFL_URL1 + json['cdnData']['bitrateInfo'][-5]['path'] + "#" + streamid
-		oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary=sSummary, thumb=sThumb))
+		try:
+			streamid = stream.xpath('./@data-contentid')[0]
+			json = JSON.ObjectFromURL(NFL_VIDEOS_JSON % streamid)
+			sTitle = json['briefHeadline']
+			sSummary = json['caption']
+			sThumb = json['imagePaths']['m']
+			sStreamURL = NFL_URL1 + json['cdnData']['bitrateInfo'][-5]['path'] + "#" + streamid	
+			oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary=sSummary, thumb=sThumb))
+		except:
+			Log("Error obtaining URLs, ignoring Video")
 
 	return oc
 
