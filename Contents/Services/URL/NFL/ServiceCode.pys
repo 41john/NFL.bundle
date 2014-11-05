@@ -150,6 +150,72 @@ def MediaObjectsForURL(url):
 
 #################################################
 	
+	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Live"):
+		if Prefs['gplivebitrate'] == "Auto":
+			return [
+				MediaObject(
+					bitrate = 4500,
+					video_resolution = '720',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLN, url = url, bitrate = '4500')))]
+				),
+				MediaObject(
+					bitrate = 3000,
+					video_resolution = '540',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLN, url = url, bitrate = '3000')))]
+				),
+				MediaObject(
+					bitrate = 2400,
+					video_resolution = '540',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLN, url = url, bitrate = '2400')))]
+			),
+				MediaObject(
+					bitrate = 1600,
+					video_resolution = '360',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLN, url = url, bitrate = '1600')))]
+				),
+				MediaObject(
+					bitrate = 1200,
+					video_resolution = '360',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLN, url = url, bitrate = '1200')))]
+				),
+				MediaObject(
+					bitrate = 800,
+					video_resolution = '224',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLN, url = url, bitrate = '800')))]
+				),
+				MediaObject(
+					bitrate = 400,
+					video_resolution = '224',
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLN, url = url, bitrate = '400')))]
+				)
+			]
+		else:
+			return [
+				MediaObject(
+					bitrate = int(Prefs['gplivebitrate']),
+					video_resolution = VidRes,
+					audio_channels = 2,
+					optimized_for_streaming = True,
+					parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLN, url = url, bitrate = Prefs['gplivebitrate'])))]
+				)
+			]
+			
+#################################################
+			
 	if url.endswith("Live"):
 		if Prefs['gplivebitrate'] == "Auto":
 			return [
@@ -316,22 +382,15 @@ def PlayVideoGP(url, bitrate):
 		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
 	
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true"):
-		Log("NFL Network/Redzone Live")
+		Log("NFL Redzone Live")
 		cookie_values = HTTP.CookiesForURL(url)	
 		headers_value = {'Cookie' : cookie_values, 'User-Agent' : 'iPhone'}
 		publish_url = "http://gamepass.nfl.com/nflgp/servlets/publishpoint"
-		if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Redzone"):
-			post_values1 = {
-			'id' : '2',
-			'type' : 'channel',
-			'nt' : '1'
-			}
-		else:
-			post_values1 = {
-			'id' : '1',
-			'type' : 'channel',
-			'nt' : '1'
-			}
+		post_values1 = {
+		'id' : '2',
+		'type' : 'channel',
+		'nt' : '1'
+		}
 		m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values1, headers=headers_value).content
 		m3u8_page = XML.ElementFromString(m3u8_pagedata)
 		m3u8_url = m3u8_page.xpath('//path/text()')[0]
@@ -342,6 +401,7 @@ def PlayVideoGP(url, bitrate):
 		m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
 		m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
 		m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
+				
 	elif url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?rza="):
 		Log("NFL Redzone Archive")
 		cookie_values = HTTP.CookiesForURL(url)
@@ -474,3 +534,89 @@ def PlayVideoGP(url, bitrate):
 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url400))
 
 ####################################################################################################
+def PlayVideoNFLN(url, bitrate):
+
+	Log("Logging in")
+	username = Prefs['username']
+	password = Prefs['password']
+
+	if url.startswith("http://gamepass.nfl.com"):
+		login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
+	if url.startswith("http://gamerewind.nfl.com"):
+		login_url = "https://gamerewind.nfl.com/nflgr/secure/schedule"
+
+	authentication_url = "https://id.s.nfl.com/login"
+	post_values = {
+		'username' : username,
+		'password' : password,
+		'vendor_id' : 'nflptnrnln',
+		'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
+		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
+		}
+
+	login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+
+	Log("NFL Network Live")
+	cookie_values = HTTP.CookiesForURL(url)	
+	headers_value = {'Cookie' : cookie_values, 'User-Agent' : 'iPhone'}
+	publish_url = "http://gamepass.nfl.com/nflgp/servlets/publishpoint"
+	post_values1 = {
+	'id' : '1',
+	'type' : 'channel',
+	'nt' : '1'
+	}
+	m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values1, headers=headers_value).content
+	m3u8_page = XML.ElementFromString(m3u8_pagedata)
+	m3u8_url = m3u8_page.xpath('//path/text()')[0]
+	m3u8_url4500 = m3u8_url.replace("adaptive","http").replace("iphone","4500")
+	m3u8_url3000 = m3u8_url.replace("adaptive","http").replace("iphone","3000")
+	m3u8_url2400 = m3u8_url.replace("adaptive","http").replace("iphone","2400")
+	m3u8_url1600 = m3u8_url.replace("adaptive","http").replace("iphone","1600")
+	m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
+	m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
+	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
+	
+	if bitrate == '4500':
+		patched_playlist = CreatePatchedPlaylist(m3u8_url4500)
+		return (patched_playlist)
+	elif bitrate == '3000':
+		patched_playlist = CreatePatchedPlaylist(m3u8_url3000)
+		return (patched_playlist)
+	elif bitrate == '2400':
+		patched_playlist = CreatePatchedPlaylist(m3u8_url2400)
+		return (patched_playlist)
+	elif bitrate == '1600':
+		patched_playlist = CreatePatchedPlaylist(m3u8_url1600)
+		return (patched_playlist)
+	elif bitrate == '1200':
+		patched_playlist = CreatePatchedPlaylist(m3u8_url1200)
+		return (patched_playlist)
+	elif bitrate == '800':
+		patched_playlist = CreatePatchedPlaylist(m3u8_url800)
+		return (patched_playlist)
+	elif bitrate == '400':
+		patched_playlist = CreatePatchedPlaylist(m3u8_url400)
+		return (patched_playlist)
+
+####################################################################################################
+def CreatePatchedPlaylist(url):
+
+    original_playlist = HTTP.Request(url).content
+    new_playlist = ''
+    for line in original_playlist.splitlines():
+        if line.startswith('#EXT-X-VERSION:4'):
+            original_key_url = '#EXT-X-VERSION:4'
+            new_key_url = '#EXT-X-VERSION:2'
+            new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
+        elif line.startswith('#EXT-X-KEY:METHOD=AES-128,URI="'):
+            original_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="'
+            new_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="http://nlds195.neulion.com:443/nlds/nfl/nfltv/as/live/'
+            new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
+        elif line.startswith('nfltv_hd'):
+            original_key_url = 'nfltv_hd'
+            new_key_url = 'http://nlds195.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd'
+            new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
+        else:
+            new_playlist = new_playlist + line + '\n'
+    
+    return new_playlist
