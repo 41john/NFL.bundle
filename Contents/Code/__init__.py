@@ -366,6 +366,8 @@ def NFLNArchivePlay(cid, title):
 		if sTitle == "NFL TOTAL ACCESS: (08/07/2014)":
 			sStreamURL="http://nlds84.neulion.com/nlds_vod/nfl/vod/2014/08/07/140807/2_140807_t1_nfltv_2013_h_quickpick1_1_pc.mp4"
 		sSummary = stream.xpath('.//runtime')[0].text + " Minutes"
+		Log(sStreamURL)
+		Log(sTitle)
 		oc.add(VideoClipObject(url=sStreamURL+"#"+sTitle, title=sTitle, summary=sSummary, thumb=sThumb))
 		
 	return oc	
