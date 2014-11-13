@@ -608,20 +608,20 @@ def CreatePatchedPlaylist(url):
     new_playlist = ''
     for line in original_playlist.splitlines():
         if line.startswith('#EXT-X-VERSION:4'):
-            original_key_url = '#EXT-X-VERSION:4'
-            new_key_url = '#EXT-X-VERSION:2'
+        	original_key_url = '#EXT-X-VERSION:4'
+        	new_key_url = '#EXT-X-VERSION:2'
             new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
         elif line.startswith('#EXT-X-KEY:METHOD=AES-128,URI="'):
-			original_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="'
-			new_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="http://nlds195.neulion.com:443/nlds/nfl/nfltv/as/live/'
-			new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
-    	elif line.startswith('nfltv_hd'):
-            original_key_url = 'nfltv_hd'
-            new_key_url = 'http://nlds195.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd'
-            new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
+        	original_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="'
+        	new_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="http://nlds195.neulion.com:443/nlds/nfl/nfltv/as/live/'
+        	new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
+        elif line.startswith('nfltv_hd'):
+        	original_key_url = 'nfltv_hd'
+        	new_key_url = 'http://nlds195.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd'
+        	new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
         else:
-            new_playlist = new_playlist + line + '\n'
-    
+        	new_playlist = new_playlist + line + '\n'
+
     Log(original_playlist)
     Log(new_playlist)
     return new_playlist
