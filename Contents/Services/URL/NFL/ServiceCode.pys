@@ -534,6 +534,7 @@ def PlayVideoGP(url, bitrate):
 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url400))
 
 ####################################################################################################
+@indirect
 def PlayVideoNFLN(url, bitrate):
 
 	Log("Logging in")
@@ -577,28 +578,30 @@ def PlayVideoNFLN(url, bitrate):
 	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
 	
 	if bitrate == '4500':
-		patched_playlist = CreatePatchedPlaylist(m3u8_url4500)
-		return (patched_playlist)
+#		patched_playlist = CreatePatchedPlaylist(m3u8_url4500)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url4500))
 	elif bitrate == '3000':
-		patched_playlist = CreatePatchedPlaylist(m3u8_url3000)
-		return (patched_playlist)
+#		patched_playlist = CreatePatchedPlaylist(m3u8_url3000)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000))
 	elif bitrate == '2400':
-		patched_playlist = CreatePatchedPlaylist(m3u8_url2400)
-		return (patched_playlist)
+#		patched_playlist = CreatePatchedPlaylist(m3u8_url2400)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url2400))
 	elif bitrate == '1600':
-		patched_playlist = CreatePatchedPlaylist(m3u8_url1600)
-		return (patched_playlist)
+#		patched_playlist = CreatePatchedPlaylist(m3u8_url1600)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1600))
 	elif bitrate == '1200':
-		patched_playlist = CreatePatchedPlaylist(m3u8_url1200)
-		return (patched_playlist)
+#		patched_playlist = CreatePatchedPlaylist(m3u8_url1200)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1200))
 	elif bitrate == '800':
-		patched_playlist = CreatePatchedPlaylist(m3u8_url800)
-		return (patched_playlist)
+#		patched_playlist = CreatePatchedPlaylist(m3u8_url800)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url800))
 	elif bitrate == '400':
-		patched_playlist = CreatePatchedPlaylist(m3u8_url400)
-		return (patched_playlist)
+#		patched_playlist = CreatePatchedPlaylist(m3u8_url400)
+		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url400))
 
+#	return (patched_playlist)
 ####################################################################################################
+# Keeping this code and hoping to use it to fix NFL Network live for Samsung and Roku.
 def CreatePatchedPlaylist(url):
 
     original_playlist = HTTP.Request(url).content
@@ -609,14 +612,16 @@ def CreatePatchedPlaylist(url):
             new_key_url = '#EXT-X-VERSION:2'
             new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
         elif line.startswith('#EXT-X-KEY:METHOD=AES-128,URI="'):
-            original_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="'
-            new_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="http://nlds195.neulion.com:443/nlds/nfl/nfltv/as/live/'
-            new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
-        elif line.startswith('nfltv_hd'):
+			original_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="'
+			new_key_url = '#EXT-X-KEY:METHOD=AES-128,URI="http://nlds195.neulion.com:443/nlds/nfl/nfltv/as/live/'
+			new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
+    	elif line.startswith('nfltv_hd'):
             original_key_url = 'nfltv_hd'
             new_key_url = 'http://nlds195.cdnak.neulion.com/nlds/nfl/nfltv/as/live/nfltv_hd'
             new_playlist = new_playlist + line.replace(original_key_url, new_key_url) + '\n'
         else:
             new_playlist = new_playlist + line + '\n'
     
+    Log(original_playlist)
+    Log(new_playlist)
     return new_playlist
