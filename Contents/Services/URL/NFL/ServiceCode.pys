@@ -20,6 +20,21 @@ def MetadataObjectForURL(url):
 		)
 
 #################################################
+	if url.startswith("http://static.now.nfl.com"):
+
+		new_url = url.replace("jpg", "json")
+		json = JSON.ObjectFromURL(new_url)
+		sTitle = json['shortHeadline']
+		sSummary = json['summary']
+		sThumb = json['cdnData']['videoImageUrl']
+		
+		return VideoClipObject(
+			title = sTitle,
+			summary = sSummary,
+			thumb = sThumb,
+		)
+
+#################################################
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Redzone"):
 		return VideoClipObject(
         	title = "NFL Redzone"
@@ -145,6 +160,18 @@ def MediaObjectsForURL(url):
 				audio_channels = 2,
 				optimized_for_streaming = True,
 				parts = [PartObject(key=Callback(PlayVideo, url = url, bitrate = '500'))]				
+			)
+		]
+
+#################################################
+
+	if url.startswith("http://static.now.nfl.com"):
+		return [
+			MediaObject(
+				video_resolution = '720',
+				audio_channels = 2,
+				optimized_for_streaming = True,
+				parts = [PartObject(key = HTTPLiveStreamURL(Callback(PlayVideoNFLNow, url = url)))]
 			)
 		]
 
@@ -513,7 +540,7 @@ def PlayVideoGP(url, bitrate):
 		m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
 		m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
 		m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
-	
+		
 	if bitrate == '4500':
 		try:
 			headers = HTTP.Request(m3u8_url4500).headers
@@ -625,3 +652,13 @@ def CreatePatchedPlaylist(url):
     Log(original_playlist)
     Log(new_playlist)
     return new_playlist
+    
+####################################################################################################
+@indirect
+def PlayVideoNFLNow(url):
+
+	new_url = url.replace("jpg", "json")
+	json = JSON.ObjectFromURL(new_url)
+	m3u8 = json['cdnData']['videoUrl']
+	return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8))
+	
