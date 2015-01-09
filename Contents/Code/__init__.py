@@ -20,6 +20,7 @@ NFL_NETWORK_SCHEDULE		= 'http://www.locatetv.com/listings/nflnet'
 NFLNAIMAGE 					= 'http://smb.cdn.neulion.com/u/nfl/nfl/thumbs/'
 NFLNOW_LIST					= 'http://static.now.nfl.com/channels/list.json'
 NFL_NOW_CHANNEL_JSON		= 'http://static.now.nfl.com/channels/videos.json?channelId=%s&videosPerPage=-1&pageNumber=1'
+NFL_NOW_LIVE				= 'http://static.now.nfl.com/events'
 
 TEAMS = {'arizona-cardinals': 'Arizona Cardinals', 'atlanta-falcons': 'Atlanta Falcons', 'baltimore-ravens': 'Baltimore Ravens', 'buffalo-bills': 'Buffalo Bills', 'carolina-panthers': 'Carolina Panthers', 'chicago-bears': 'Chicago Bears', 'cincinnati-bengals': 'Cincinnati Bengals', 'cleveland-browns': 'Cleveland Browns', 'dallas-cowboys': 'Dallas Cowboys', 'denver-broncos': 'Denver Broncos', 'detroit-lions': 'Detroit Lions', 'green-bay-packers': 'Green Bay Packers', 'houston-texans': 'Houston Texans', 'indianapolis-colts': 'Indianapolis Colts', 'jacksonville-jaguars': 'Jacksonville Jaguars', 'kansas-city-chiefs': 'Kansas City Chiefs', 'miami-dolphins': 'Miami Dolphins', 'minnesota-vikings': 'Minnesota Vikings', 'new-england-patriots': 'New England Patriots', 'new-orleans-saints': 'New Orleans Saints', 'new-york-giants': 'New York Giants', 'new-york-jets': 'New York Jets', 'oakland-raiders': 'Oakland Raiders', 'philadelphia-eagles': 'Philadelphia Eagles', 'pittsburgh-steelers': 'Pittsburgh Steelers', 'san-diego-chargers': 'San Diego Chargers', 'san-francisco-49ers': 'San Francisco 49ers', 'seattle-seahawks': 'Seattle Seahawks', 'st-louis-rams': 'St. Louis Rams', 'tampa-bay-buccaneers': 'Tampa Bay Buccaneers', 'tennessee-titans': 'Tennessee Titans', 'washington-redskins': 'Washington Redskins'}
 ORDERED_TEAMS = ['arizona-cardinals','atlanta-falcons','baltimore-ravens','buffalo-bills','carolina-panthers','chicago-bears','cincinnati-bengals','cleveland-browns','dallas-cowboys','denver-broncos','detroit-lions','green-bay-packers','houston-texans','indianapolis-colts','jacksonville-jaguars','kansas-city-chiefs','miami-dolphins','minnesota-vikings','new-england-patriots','new-orleans-saints','new-york-giants','new-york-jets','oakland-raiders','philadelphia-eagles','pittsburgh-steelers','san-diego-chargers','san-francisco-49ers','seattle-seahawks','st-louis-rams','tampa-bay-buccaneers','tennessee-titans','washington-redskins']
@@ -480,6 +481,8 @@ def NflNetworkArchiveMenu():
 def NFLNowMenu():
 
 	oc = ObjectContainer(title2="NFL Now")
+		
+	oc.add(DirectoryObject(key=Callback(NFLNowLive), title="NFL Now Live", thumb=R("nflnow.png"), summary="NFL Now Live Events"))
 	
 	json = JSON.ObjectFromURL(NFLNOW_LIST)['channelList']
 	
@@ -510,6 +513,28 @@ def NFLNowChannel(sChannelid, sTitle):
 			sThumb = stream['videoImageUrl']
 			sStreamURL = sThumb	
 			oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary=sSummary, thumb=sThumb))
+		except:
+			Log("Error obtaining URLs, ignoring Video")
+
+	return oc
+
+###################################################################################################
+
+
+@route('/video/nflvideos/nflnowlive')	
+def NFLNowLive():
+	
+	oc = ObjectContainer(title2="NFL Now Live")
+	
+	json = JSON.ObjectFromURL(NFL_NOW_LIVE)
+	
+	for live in json:
+		try:
+			sTitle = live['shortHeadline']
+			sSummary = live['summary']
+			sThumb = live['cdnData']['videoImageUrl1']
+			sStreamURL = live['cdnData']['streamUrl']
+			oc.add(VideoClipObject(url=sStreamURL+"#Live", title=sTitle, summary=sSummary, thumb=sThumb))
 		except:
 			Log("Error obtaining URLs, ignoring Video")
 
