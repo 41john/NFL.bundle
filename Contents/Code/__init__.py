@@ -530,11 +530,14 @@ def NFLNowLive():
 	
 	for live in json:
 		try:
-			sTitle = live['shortHeadline']
-			sSummary = live['summary']
-			sThumb = live['cdnData']['videoImageUrl1']
-			sStreamURL = live['cdnData']['streamUrl']
-			oc.add(VideoClipObject(url=sStreamURL+"#Live", title=sTitle, summary=sSummary, thumb=sThumb))
+			if live['live'] == (True):
+				sTitle = live['shortHeadline']
+				sSummary = live['summary']
+				sThumb = live['cdnData']['videoImageUrl1']
+				sStreamURL = live['cdnData']['streamUrl']
+				oc.add(VideoClipObject(url=sStreamURL+"#Live", title=sTitle, summary=sSummary, thumb=sThumb))
+			else:
+				Log(live['shortHeadline'] + " is currently not live")
 		except:
 			Log("Error obtaining URLs, ignoring Video")
 
