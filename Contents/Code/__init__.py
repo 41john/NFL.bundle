@@ -22,8 +22,8 @@ NFLNOW_LIST					= 'http://static.now.nfl.com/channels/list.json'
 NFL_NOW_CHANNEL_JSON		= 'http://static.now.nfl.com/channels/videos.json?channelId=%s&videosPerPage=-1&pageNumber=1'
 NFL_NOW_LIVE				= 'http://static.now.nfl.com/events'
 
-TEAMS = {'arizona-cardinals': 'Arizona Cardinals', 'atlanta-falcons': 'Atlanta Falcons', 'baltimore-ravens': 'Baltimore Ravens', 'buffalo-bills': 'Buffalo Bills', 'carolina-panthers': 'Carolina Panthers', 'chicago-bears': 'Chicago Bears', 'cincinnati-bengals': 'Cincinnati Bengals', 'cleveland-browns': 'Cleveland Browns', 'dallas-cowboys': 'Dallas Cowboys', 'denver-broncos': 'Denver Broncos', 'detroit-lions': 'Detroit Lions', 'green-bay-packers': 'Green Bay Packers', 'houston-texans': 'Houston Texans', 'indianapolis-colts': 'Indianapolis Colts', 'jacksonville-jaguars': 'Jacksonville Jaguars', 'kansas-city-chiefs': 'Kansas City Chiefs', 'miami-dolphins': 'Miami Dolphins', 'minnesota-vikings': 'Minnesota Vikings', 'new-england-patriots': 'New England Patriots', 'new-orleans-saints': 'New Orleans Saints', 'new-york-giants': 'New York Giants', 'new-york-jets': 'New York Jets', 'oakland-raiders': 'Oakland Raiders', 'philadelphia-eagles': 'Philadelphia Eagles', 'pittsburgh-steelers': 'Pittsburgh Steelers', 'san-diego-chargers': 'San Diego Chargers', 'san-francisco-49ers': 'San Francisco 49ers', 'seattle-seahawks': 'Seattle Seahawks', 'st-louis-rams': 'St. Louis Rams', 'tampa-bay-buccaneers': 'Tampa Bay Buccaneers', 'tennessee-titans': 'Tennessee Titans', 'washington-redskins': 'Washington Redskins'}
-ORDERED_TEAMS = ['arizona-cardinals','atlanta-falcons','baltimore-ravens','buffalo-bills','carolina-panthers','chicago-bears','cincinnati-bengals','cleveland-browns','dallas-cowboys','denver-broncos','detroit-lions','green-bay-packers','houston-texans','indianapolis-colts','jacksonville-jaguars','kansas-city-chiefs','miami-dolphins','minnesota-vikings','new-england-patriots','new-orleans-saints','new-york-giants','new-york-jets','oakland-raiders','philadelphia-eagles','pittsburgh-steelers','san-diego-chargers','san-francisco-49ers','seattle-seahawks','st-louis-rams','tampa-bay-buccaneers','tennessee-titans','washington-redskins']
+TEAMS = {'arizona-cardinals': 'Arizona Cardinals', 'atlanta-falcons': 'Atlanta Falcons', 'baltimore-ravens': 'Baltimore Ravens', 'buffalo-bills': 'Buffalo Bills', 'carolina-panthers': 'Carolina Panthers', 'chicago-bears': 'Chicago Bears', 'cincinnati-bengals': 'Cincinnati Bengals', 'cleveland-browns': 'Cleveland Browns', 'dallas-cowboys': 'Dallas Cowboys', 'denver-broncos': 'Denver Broncos', 'detroit-lions': 'Detroit Lions', 'green-bay-packers': 'Green Bay Packers', 'houston-texans': 'Houston Texans', 'indianapolis-colts': 'Indianapolis Colts', 'jacksonville-jaguars': 'Jacksonville Jaguars', 'kansas-city-chiefs': 'Kansas City Chiefs', 'miami-dolphins': 'Miami Dolphins', 'minnesota-vikings': 'Minnesota Vikings', 'new-england-patriots': 'New England Patriots', 'new-orleans-saints': 'New Orleans Saints', 'new-york-giants': 'New York Giants', 'new-york-jets': 'New York Jets', 'oakland-raiders': 'Oakland Raiders', 'philadelphia-eagles': 'Philadelphia Eagles', 'pittsburgh-steelers': 'Pittsburgh Steelers', 'san-diego-chargers': 'San Diego Chargers', 'san-francisco-49ers': 'San Francisco 49ers', 'seattle-seahawks': 'Seattle Seahawks', 'st-louis-rams': 'St. Louis Rams', 'tampa-bay-buccaneers': 'Tampa Bay Buccaneers', 'tennessee-titans': 'Tennessee Titans', 'washington-redskins': 'Washington Redskins', 'None': 'Set Team in Preferences'}
+ORDERED_TEAMS = ['arizona-cardinals','atlanta-falcons','baltimore-ravens','buffalo-bills','carolina-panthers','chicago-bears','cincinnati-bengals','cleveland-browns','dallas-cowboys','denver-broncos','detroit-lions','green-bay-packers','houston-texans','indianapolis-colts','jacksonville-jaguars','kansas-city-chiefs','miami-dolphins','minnesota-vikings','new-england-patriots','new-orleans-saints','new-york-giants','new-york-jets','oakland-raiders','philadelphia-eagles','pittsburgh-steelers','san-diego-chargers','san-francisco-49ers','seattle-seahawks','st-louis-rams','tampa-bay-buccaneers','tennessee-titans','washington-redskins','None']
 
 SHOWS = {'nfl-am': 'NFL AM', 'nfl-network-total-access': 'NFL Total Access', 'nfl-network-gameday': 'NFL GameDay', 'nfl-network-playbook': 'Playbook', 'nfl-films-sound-efx': 'Sound FX', 'nfl-top100-2014': 'Top 100 Players of 2014', 'nfl-top100-2013': 'Top 100 Players of 2013', 'nfl-network-path-to-the-draft': 'Path to the Draft', 'nfl-network-around-the-league': 'Around the League', 'nfl-fantasy': 'Fantasy', 'nfl-fantasy-team-by-team': 'Fantasy Team Previews', 'nfl-network-the-coaches': 'The Coaches', 'nfl-films-game-of-the-week': 'Game of the Week', 'nfl-films-americas-game': 'Americas Game', 'nfl-films-presents': 'NFL Films Presents', 'nfl-films-anatomy-of-a-play': 'Anatomy of a Play', 'nfl-network-hard-knocks': 'Hard Knocks', 'nfl-redzone-videos': 'NFL Redzone Top 5 Plays', 'a-football-life': 'A Football Life', 'nfl-network-top-ten': 'NFL Top Ten Plays'}
 ORDERED_SHOWS = ['nfl-am', 'nfl-network-total-access', 'nfl-network-gameday', 'nfl-network-playbook', 'nfl-films-sound-efx', 'nfl-top100-2014', 'nfl-top100-2013', 'nfl-network-path-to-the-draft', 'nfl-network-around-the-league', 'nfl-fantasy', 'nfl-fantasy-team-by-team', 'nfl-network-the-coaches', 'nfl-films-game-of-the-week', 'nfl-films-americas-game', 'nfl-films-presents', 'nfl-films-anatomy-of-a-play', 'nfl-network-hard-knocks', 'nfl-redzone-videos', 'a-football-life', 'nfl-network-top-ten']
@@ -55,13 +55,34 @@ def Start():
 def VideoMainMenu():
 	
 	oc = ObjectContainer()
+	
+	for category in ORDERED_TEAMS:
+		if Prefs['team'] == category:
+			sTitle = TEAMS[category]
 		
 	oc.add(DirectoryObject(key = Callback(NFLVideosMenu), title="NFL.com Videos", summary="Browse videos from NFL.com/Videos"))
-	oc.add(DirectoryObject(key = Callback(PlayMenu, url="%s/%s" % (BASE_URL, Prefs['team'])), title="My Team", summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
+	oc.add(DirectoryObject(key = Callback(NFLMyTeamMenu), title=sTitle, summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
 	oc.add(DirectoryObject(key = Callback(NFLNowMenu), title="NFL Now", summary="Browse videos from NFL Now", thumb=R("nflnow.png")))
 	oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
 	oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL Game Rewind", summary="NFL Game Rewind subscribers only", thumb=R("gamerewind.png")))
 	oc.add(PrefsObject(title="Preferences", summary="Set My Team. Enter subscription details for Gamepass or NFL Network Live", thumb=R("icon-prefs.png")))
+	return oc
+
+
+###################################################################################################
+
+@route('/video/nflvideos/nflmyteammenu')
+def NFLMyTeamMenu():
+	
+	for category in ORDERED_TEAMS:
+		if Prefs['team'] == category:
+			sTitle = TEAMS[category]
+	
+	oc = ObjectContainer(title2=sTitle)
+	
+	oc.add(DirectoryObject(key = Callback(PlayMenu, url="%s/%s" % (BASE_URL, Prefs['team'])), title="NFL.com/Videos", summary="Video for "+sTitle+" from NFL.com/videos", thumb=R("nfl-network.png")))
+	oc.add(DirectoryObject(key=Callback(NFLNowChannel, sChannelid=Prefs['team'], sTitle="NFL Now"), title="NFL Now", thumb=R("nflnow.png"), summary="Video for "+sTitle+" from NFL Now"))
+
 	return oc
 
 
