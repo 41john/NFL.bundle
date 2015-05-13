@@ -367,12 +367,15 @@ def NFLNArchivePlay(cid, title):
 		sThumb = NFLNAIMAGE + stream.xpath('.//image')[0].text
 		sStreamURL = stream.xpath('.//publishPoint')[0].text
 		sStreamURL = sStreamURL.replace("adaptive","http").replace(":443","")
-		if sTitle == "NFL TOTAL ACCESS: (08/07/2014)":
-			sStreamURL="http://nlds84.neulion.com/nlds_vod/nfl/vod/2014/08/07/140807/2_140807_t1_nfltv_2013_h_quickpick1_1_pc.mp4"
+		if sStreamURL == "":
+			sStreamURL="Cannotbeplayed"
 		sSummary = stream.xpath('.//runtime')[0].text + " Minutes"
-		oc.add(VideoClipObject(url=sStreamURL+"#"+sTitle, title=sTitle, summary=sSummary, thumb=sThumb))
-		
-	return oc	
+		if sStreamURL == "Cannotbeplayed":
+			Log(sTitle + " can not be listed due to an error by NFL Gamepass with the URL listed for this stream")
+		else:
+			oc.add(VideoClipObject(url=sStreamURL+"#"+sTitle, title=sTitle, summary=sSummary, thumb=sThumb))
+
+	return oc
 	
 ###################################################################################################
 
