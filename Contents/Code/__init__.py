@@ -386,15 +386,10 @@ def NFLNArchivePlay(cid, title):
 	for stream in program_page:
 		sTitle = stream.xpath('.//name')[0].text
 		sThumb = NFLNAIMAGE + stream.xpath('.//image')[0].text
-		sStreamURL = stream.xpath('.//publishPoint')[0].text
-		sStreamURL = sStreamURL.replace("adaptive","http").replace(":443","")
-		if sStreamURL == "":
-			sStreamURL="Cannotbeplayed"
-		sSummary = stream.xpath('.//runtime')[0].text + " Minutes"
-		if sStreamURL == "Cannotbeplayed":
-			Log(sTitle + " can not be listed due to an error by NFL Gamepass with the URL listed for this stream")
-		else:
-			oc.add(VideoClipObject(url=sStreamURL+"#"+sTitle, title=sTitle, summary=sSummary, thumb=sThumb))
+		sRuntime = stream.xpath('.//runtime')[0].text
+		sStreamID = stream.xpath('.//id')[0].text
+		sSummary = sRuntime + " Minutes"
+		oc.add(VideoClipObject(url="http://gamepass.nfl.com/nflgp/console.jsp?nfnas=#"+sTitle+"#"+sStreamID, title=sTitle, summary=sSummary, thumb=sThumb))
 
 	return oc
 	
@@ -486,7 +481,6 @@ def NflNetworkArchiveMenu():
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="220", title="Hard Knocks 2014"), title="Hard Knocks 2014", thumb=R("nfl-network.png"), summary="Hard Knocks 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="218", title="A Football Life 2014"), title="A Football Life 2014", thumb=R("nfl-network.png"), summary="A Football Life 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="222", title="Hall of Fame 2014"), title="Hall of Fame 2014", thumb=R("nfl-network.png"), summary="Hall of Fame 2014"))	
-	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="219", title="NFL Films Presents 2014"), title="NFL Films Presents 2014", thumb=R("nfl-network.png"), summary="NFL Films Presents 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="213", title="Playbook 2014"), title="Playbook 2014", thumb=R("nfl-network.png"), summary="Playbook 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="215", title="Sound FX 2014"), title="Sound FX 2014", thumb=R("nfl-network.png"), summary="Sound FX 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="217", title="Top 100 Players of 2014"), title="Top 100 Players of 2014", thumb=R("nfl-network.png"), summary="Top 100 Players of 2014"))
