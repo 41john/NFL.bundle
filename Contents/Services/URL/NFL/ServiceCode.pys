@@ -84,15 +84,9 @@ def MetadataObjectForURL(url):
     	)
 
 #################################################
-	if url.startswith("http://gamepass.nfl.com"):
+	if url.startswith("http://game"):
 		return VideoClipObject(
         	title = "NFL Gamepass"
-    	)
-
-#################################################
-	if url.startswith("http://gamerewind.nfl.com"):
-		return VideoClipObject(
-        	title = "NFL Game Rewind"
     	)
 
 ####################################################################################################
@@ -410,19 +404,24 @@ def PlayVideoGP(url, bitrate):
 	
 		if url.startswith("http://gamepass.nfl.com"):
 			login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
+			authentication_url = "https://id.s.nfl.com/login"
+			post_values = {
+				'username' : username,
+				'password' : password,
+				'vendor_id' : 'nflptnrnln',
+				'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
+				'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
+				}	
+			login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+
 		if url.startswith("http://gamerewind.nfl.com"):
 			login_url = "https://gamerewind.nfl.com/nflgr/secure/schedule"
-	
-		authentication_url = "https://id.s.nfl.com/login"
-		post_values = {
-			'username' : username,
-			'password' : password,
-			'vendor_id' : 'nflptnrnln',
-			'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
-			'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
-			}
-	
-		login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+			authentication_url = "https://gamepass.nfl.com/nflgp/secure/nfllogin"
+			post_values = {
+				'username' : username,
+				'password' : password
+				}
+			login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
 	
 	if url.startswith("http://gamepass.nfl.com/nflgp/console.jsp?nfln=true"):
 		Log("NFL Redzone Live")
@@ -507,16 +506,12 @@ def PlayVideoGP(url, bitrate):
 		m3u8_url400 = m3u8_url.replace("pc.mp4","400.mp4.m3u8")
 	else:
 		Log("NFL Gamepass/Rewind Game")
-		new_url = url.replace("#Condensed", "").replace("#Live", "")
+		new_url = url.replace("#Condensed", "").replace("#Live", "").replace("nflgr", "nflgp").replace("gamerewind", "gamepass")
 		cookie_values = HTTP.CookiesForURL(new_url)
 		headers_value = {'Cookie' : cookie_values}
 	
-		if url.startswith("http://gamepass"):
-			game_id = new_url.replace("http://gamepass.nfl.com/nflgp/console.jsp?eid=", "")
-			games_url = "http://gamepass.nfl.com/nflgp/servlets/games"
-		if url.startswith("http://gamerewind"):
-			game_id = new_url.replace("http://gamerewind.nfl.com/nflgr/console.jsp?eid=", "")
-			games_url = "http://gamerewind.nfl.com/nflgr/servlets/games"
+		game_id = new_url.replace("http://gamepass.nfl.com/nflgp/console.jsp?eid=", "")
+		games_url = "http://gamepass.nfl.com/nflgp/servlets/games"
 
 		post_values1 = {
 		'eid' : game_id,
@@ -553,11 +548,9 @@ def PlayVideoGP(url, bitrate):
 			'nt' : '1',
 			'gt' : 'archive'
 			}
-	
-		if url.startswith("http://gamepass"):
-			publish_url = "http://gamepass.nfl.com/nflgp/servlets/publishpoint"
-		else:
-			publish_url = "http://gamerewind.nfl.com/nflgr/servlets/publishpoint"
+
+		publish_url = "http://gamepass.nfl.com/nflgp/servlets/publishpoint"
+
 
 		headers_value2 = {'Cookie' : cookie_values, 'User-Agent' : 'iPhone'}
 		m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values2, headers=headers_value2).content

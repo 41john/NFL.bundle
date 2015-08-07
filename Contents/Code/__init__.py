@@ -64,7 +64,7 @@ def VideoMainMenu():
 	oc.add(DirectoryObject(key = Callback(NFLMyTeamMenu), title=sTitle, summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
 	oc.add(DirectoryObject(key = Callback(NFLNowMenu), title="NFL Now", summary="Browse videos from NFL Now", thumb=R("nflnow.png")))
 	oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
-	oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL Game Rewind", summary="NFL Game Rewind subscribers only", thumb=R("gamerewind.png")))
+	oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL GamePass US", summary="NFL GamePass US subscribers only", thumb=R("gamepass.png")))
 	oc.add(PrefsObject(title="Preferences", summary="Set My Team. Enter subscription details for Gamepass or NFL Network Live", thumb=R("icon-prefs.png")))
 	return oc
 
@@ -238,7 +238,7 @@ def GamepassPlay(week, season, week_title):
 	oc = ObjectContainer(title2=week_title)
 	
 	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', values={'week':week, 'season':season}, cacheTime=1)
-
+	
 	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
 		sTeam1 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
 		sTeam2 = stream.xpath('./table/tr[3]/td[2]/text()')[0]
@@ -398,9 +398,9 @@ def NFLNArchivePlay(cid, title):
 @route('/video/nflvideos/gamerewind')
 def GamerewindMenu():
 
-	oc = ObjectContainer(title2="NFL Game Rewind")
+	oc = ObjectContainer(title2="NFL Game GamePass US")
 	
-	oc.add(DirectoryObject(key=Callback(GamerewindSeason), title="Archive", thumb=R("gamerewind.png"), summary="Archived games from this season back to 2012"))
+	oc.add(DirectoryObject(key=Callback(GamerewindSeason), title="Archive", thumb=R("gamepass.png"), summary="Archived games from this season back to 2012"))
 	
 	return oc
 
@@ -409,12 +409,12 @@ def GamerewindMenu():
 @route('/video/nflvideos/gamerewindseason')
 def GamerewindSeason():
 
-	oc = ObjectContainer(title2="NFL Game Rewind")
+	oc = ObjectContainer(title2="NFL Game GamePass US")
 
 	year = Datetime.Now().year if Datetime.Now().month < 7 else Datetime.Now().year+1
 
 	for season in reversed(range(2012, year)):
-		oc.add(DirectoryObject(key = Callback(GamerewindWeek, season=str(season)), title=str(season), thumb=R("gamerewind.png")))
+		oc.add(DirectoryObject(key = Callback(GamerewindWeek, season=str(season)), title=str(season), thumb=R("gamepass.png")))
 
 	return oc
 
@@ -423,7 +423,7 @@ def GamerewindSeason():
 @route('/video/nflvideos/gamerewindweek')
 def GamerewindWeek(season):
 
-	oc = ObjectContainer(title2="NFL Game Rewind")
+	oc = ObjectContainer(title2="NFL GamePass US")
 	
 	weeks = {'201': 'Week 1', '202': 'Week 2', '203': 'Week 3', '204': 'Week 4', '205': 'Week 5', '206': 'Week 6', '207': 'Week 7', '208': 'Week 8', '209': 'Week 9', '210': 'Week 10', '211': 'Week 11', '212': 'Week 12', '213': 'Week 13', '214': 'Week 14', '215': 'Week 15', '216': 'Week 16', '217': 'Week 17', '218': 'Wild Card Round', '219': 'Divisional Round', '220': 'Championship Round', '221': 'Pro Bowl', '222': 'Super Bowl'}
 	orderedWeeks = ['201', '202', '203', '204', '205', '206', '207', '208', '209', '210', '211', '212', '213', '214', '215', '216', '217', '218', '219', '220', '221', '222']
@@ -432,18 +432,18 @@ def GamerewindWeek(season):
 	if str(currentSeason) == season:
 		page = HTML.ElementFromURL(GAMEREWIND_SCHEDULE_WEEK, errors='ignore', cacheTime=1)
 		currentWeek = page.xpath("//select[@id = 'weekSelect']/option[@selected = 'true']")[0].get("value")
-		oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=currentWeek, season=season, week_title=weeks[currentWeek]), title = "Current Week", thumb=R("gamerewind.png")))
+		oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=currentWeek, season=season, week_title=weeks[currentWeek]), title = "Current Week", thumb=R("gamepass.png")))
 	
 		try:
 			if currentWeek[-1:] != "1":
 				lastWeek = str(int(currentWeek) - 1)
-				oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=lastWeek, season=season, week_title=weeks[lastWeek]), title = "Last Week", thumb=R("gamerewind.png")))
+				oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=lastWeek, season=season, week_title=weeks[lastWeek]), title = "Last Week", thumb=R("gamepass.png")))
 		except:
 			Log("Last weeks games not available")
 
 	for week in orderedWeeks:
 		week_title = weeks[week]
-		oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=week, season=season, week_title=week_title), title = week_title, thumb=R("gamerewind.png")))
+		oc.add(DirectoryObject(key = Callback(GamerewindPlay, week=week, season=season, week_title=week_title), title = week_title, thumb=R("gamepass.png")))
 	
 	return oc
 	
@@ -454,19 +454,32 @@ def GamerewindPlay(week, season, week_title):
 
 	oc = ObjectContainer(title2=week_title)
 	
-	list = HTML.ElementFromURL(GAMEREWIND_SCHEDULE, errors='ignore', values={'week':week, 'season':season}, cacheTime=1)
+	username = Prefs['username']
+	password = Prefs['password']
+	
+	login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
+	
+	authentication_url = "https://gamepass.nfl.com/nflgp/secure/nfllogin"
+	post_values = {
+		'username' : username,
+		'password' : password
+		}
 
+	login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
+	
+	cookie_values = HTTP.CookiesForURL(login_url)
+	headers_value = {'Cookie' : cookie_values}
+	
+	list = HTML.ElementFromURL(GAMEPASS_SCHEDULE, errors='ignore', values={'week':week, 'season':season}, headers=headers_value, cacheTime=1)
+	
 	for stream in list.xpath('//td[@class="gameTile"]/*/parent::td'):
 		sTeam1 = stream.xpath('./table/tr[2]/td[2]/text()')[0]
 		sTeam2 = stream.xpath('./table/tr[3]/td[2]/text()')[0]
 		sTitle = "%s @ %s" % (sTeam1,sTeam2)
-		try:
-			sStreamURL = stream.xpath('./table/tr[3]/td[3]/a')[0].get('href')
-			sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamerewind.nfl.com/nflgr/console.jsp?eid=").replace("')","")
-		except:
-			sStreamURL = "http://gamerewind.nfl.com/nflgr/console.jsp?eid=blahblah"
-		oc.add(VideoClipObject(url=sStreamURL + "#Condensed", title=sTitle + " - Condensed Game",  thumb=R("icon-gamerewind.png")))
-		oc.add(VideoClipObject(url=sStreamURL, title=sTitle + " - Full Length Game",  thumb=R("icon-gamerewind.png")))
+		sStreamURL = stream.xpath('./table/tr[3]/td[3]/a')[0].get('href')
+		sStreamURL = sStreamURL = sStreamURL.replace("javascript:launchApp('","http://gamerewind.nfl.com/nflgr/console.jsp?eid=").replace("')","")
+		oc.add(VideoClipObject(url=sStreamURL + "#Condensed", title=sTitle + " - Condensed Game",  thumb=R("icon-gamepass.png")))
+		oc.add(VideoClipObject(url=sStreamURL, title=sTitle + " - Full Length Game",  thumb=R("icon-gamepass.png")))
 	return oc
 	
 ###################################################################################################	
