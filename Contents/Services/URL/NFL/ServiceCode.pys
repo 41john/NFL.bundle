@@ -619,13 +619,13 @@ def PlayVideoNFLN(url, bitrate):
 	m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values1, headers=headers_value).content
 	m3u8_page = XML.ElementFromString(m3u8_pagedata)
 	m3u8_url = m3u8_page.xpath('//path/text()')[0]
-	m3u8_url4500 = m3u8_url.replace("adaptive","http").replace("iphone","4500")
-	m3u8_url3000 = m3u8_url.replace("adaptive","http").replace("iphone","3000")
-	m3u8_url2400 = m3u8_url.replace("adaptive","http").replace("iphone","2400")
-	m3u8_url1600 = m3u8_url.replace("adaptive","http").replace("iphone","1600")
-	m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
-	m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
-	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
+	m3u8_url4500 = m3u8_url.replace("adaptive","http").replace("iphone","4500_android")
+	m3u8_url3000 = m3u8_url.replace("adaptive","http").replace("iphone","3000_android")
+	m3u8_url2400 = m3u8_url.replace("adaptive","http").replace("iphone","2400_android")
+	m3u8_url1600 = m3u8_url.replace("adaptive","http").replace("iphone","1600_android")
+	m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200_android")
+	m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800_android")
+	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400_android")
 	
 	if bitrate == '4500':
 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url4500))
