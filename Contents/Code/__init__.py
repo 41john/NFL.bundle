@@ -482,6 +482,7 @@ def NflNetworkArchiveMenu():
 
 	oc = ObjectContainer(title2="NFL Network Archive")
 
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="251", title="Hard Knocks 2015"), title="Hard Knocks 2015", thumb=R("nfl-network.png"), summary="Hard Knocks 2015"))	
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="214", title="Total Access 2014"), title="Total Access 2014", thumb=R("nfl-network.png"), summary="Total Access 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="212", title="NFL Gameday 2014"), title="NFL Gameday 2014", thumb=R("nfl-network.png"), summary="NFL Gameday 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="220", title="Hard Knocks 2014"), title="Hard Knocks 2014", thumb=R("nfl-network.png"), summary="Hard Knocks 2014"))
@@ -496,6 +497,9 @@ def NflNetworkArchiveMenu():
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="179", title="NFL Gameday 2013"), title="NFL Gameday 2013", thumb=R("nfl-network.png"), summary="NFL Gameday 2013"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="180", title="Playbook 2013"), title="Playbook 2013", thumb=R("nfl-network.png"), summary="Playbook 2013"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="183", title="Sound FX 2013"), title="Sound FX 2013", thumb=R("nfl-network.png"), summary="Sound FX 2013"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="117", title="Super Bowl Archives"), title="Super Bowl Archives", thumb=R("nfl-network.png"), summary="Super Bowl Archives"))
+# should i use http://nlmobile.cdnak.neulion.com/nfl/config/nflgp/2014/config_ios_r5.xml to create menu or just use this to manually create the above list of shows.
+
 	
 	return oc
 	

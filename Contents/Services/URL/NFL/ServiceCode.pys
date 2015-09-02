@@ -524,10 +524,17 @@ def PlayVideoGP(url, bitrate):
 			for gamenum in range(1, 17):
 				if games_page.xpath('//game[' + str(gamenum) + ']//elias/text()')[0] == game_id:
 					live_game_id = games_page.xpath('//game[' + str(gamenum) + ']//id/text()')[0]
+					
 		except:
 			Log("error obtaining live game id")
 					
 		if url.endswith("#Live"):
+			post_values3 = {
+			'id' : live_game_id,
+			'type' : 'game',
+			'nt' : '1',
+			'gt' : 'dvr'
+			}
 			post_values2 = {
 			'id' : live_game_id,
 			'type' : 'game',
@@ -553,7 +560,10 @@ def PlayVideoGP(url, bitrate):
 
 
 		headers_value2 = {'Cookie' : cookie_values, 'User-Agent' : 'iPhone'}
-		m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values2, headers=headers_value2).content
+		try:
+			m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values3, headers=headers_value2).content
+		except:
+			m3u8_pagedata = HTTP.Request(url=publish_url, values=post_values2, headers=headers_value2).content
 		m3u8_page = XML.ElementFromString(m3u8_pagedata)
 		m3u8_url = m3u8_page.xpath('//path/text()')[0]
 		m3u8_url4500 = m3u8_url.replace("adaptive","http").replace("iphone","4500")
@@ -563,13 +573,22 @@ def PlayVideoGP(url, bitrate):
 		m3u8_url1200 = m3u8_url.replace("adaptive","http").replace("iphone","1200")
 		m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
 		m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
+	
+	m3u8_url4500 = m3u8_url4500.replace("4500","4500_iphone")
+	m3u8_url3000 = m3u8_url3000.replace("3000","3000_iphone")
+	m3u8_url2400 = m3u8_url2400.replace("2400","2400_iphone")
+	m3u8_url1600 = m3u8_url1600.replace("1600","1600_iphone")
+	m3u8_url1200 = m3u8_url1200.replace("1200","1200_iphone")
+	m3u8_url800 = m3u8_url800.replace("800","800_iphone")
+	m3u8_url400 = m3u8_url400.replace("400","400_iphone")
+	
 		
 	if bitrate == '4500':
 		try:
 			headers = HTTP.Request(m3u8_url4500).headers
-			return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url4500))	
+			return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url4500))
 		except:
-			return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000))	
+			return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000))
 	elif bitrate == '3000':
 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000))
 	elif bitrate == '2400':
@@ -628,20 +647,20 @@ def PlayVideoNFLN(url, bitrate):
 	m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400_android")
 	
 	if bitrate == '4500':
-		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url4500))
-	elif bitrate == '3000':
-		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000))
-	elif bitrate == '2400':
-		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url2400))
-	elif bitrate == '1600':
-		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1600))
-	elif bitrate == '1200':
-		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1200))
-	elif bitrate == '800':
-		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url800))
-	elif bitrate == '400':
-		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url400))
-    
+ 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url4500))
+ 	elif bitrate == '3000':
+ 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url3000))
+ 	elif bitrate == '2400':
+ 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url2400))
+ 	elif bitrate == '1600':
+ 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1600))
+ 	elif bitrate == '1200':
+ 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url1200))
+ 	elif bitrate == '800':
+ 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url800))
+ 	elif bitrate == '400':
+ 		return IndirectResponse(VideoClipObject, key = HTTPLiveStreamURL(m3u8_url400))
+
 ####################################################################################################
 @indirect
 def PlayVideoNFLNow(url):
