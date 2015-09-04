@@ -63,9 +63,14 @@ def VideoMainMenu():
 	oc.add(DirectoryObject(key = Callback(NFLVideosMenu), title="NFL.com Videos", summary="Browse videos from NFL.com/Videos"))
 	oc.add(DirectoryObject(key = Callback(NFLMyTeamMenu), title=sTitle, summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
 	oc.add(DirectoryObject(key = Callback(NFLNowMenu), title="NFL Now", summary="Browse videos from NFL Now", thumb=R("nflnow.png")))
-	oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
-	oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL GamePass US", summary="NFL GamePass US subscribers only", thumb=R("gamepass.png")))
-	oc.add(PrefsObject(title="Preferences", summary="Set My Team. Enter subscription details for Gamepass or NFL Network Live", thumb=R("icon-prefs.png")))
+	if Prefs['gamepasssub'] == "GamePass Intl + US":
+		oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass International", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
+		oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL GamePass US", summary="NFL GamePass US subscribers only", thumb=R("gamepass.png")))
+	if Prefs['gamepasssub'] == "GamePass International":
+		oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass International", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
+	if Prefs['gamepasssub'] == "GamePass US":
+		oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL GamePass US", summary="NFL GamePass US subscribers only", thumb=R("gamepass.png")))
+	oc.add(PrefsObject(title="Preferences", summary="Set My Team. Enter subscription details for Gamepass", thumb=R("icon-prefs.png")))
 	return oc
 
 
@@ -482,6 +487,7 @@ def NflNetworkArchiveMenu():
 
 	oc = ObjectContainer(title2="NFL Network Archive")
 
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="254", title="Total Access 2015"), title="Total Access 2015", thumb=R("nfl-network.png"), summary="Total Access 2015"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="251", title="Hard Knocks 2015"), title="Hard Knocks 2015", thumb=R("nfl-network.png"), summary="Hard Knocks 2015"))	
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="214", title="Total Access 2014"), title="Total Access 2014", thumb=R("nfl-network.png"), summary="Total Access 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="212", title="NFL Gameday 2014"), title="NFL Gameday 2014", thumb=R("nfl-network.png"), summary="NFL Gameday 2014"))
