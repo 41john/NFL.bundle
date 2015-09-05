@@ -574,14 +574,14 @@ def PlayVideoGP(url, bitrate):
 		m3u8_url800 = m3u8_url.replace("adaptive","http").replace("iphone","800")
 		m3u8_url400 = m3u8_url.replace("adaptive","http").replace("iphone","400")
 	
-	m3u8_url4500 = m3u8_url4500.replace("4500","4500_iphone")
-	m3u8_url3000 = m3u8_url3000.replace("3000","3000_iphone")
-	m3u8_url2400 = m3u8_url2400.replace("2400","2400_iphone")
-	m3u8_url1600 = m3u8_url1600.replace("1600","1600_iphone")
-	m3u8_url1200 = m3u8_url1200.replace("1200","1200_iphone")
-	m3u8_url800 = m3u8_url800.replace("800","800_iphone")
-	m3u8_url400 = m3u8_url400.replace("400","400_iphone")
-	
+# Keeping as may be helpful in future to use an m3u8 playlist of another client.
+#	m3u8_url4500 = m3u8_url4500.replace("4500","4500_iphone")
+#	m3u8_url3000 = m3u8_url3000.replace("3000","3000_iphone")
+#	m3u8_url2400 = m3u8_url2400.replace("2400","2400_iphone")
+#	m3u8_url1600 = m3u8_url1600.replace("1600","1600_iphone")
+#	m3u8_url1200 = m3u8_url1200.replace("1200","1200_iphone")
+#	m3u8_url800 = m3u8_url800.replace("800","800_iphone")
+#	m3u8_url400 = m3u8_url400.replace("400","400_iphone")
 		
 	if bitrate == '4500':
 		try:
