@@ -489,7 +489,10 @@ def NflNetworkArchiveMenu():
 	oc = ObjectContainer(title2="NFL Network Archive")
 
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="254", title="Total Access 2015"), title="Total Access 2015", thumb=R("nfl-network.png"), summary="Total Access 2015"))
-	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="251", title="Hard Knocks 2015"), title="Hard Knocks 2015", thumb=R("nfl-network.png"), summary="Hard Knocks 2015"))	
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="251", title="Hard Knocks 2015"), title="Hard Knocks 2015", thumb=R("nfl-network.png"), summary="Hard Knocks 2015"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="249", title="A Football Life 2015"), title="A Football Life 2015", thumb=R("nfl-network.png"), summary="A Football Life 2015"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="252", title="NFL Gameday 2015"), title="NFL Gameday 2015", thumb=R("nfl-network.png"), summary="NFL Gameday 2015"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="256", title="Sound FX 2015"), title="Sound FX 2015", thumb=R("nfl-network.png"), summary="Sound FX 2015"))	
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="214", title="Total Access 2014"), title="Total Access 2014", thumb=R("nfl-network.png"), summary="Total Access 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="212", title="NFL Gameday 2014"), title="NFL Gameday 2014", thumb=R("nfl-network.png"), summary="NFL Gameday 2014"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="220", title="Hard Knocks 2014"), title="Hard Knocks 2014", thumb=R("nfl-network.png"), summary="Hard Knocks 2014"))
