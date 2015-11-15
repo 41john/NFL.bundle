@@ -7,8 +7,8 @@
 
 NFL_URL						= 'http://www.nfl.com'
 NFL_URL1					= 'http://a.video.nfl.com/'
-BASE_URL					= 'http://www.nfl.com/videos'
-LATEST_VIDEOS				= 'http://www.nfl.com/videos/nfl-videos'
+BASE_URL					= 'http://www.nfl.com/feeds-rs/videos/byChannel/%s.json?limit=100&offset=0'
+LATEST_VIDEOS				= 'http://www.nfl.com/feeds-rs/videos/byChannel/nfl-videos.json?limit=100&offset=0'
 NFL_NETWORK_LIVE			= 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#Live'
 NFL_REDZONE_LIVE			= 'http://gamepass.nfl.com/nflgp/console.jsp?nfln=true#RedzoneLive'
 GAMEPASS_SCHEDULE			= 'https://gamepass.nfl.com/nflgp/secure/schedulechange'
@@ -61,8 +61,10 @@ def VideoMainMenu():
 			sTitle = TEAMS[category]
 		
 	oc.add(DirectoryObject(key = Callback(NFLVideosMenu), title="NFL.com Videos", summary="Browse videos from NFL.com/Videos"))
-	oc.add(DirectoryObject(key = Callback(NFLMyTeamMenu), title=sTitle, summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
-	oc.add(DirectoryObject(key = Callback(NFLNowMenu), title="NFL Now", summary="Browse videos from NFL Now", thumb=R("nflnow.png")))
+	oc.add(DirectoryObject(key = Callback(PlayMenu, url=BASE_URL % Prefs['team']), title=sTitle, summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
+# Remove My Team sub menu and also NFL Now, will keep code in case I decide to add NFL Now again.	
+#	oc.add(DirectoryObject(key = Callback(NFLMyTeamMenu), title=sTitle, summary="Set your favourite team in Preferences and browse videos for that team here", thumb=R("%s.png" % Prefs['team'])))
+#	oc.add(DirectoryObject(key = Callback(NFLNowMenu), title="NFL Now", summary="Browse videos from NFL Now", thumb=R("nflnow.png")))
 	if Prefs['gamepasssub'] == "GamePass Intl + US":
 		oc.add(DirectoryObject(key = Callback(GamepassMenu), title="NFL GamePass International", summary="NFL GamePass subscribers only", thumb=R("gamepass.png")))
 		oc.add(DirectoryObject(key = Callback(GamerewindMenu), title="NFL GamePass US", summary="NFL GamePass US subscribers only", thumb=R("gamepass.png")))
@@ -85,7 +87,7 @@ def NFLMyTeamMenu():
 	
 	oc = ObjectContainer(title2=sTitle)
 	
-	oc.add(DirectoryObject(key = Callback(PlayMenu, url="%s/%s" % (BASE_URL, Prefs['team'])), title="NFL.com/Videos", summary="Video for "+sTitle+" from NFL.com/videos", thumb=R("nfl-network.png")))
+	oc.add(DirectoryObject(key = Callback(PlayMenu, url=BASE_URL % Prefs['team']), title="NFL.com/Videos", summary="Video for "+sTitle+" from NFL.com/videos", thumb=R("nfl-network.png")))
 	oc.add(DirectoryObject(key=Callback(NFLNowChannel, sChannelid=Prefs['team'], sTitle="NFL Now"), title="NFL Now", thumb=R("nflnow.png"), summary="Video for "+sTitle+" from NFL Now"))
 
 	return oc
@@ -114,7 +116,7 @@ def ShowsMenu():
 	oc = ObjectContainer(title2="Shows")
 
 	for category in ORDERED_SHOWS:
-		oc.add(DirectoryObject(key=Callback(PlayMenu, url="%s/%s" % (BASE_URL, category)), title=SHOWS[category], thumb=R("%s.png" % category)))
+		oc.add(DirectoryObject(key=Callback(PlayMenu, url=BASE_URL % category), title=SHOWS[category], thumb=R("%s.png" % category)))
 
 	return oc
 
@@ -126,7 +128,7 @@ def TeamsMenu():
 	oc = ObjectContainer(title2="Teams")
 
 	for category in ORDERED_TEAMS:
-		oc.add(DirectoryObject(key=Callback(PlayMenu, url="%s/%s" % (BASE_URL, category)), title=TEAMS[category], thumb=R("%s.png" % category)))
+		oc.add(DirectoryObject(key=Callback(PlayMenu, url=BASE_URL % category), title=TEAMS[category], thumb=R("%s.png" % category)))
 
 	return oc
 
@@ -138,7 +140,7 @@ def SpotlightMenu():
 	oc = ObjectContainer(title2="Channels")
 
 	for category in ORDERED_SPOTLIGHT:
-		oc.add(DirectoryObject(key=Callback(PlayMenu, url="%s/%s" % (BASE_URL, category)), title=SPOTLIGHT[category], thumb=R("%s.png" % category)))
+		oc.add(DirectoryObject(key=Callback(PlayMenu, url=BASE_URL % category), title=SPOTLIGHT[category], thumb=R("%s.png" % category)))
 
 	return oc
 
@@ -150,7 +152,7 @@ def EventsMenu():
 	oc = ObjectContainer(title2="Events")
 
 	for category in ORDERED_EVENTS:
-		oc.add(DirectoryObject(key=Callback(PlayMenu, url="%s/%s" % (BASE_URL, category)), title=EVENTS[category], thumb=R("%s.png" % category)))
+		oc.add(DirectoryObject(key=Callback(PlayMenu, url=BASE_URL % category), title=EVENTS[category], thumb=R("%s.png" % category)))
 
 	return oc
 
@@ -160,16 +162,17 @@ def EventsMenu():
 def PlayMenu(url=None):
 
 	oc = ObjectContainer(title2="NFL.com/Videos")
-	list = HTML.ElementFromURL(url, errors='ignore', cacheTime=1).xpath('//div[@class="coverage-wrapper"]/div[@class="yui3-video-coverage-item "]')
+	list = JSON.ObjectFromURL(url)['videos']
 
 	for stream in list:
 		try:
-			streamid = stream.xpath('./@data-contentid')[0]
-			json = JSON.ObjectFromURL(NFL_VIDEOS_JSON % streamid)
-			sTitle = json['briefHeadline']
-			sSummary = json['caption']
-			sThumb = json['imagePaths']['m']
-			sStreamURL = NFL_URL1 + json['cdnData']['bitrateInfo'][-5]['path'] + "#" + streamid	
+			streamid = stream['id']
+			sTitle = stream['briefHeadline']
+			sSummary = stream['caption']
+			sThumb = stream['largeImageUrl']
+			sStreamURL = stream['videoBitRates'][-5]['videoPath'] + "#" + streamid
+			if sStreamURL.startswith("http://video.nfl.com"):
+				sStreamURL = sStreamURL.replace("http://video.nfl.com","http://a.video.nfl.com")
 			oc.add(VideoClipObject(url=sStreamURL, title=sTitle, summary=sSummary, thumb=sThumb))
 		except:
 			Log("Error obtaining URLs, ignoring Video")
