@@ -491,6 +491,17 @@ def NflNetworkArchiveMenu():
 
 	oc = ObjectContainer(title2="NFL Network Archive")
 
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="294", title="Total Access 2016"), title="Total Access 2016", thumb=R("nfl-network.png"), summary="Total Access 2016"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="291", title="Hard Knocks 2016"), title="Hard Knocks 2016", thumb=R("nfl-network.png"), summary="Hard Knocks 2016"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="289", title="A Football Life 2016"), title="A Football Life 2016", thumb=R("nfl-network.png"), summary="A Football Life 2016"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="292", title="NFL Gameday 2016"), title="NFL Gameday 2016", thumb=R("nfl-network.png"), summary="NFL Gameday 2016"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="296", title="Sound FX 2016"), title="Sound FX 2016", thumb=R("nfl-network.png"), summary="Sound FX 2016"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="298", title="The Timeline 2016"), title="The Timeline 2016", thumb=R("nfl-network.png"), summary="The Timeline 2016"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="293", title="NFL Honors 2016"), title="NFL Honors 2016", thumb=R("nfl-network.png"), summary="NFL Honors 2016"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="290", title="Hall of Fame 2016"), title="Hall of Fame 2016", thumb=R("nfl-network.png"), summary="Hall of Fame 2016"))	
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="295", title="Playbook 2016"), title="Playbook 2016", thumb=R("nfl-network.png"), summary="Playbook 2016"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="305", title="Undrafted 2016"), title="Undrafted 2016", thumb=R("nfl-network.png"), summary="Undrafted 2016"))
+	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="264", title="The Timeline 2015"), title="The Timeline 2015", thumb=R("nfl-network.png"), summary="The Timeline 2015"))	
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="254", title="Total Access 2015"), title="Total Access 2015", thumb=R("nfl-network.png"), summary="Total Access 2015"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="251", title="Hard Knocks 2015"), title="Hard Knocks 2015", thumb=R("nfl-network.png"), summary="Hard Knocks 2015"))
 	oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, cid="249", title="A Football Life 2015"), title="A Football Life 2015", thumb=R("nfl-network.png"), summary="A Football Life 2015"))
