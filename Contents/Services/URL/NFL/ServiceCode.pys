@@ -404,13 +404,10 @@ def PlayVideoGP(url, bitrate):
 	
 		if url.startswith("http://gamepass.nfl.com"):
 			login_url = "https://gamepass.nfl.com/nflgp/secure/schedule"
-			authentication_url = "https://id.s.nfl.com/login"
+			authentication_url = "https://gamepass.nfl.com/nflgp/secure/nfllogin"
 			post_values = {
 				'username' : username,
-				'password' : password,
-				'vendor_id' : 'nflptnrnln',
-				'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
-				'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
+				'password' : password
 				}	
 			login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
 
@@ -615,13 +612,10 @@ def PlayVideoNFLN(url, bitrate):
 	if url.startswith("http://gamerewind.nfl.com"):
 		login_url = "https://gamerewind.nfl.com/nflgr/secure/schedule"
 
-	authentication_url = "https://id.s.nfl.com/login"
+	authentication_url = "https://gamepass.nfl.com/nflgp/secure/nfllogin"
 	post_values = {
 		'username' : username,
-		'password' : password,
-		'vendor_id' : 'nflptnrnln',
-		'success_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule',
-		'error_url' : 'https://network.nfl.com/nfln/secure/login?redirect=schedule'
+		'password' : password
 		}
 
 	login = HTTP.Request(url=authentication_url, values=post_values, cacheTime=0).content
