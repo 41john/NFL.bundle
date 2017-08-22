@@ -14,15 +14,7 @@
 				<string>http://gamerewind.nfl.com/.+</string>
 				<string>http://www.nfl.com/.+</string>
 				<string>http://a.video.nfl.com/.+</string>
-				<string>http://nlds82.neulion.com/.+</string>
-				<string>http://nlds53.neulion.com/.+</string>
-				<string>http://nlds84.neulion.com/.+</string>
-				<string>http://nlds82.cdnak.neulion.com/.+</string>
-				<string>http://nlds53.cdnak.neulion.com/.+</string>
-				<string>http://nlds84.cdnak.neulion.com/.+</string>
-				<string>http://nlds82.cdnl3nl.neulion.com/.+</string>
-				<string>http://nlds53.cdnl3nl.neulion.com/.+</string>
-				<string>http://nlds84.cdnl3nl.neulion.com/.+</string>
+				<string>https://www.nflgamepass.com/.+</string>
 				<string>http://static.now.nfl.com/.+</string>
 				<string>http://nflioslive-i.akamaihd.net/.+</string>
 				<string>http://nflnowlive.nfln.nfl.com/.+</string>
