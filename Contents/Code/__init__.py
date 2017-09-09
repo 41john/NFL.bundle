@@ -217,19 +217,6 @@ def GamepassPlay(week, season, week_title):
 	list = JSON.ObjectFromURL(week, cacheTime=1)
 	
 	try:
-		for stream in list['modules']['weekScheduledGames']['content']:
-			sTeam1 = stream['visitorNickName']
-			sTeam2 = stream['homeNickName']
-			sTitle = "Scheduled - %s @ %s" % (sTeam1,sTeam2)
-			sStreamURL = "https://www.nflgamepass.com/api/en/content/v1/web/games/" + season + "/" + str(stream['gameId']) + "/data"
-			try:
-				videoId = str(JSON.ObjectFromURL(sStreamURL)['modules']['singlegame']['content'][0]['video']['videoId'])
-			except:
-				videoId = stream['homeNickName']
-			oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId, title=sTitle,  thumb=R("icon-gamepass.png")))
-	except:
-		Log("No Scheduled Games")
-	try:
 		for stream in list['modules']['weekLiveGames']['content']:
 			sTeam1 = stream['visitorNickName']
 			sTeam2 = stream['homeNickName']
@@ -265,6 +252,19 @@ def GamepassPlay(week, season, week_title):
 				Log("No Full Length Games")
 	except:
 		Log("No Completed Games")
+	try:
+		for stream in list['modules']['weekScheduledGames']['content']:
+			sTeam1 = stream['visitorNickName']
+			sTeam2 = stream['homeNickName']
+			sTitle = "Scheduled - %s @ %s" % (sTeam1,sTeam2)
+			sStreamURL = "https://www.nflgamepass.com/api/en/content/v1/web/games/" + season + "/" + str(stream['gameId']) + "/data"
+			try:
+				videoId = str(JSON.ObjectFromURL(sStreamURL)['modules']['singlegame']['content'][0]['video']['videoId'])
+			except:
+				videoId = stream['homeNickName']
+			oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId, title=sTitle,  thumb=R("icon-gamepass.png")))
+	except:
+		Log("No Scheduled Games")
 
 	return oc
 
@@ -283,19 +283,6 @@ def GamepassPlayweek():
 
 	gamelist = JSON.ObjectFromURL(GAMEPASS_SCHEDULE % (season, seasonType, week), cacheTime=1)
 	
-	try:
-		for stream in gamelist['modules']['weekScheduledGames']['content']:
-			sTeam1 = stream['visitorNickName']
-			sTeam2 = stream['homeNickName']
-			sTitle = "Scheduled - %s @ %s" % (sTeam1,sTeam2)
-			sStreamURL = "https://www.nflgamepass.com/api/en/content/v1/web/games/" + season + "/" + str(stream['gameId']) + "/data"
-			try:
-				videoId = str(JSON.ObjectFromURL(sStreamURL)['modules']['singlegame']['content'][0]['video']['videoId'])
-			except:
-				videoId = stream['homeNickName']
-			oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId, title=sTitle,  thumb=R("icon-gamepass.png")))
-	except:
-		Log("No Scheduled Games")
 	try:
 		for stream in gamelist['modules']['weekLiveGames']['content']:
 			sTeam1 = stream['visitorNickName']
@@ -332,6 +319,19 @@ def GamepassPlayweek():
 				Log("No Full Length Games")
 	except:
 		Log("No Completed Games")
+	try:
+		for stream in gamelist['modules']['weekScheduledGames']['content']:
+			sTeam1 = stream['visitorNickName']
+			sTeam2 = stream['homeNickName']
+			sTitle = "Scheduled - %s @ %s" % (sTeam1,sTeam2)
+			sStreamURL = "https://www.nflgamepass.com/api/en/content/v1/web/games/" + season + "/" + str(stream['gameId']) + "/data"
+			try:
+				videoId = str(JSON.ObjectFromURL(sStreamURL)['modules']['singlegame']['content'][0]['video']['videoId'])
+			except:
+				videoId = stream['homeNickName']
+			oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId, title=sTitle,  thumb=R("icon-gamepass.png")))
+	except:
+		Log("No Scheduled Games")
 
 	return oc
 
