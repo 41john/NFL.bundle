@@ -12,7 +12,7 @@ LATEST_VIDEOS				= 'http://www.nfl.com/feeds-rs/videos/byChannel/nfl-videos.json
 NFL_NETWORK_LIVE			= 'https://www.nflgamepass.com/api/en/content/v1/web/network/data'
 NFL_REDZONE					= 'https://www.nflgamepass.com/api/en/content/v1/web/redzone/videos'
 GAMEPASS_SCHEDULE_WEEK		= 'https://www.nflgamepass.com/api/en/content/v1/web/games/seasons'
-GAMEPASS_SCHEDULE			= 'https://www.nflgamepass.com/v1/web/games/%s/%s/%s/list'
+GAMEPASS_SCHEDULE			= 'https://www.nflgamepass.com/api/en/content/v1/web/games/%s/%s/%s/list'
 NFL_VIDEOS_JSON				= 'http://www.nfl.com/static/embeddablevideo/%s.json'
 NFLNA_PROGRAMS				= 'https://www.nflgamepass.com/api/en/content/v1/web/network/programs'
 NFLGAMEPASS_TEAMS			= 'https://www.nflgamepass.com/api/en/content/v1/web/teams/list'
@@ -154,7 +154,7 @@ def GamepassMenu():
 
 	oc = ObjectContainer(title2="NFL Game Pass")
 	
-	oc.add(DirectoryObject(key=Callback(GamepassPlayweek), title="Live Games", thumb=R("gamepass-live.png"), summary="This week's Live Games"))
+	oc.add(DirectoryObject(key=Callback(GamepassPlayweek), title="This Week's Games", thumb=R("gamepass-live.png"), summary="This Week's Games"))
 	oc.add(DirectoryObject(key=Callback(GamepassSeason), title="Archived Games", thumb=R("gamepass.png"), summary="Archived games from this season back to 2013"))
 	oc.add(DirectoryObject(key=Callback(GamepassTeamMenu), title="Team Games", summary="Watch Games for a team of your choice", thumb=R("gamepass.png")))
 	oc.add(DirectoryObject(key=Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
