@@ -159,7 +159,7 @@ def GamepassMenu():
 	oc.add(DirectoryObject(key=Callback(GamepassTeamMenu), title="Team Games", summary="Watch Games for a team of your choice", thumb=R("gamepass.png")))
 	oc.add(DirectoryObject(key=Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
 	oc.add(DirectoryObject(key=Callback(NflNetworkArchiveMenu), title="NFL Network Archive", summary="Watch NFL Network Archived Shows", thumb=R("nfl-network.png")))
-#	oc.add(DirectoryObject(key=Callback(NflRedzoneMenu), title="NFL Redzone Live", summary="Watch NFL Redzone Live", thumb=R("redzone-logo-live.png")))
+	oc.add(DirectoryObject(key=Callback(NflRedzoneMenu), title="NFL Redzone Live", summary="Watch NFL Redzone Live", thumb=R("redzone-logo-live.png")))
 #	oc.add(DirectoryObject(key=Callback(NflRedzoneArchive), title="NFL Redzone Archive", thumb=R("redzone-logo.png"), summary="Archived Redzone channel from this season back to 2016"))
 	
 	return oc
@@ -361,7 +361,6 @@ def NflRedzoneMenu():
 	
 	list = JSON.ObjectFromURL(NFL_REDZONE, errors='ignore', cacheTime=1)
 
-# A Guess on the VideoId will check once featured released for NFL Gamepass Europe	
 	videoId = str(list['modules']['redZoneLive']['content'][0]['videoId'])
 
 	oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId + "#NFLRL", title="NFL Redzone Live", summary="Watch NFL Redzone Live", thumb=R("icon-nfl-redzone-live.png")))
