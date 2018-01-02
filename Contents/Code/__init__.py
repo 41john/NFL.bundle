@@ -201,7 +201,7 @@ def GamepassWeek(season):
 		seasontypelist	= seasontype['weeks']
 		for gameweek in seasontypelist:
 			week = gameweek['_links'][0]['href']
-			week = week.replace("gamepass.com","gamepass.com/api/en/content")
+			week = week.replace("https://nflgp-prd.akamaized.net","http://nflgamepass.com/api/en/content")
 			week_title = gameweek['weekNameAbbr'] + str(gameweek['number'])
 			week_title = week_title.replace("pro21","Pro Bowl").replace("hof0","Hall of Fame").replace("p","Preseason Week ").replace("week","Week ").replace("wc18","Wild Card Games").replace("div19","Divisional Games").replace("conf20","Conference Championship Games").replace("sb22","Super Bowl")
 			oc.add(DirectoryObject(key = Callback(GamepassPlay, week=week, season=season, week_title=week_title), title = week_title, thumb=R("gamepass.png")))
@@ -433,14 +433,14 @@ def GamepassTeamMenu():
 	list = JSON.ObjectFromURL(NFLGAMEPASS_TEAMS, errors='ignore', cacheTime=1)
 	
 	for team in list['modules']['teamListAFC']['content']:
-		teamTitle = team['fullName']
+		teamTitle = str(team['fullName'])
 		teamId = team['seoname']
-		sThumb = str.lower(teamTitle.replace(" ","-"))
+		sThumb = teamTitle.replace(" ","-").lower()
 		oc.add(DirectoryObject(key=Callback(GamepassTeamPlay, title=teamTitle, id=teamId, thumbs=sThumb), title=teamTitle, thumb=R("%s.png" % sThumb), summary=teamTitle))
 	for team in list['modules']['teamListNFC']['content']:
 		teamTitle = team['fullName']
 		teamId = team['seoname']
-		sThumb = str.lower(teamTitle.replace(" ","-"))
+		sThumb = teamTitle.replace(" ","-").lower()
 		oc.add(DirectoryObject(key=Callback(GamepassTeamPlay, title=teamTitle, id=teamId, thumbs=sThumb), title=teamTitle, thumb=R("%s.png" % sThumb), summary=teamTitle))
 
 	return oc
