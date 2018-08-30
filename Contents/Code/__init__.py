@@ -160,7 +160,7 @@ def GamepassMenu():
 	oc.add(DirectoryObject(key=Callback(NflNetworkMenu), title="NFL Network Live", summary="Watch NFL Network Live", thumb=R("nfl-network-live.png")))
 	oc.add(DirectoryObject(key=Callback(NflNetworkArchiveMenu), title="NFL Network Archive", summary="Watch NFL Network Archived Shows", thumb=R("nfl-network.png")))
 	oc.add(DirectoryObject(key=Callback(NflRedzoneMenu), title="NFL Redzone Live", summary="Watch NFL Redzone Live", thumb=R("redzone-logo-live.png")))
-#	oc.add(DirectoryObject(key=Callback(NflRedzoneArchive), title="NFL Redzone Archive", thumb=R("redzone-logo.png"), summary="Archived Redzone channel from this season back to 2016"))
+	oc.add(DirectoryObject(key=Callback(NflRedzoneArchive), title="NFL Redzone Archive", thumb=R("redzone-logo.png"), summary="Archived Redzone channel Videos"))
 	
 	return oc
 
@@ -185,17 +185,19 @@ def GamepassWeek(season):
 
 	oc = ObjectContainer(title2="NFL Game Pass")
 	list = JSON.ObjectFromURL(GAMEPASS_SCHEDULE_WEEK, cacheTime=1)
-	
-	if season == '2017':
+
+	if season == '2018':
 		seasonlist = list['modules']['mainMenu']['seasonStructureList'][0]
-	if season == '2016':
+	if season == '2017':
 		seasonlist = list['modules']['mainMenu']['seasonStructureList'][1]
-	if season == '2015':
+	if season == '2016':
 		seasonlist = list['modules']['mainMenu']['seasonStructureList'][2]
-	if season == '2014':
+	if season == '2015':
 		seasonlist = list['modules']['mainMenu']['seasonStructureList'][3]
-	if season == '2013':
+	if season == '2014':
 		seasonlist = list['modules']['mainMenu']['seasonStructureList'][4]
+	if season == '2013':
+		seasonlist = list['modules']['mainMenu']['seasonStructureList'][5]
 		
 	for seasontype in seasonlist['seasonTypes']:
 		seasontypelist	= seasontype['weeks']
@@ -375,18 +377,18 @@ def NflRedzoneArchive():
 	oc = ObjectContainer(title2="NFL Redzone Archive")
 
 	list = JSON.ObjectFromURL(NFL_REDZONE, errors='ignore', cacheTime=1)
-
-# A Guess on the VideoId will check once featured released for NFL Gamepass Europe	
-	videoId = str(list['modules']['redZoneVod']['content'][0]['videoId'])
-
-	oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId + "#NFLRA", title="NFL Redzone", summary="Watch NFL Redzone", thumb=R("icon-nfl-redzone.png")))
-
+	
+	for stream in list['modules']['redZoneVod']['content']:
+		sTitle = stream['season'].replace("season-","") + " " + stream['title']
+		videoId = stream['videoId']
+		sSummary = sTitle
+		oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId + "#NFLRA", title=sTitle, summary=sSummary, thumb=R("icon-nfl-redzone-live.png")))
 
 	return oc
 	
 ###################################################################################################el
 
-@route('/video/nflvideos/nflnarchiveplay')	
+@route('/video/nflvideos/nflnarchiveplay')
 def NFLNArchivePlay(title, id, thumbs):
 
 	oc = ObjectContainer(title2=title)
@@ -416,11 +418,15 @@ def NflNetworkArchiveMenu():
 		programId = program['slug']
 		seasonslist = program['seasons']
 		sThumb = program['thumbnail']['templateUrl'].replace("{formatInstructions}","w_512,h_512,c_thumb,q_auto,f_jpg")
-		for seasons in seasonslist:
-			seasonTitle = seasons['value']
-			seasonId =  seasons['slug']
-			oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, title=programTitle + " " + seasonTitle, id=seasonId + "/" + programId, thumbs=sThumb), title=programTitle + " " + seasonTitle, thumb=sThumb, summary=programTitle + " " + seasonTitle))
-	
+		
+		if not seasonslist:
+			oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, title=programTitle, id=programId, thumbs=sThumb), title=programTitle, thumb=sThumb, summary=programTitle))
+		else:
+			for seasons in seasonslist:
+				seasonTitle = seasons['value']
+				seasonId =  seasons['slug']
+				oc.add(DirectoryObject(key=Callback(NFLNArchivePlay, title=programTitle + " " + seasonTitle, id=seasonId + "/" + programId, thumbs=sThumb), title=programTitle + " " + seasonTitle, thumb=sThumb, summary=programTitle + " " + seasonTitle))
+		
 	return oc
 
 ###################################################################################################
@@ -453,20 +459,19 @@ def GamepassTeamPlay(title, id, thumbs):
 	oc = ObjectContainer(title2=title)
 	
 	list = JSON.ObjectFromURL(url="https://www.nflgamepass.com/api/en/content/v1/web/teams/"+id+"/videos", errors='ignore', cacheTime=1)
+
 	try:
-		for stream in list['modules']['videos2016']['content']:
+		for stream in list['modules']['gamesCurrentSeason']['content']:
 			sTitle = stream['video']['title'] + " " + str(stream['season']) + " " + stream['weekName']
 			videoId = stream['video']['videoId']
 			sThumb = thumbs
 			oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId + "#NFLTEAMS", title=sTitle, summary=sTitle, thumb=R("%s.png" % sThumb)))
-	except:
-		Log("No Games in list")
-	try:
-		for stream in list['modules']['videos2017']['content']:
-			sTitle = stream['video']['title'] + " " + str(stream['season']) + " " + stream['weekName']
-			videoId = stream['video']['videoId']
-			sThumb = thumbs
-			oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId + "#NFLTEAMS", title=sTitle, summary=sTitle, thumb=R("%s.png" % sThumb)))
+			try:
+				sTitlecon = stream['condensedVideo']['title'] + " " + str(stream['season']) + " " + stream['weekName']
+				videoIdcon = stream['condensedVideo']['videoId']
+				oc.add(VideoClipObject(url="https://www.nflgamepass.com/api/en/content/v1/diva/" + videoIdcon + "#NFLTEAMS", title=sTitlecon, summary=sTitlecon, thumb=R("%s.png" % sThumb)))
+			except:
+				Log("No Condensed Game")	
 	except:
 		Log("No Games in list")
 		
