@@ -248,7 +248,10 @@ def PlayVideoGP(url):
 		videoId = new_url.replace("https://www.nflgamepass.com/api/en/content/v1/diva/", "")
 	
 	video_url = XML.ElementFromURL("https://www.nflgamepass.com/api/en/content/v1/diva/" + videoId)
-	m3u8Url = video_url.xpath('//video/videoSources/videoSource[@format="ChromeCast"]/uri/text()')[0]
+	try:
+		m3u8Url = video_url.xpath('//video/videoSources/videoSource[@format="ChromeCast"]/uri/text()')[0]
+	except:
+		m3u8Url = video_url.xpath('//video/videoSources/videoSource[@format="Chromecast"]/uri/text()')[0]
 	post_values2 = {
 		'Type' : '1',
 		'User' : '',
