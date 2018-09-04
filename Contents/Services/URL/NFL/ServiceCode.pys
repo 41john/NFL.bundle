@@ -4,6 +4,7 @@ NFL_NETWORK_SCHEDULE		= 'http://www.locatetv.com/listings/nflnet'
 GAMEPASS_CONFIG				= 'https://www.nflgamepass.com/api/en/content/v1/web/config'
 GAMEPASS_REDZONE			= 'https://www.nflgamepass.com/api/en/content/v1/web/redzone/videos'
 GAMEPASS_NFLN				= 'https://www.nflgamepass.com/api/en/content/v1/web/network/data'
+GIGYA_AUTH					= 'https://accounts.us1.gigya.com/accounts.login'
 import uuid
 import json
 import urllib2
@@ -177,14 +178,35 @@ def PlayVideoGP(url):
 	username = Prefs['username']
 	password = Prefs['password']
 	
+	gigya_apikey = JSON.ObjectFromURL(GAMEPASS_CONFIG)['modules']['GIGYA']['JAVASCRIPT_API_URL'].replace("https://cdns.eu1.gigya.com/js/gigya.js?apiKey=","")
+	gigya_post_values = {
+		'apiKey' : gigya_apikey,
+		'loginID' : username,
+		'password' : password
+		}		
+	
+	gigyalogin = JSON.ObjectFromURL(url=GIGYA_AUTH, values=gigya_post_values, cacheTime=0)
+		
+	UID = gigyalogin['UID']
+	UIDSignature = gigyalogin['UIDSignature']
+	signatureTimestamp = gigyalogin['signatureTimestamp']
+	
 	clientId = JSON.ObjectFromURL(GAMEPASS_CONFIG)['modules']['API']['CLIENT_ID']
 	authentication_url = JSON.ObjectFromURL(GAMEPASS_CONFIG)['modules']['API']['LOGIN']
 	post_values = {
+		'client_id' : clientId,
+ 		'device_description' : 'iPhone',
+        'device_id' : '',
+        'device_type' : 'iOS',
+        'errorCode' : '0',
+        'grant_type' : 'shield_authentication',
+        'password' : password,
+        'signature' : UIDSignature,
+        'ts' : signatureTimestamp,
  		'username' : username,
- 		'password' : password,
- 		'client_id': clientId,
-        'grant_type': 'password'
+        'uuid' : UID
  		}
+
 	login = JSON.ObjectFromURL(url=authentication_url, values=post_values, cacheTime=0)
 	accessToken = login['access_token']
 	

@@ -42,7 +42,7 @@ def Start():
 	DirectoryObject.thumb = R("nfl-network.png")
 	DirectoryObject.art = R(ART)
 
-	HTTP.Headers['User-agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0'
+	HTTP.Headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36'
 
 ###################################################################################################
 
